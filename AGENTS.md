@@ -138,7 +138,7 @@ Search is a core feature, not a later enhancement.
 
 - Index lesson titles, headings, body text, glossary terms, analogies, and provider service names.
 - Return matches for sections within long lessons.
-- Support filters for provider, topic, difficulty, role, and learning path.
+- Support filters for provider, curriculum module, topic, and difficulty.
 - Support abbreviations, common synonyms, and cross-provider terminology.
 - Examples include `VM`, `virtual machine`, `EC2`, `Azure Virtual Machines`, and `Compute Engine`.
 - Provide helpful empty states and suggested alternative terms.
@@ -161,6 +161,18 @@ The site should encourage continued learning through clarity and achievable prog
 - Use encouraging, direct, human language.
 - Avoid excessive animation, gamification pressure, streak anxiety, and visual noise.
 - Make the next useful action obvious.
+
+## Curriculum-first structure
+
+`cloudservs` has one ordered curriculum. Do not build separate role-based learning paths, role dashboards, duplicated lesson sequences, or independent progress systems.
+
+- Give every lesson one clear position in the main curriculum.
+- Use prerequisites and previous and next lesson links to guide progression.
+- Track progress against the single curriculum.
+- Allow learners to search or filter the curriculum without creating alternate course structures.
+- Workplace relevance may be shown as lightweight lesson context, but it must not become a separate navigation or progress system.
+- Reuse the same lesson wherever another page references it. Never duplicate lesson content for a job role.
+- Treat any future curated role view as an optional index over the existing curriculum, not as a separate curriculum.
 
 ## Interface and visual design
 
@@ -214,7 +226,7 @@ Each lesson should include structured metadata for at least:
 - Prerequisites
 - Learning objectives
 - Providers covered
-- Relevant job roles
+- Workplace relevance
 - Estimated reading or study time
 - Mapping confidence where comparisons exist
 - Primary sources
@@ -262,7 +274,7 @@ Build in quality-controlled chunks:
 1. Foundation, design system, content schema, search, deployment, and reusable learning components.
 2. Pilot curriculum covering cloud fundamentals, global infrastructure, shared responsibility, compute, storage, networking, and identity.
 3. Core technical curriculum.
-4. Role-based professional learning paths.
+4. Remaining curriculum modules and cross-topic architecture practice.
 5. Job preparation, quizzes, scenarios, and revision tools.
 6. Advanced curriculum and maintenance automation.
 
@@ -295,4 +307,3 @@ Before calling a change complete:
 - Keep assets optimized and source attribution recorded where required.
 - Never place secrets or private credentials in client code, lesson content, examples, or repository history.
 - Remember that all GitHub Pages code and data delivered to the browser are public.
-

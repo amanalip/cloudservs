@@ -258,7 +258,7 @@ No direct equivalent    Is behavior closely comparable?
 
 - Visible prerequisites
 - Beginner, intermediate, and advanced depth indicators
-- Role-based learning paths
+- One clear, ordered curriculum
 - Clear lesson objectives
 - Continue-learning entry point
 - Locally saved progress
@@ -312,7 +312,7 @@ Learner query
 Lessons, sections, glossary terms, and comparisons
           |
           v
-Provider, topic, difficulty, role, and path filters
+Provider, curriculum module, topic, and difficulty filters
 ```
 
 Planned search behavior:
@@ -320,7 +320,7 @@ Planned search behavior:
 - Full-text search across lesson content
 - Section-level results for long lessons
 - Highlighted matches and useful excerpts
-- Provider, domain, difficulty, role, and learning-path filters
+- Provider, curriculum-module, domain, and difficulty filters
 - Support for abbreviations and common synonyms
 - Cross-provider terminology discovery
 - Keyboard-friendly search dialog
@@ -515,47 +515,47 @@ The curriculum is intended to be broad enough for serious job preparation. It wi
 | Hands-on job skills | Consoles, command-line tools, logs, permissions, network diagnosis, deployments, databases, monitoring, backups, cost estimation, and incident response |
 | Interview and career preparation | Concept questions, comparisons, troubleshooting, architecture scenarios, security, cost, behavioral questions, whiteboards, resumes, and portfolios |
 
-## Learning paths
+## One ordered curriculum
+
+`cloudservs` will use one curriculum, one lesson sequence, and one progress model. It will not duplicate lessons for different professions or maintain separate role-based paths.
+
+Workplace relevance can still be explained inside a lesson. For example, an identity lesson may describe why administrators, developers, security professionals, and architects encounter the topic. That context does not create a separate course.
 
 ```text
-Cloud foundations
-       |
-       +-- Cloud administrator
-       |      +-- Identity
-       |      +-- Compute
-       |      +-- Networking
-       |      +-- Monitoring
-       |
-       +-- Cloud developer
-       |      +-- APIs
-       |      +-- Databases
-       |      +-- Messaging
-       |      +-- Serverless
-       |
-       +-- DevOps engineer
-       |      +-- Containers
-       |      +-- Kubernetes
-       |      +-- CI/CD
-       |      +-- Infrastructure as code
-       |
-       +-- Cloud security
-       |      +-- IAM
-       |      +-- Network security
-       |      +-- Encryption
-       |      +-- Governance
-       |
-       +-- Data professional
-       |      +-- Storage
-       |      +-- Pipelines
-       |      +-- Analytics
-       |      +-- AI foundations
-       |
-       +-- Solutions architect
-              +-- Reliability
-              +-- Cost
-              +-- Migration
-              +-- Architecture patterns
+Start
+  |
+  v
+Module 1: Cloud and computing foundations
+  |
+  v
+Module 2: Identity, infrastructure, compute, storage, and databases
+  |
+  v
+Module 3: Networking and application delivery
+  |
+  v
+Module 4: Containers, Kubernetes, serverless, and messaging
+  |
+  v
+Module 5: Security, observability, reliability, and operations
+  |
+  v
+Module 6: DevOps, infrastructure as code, cost, and governance
+  |
+  v
+Module 7: Data, analytics, AI, migration, and modernization
+  |
+  v
+Module 8: Architecture patterns and integrated scenarios
+  |
+  v
+Module 9: Hands-on job skills and interview preparation
+  |
+  v
+Curriculum completion
 ```
+
+Learners can search, revisit, or jump to a lesson when needed, but the site will always make the recommended curriculum order and prerequisites clear.
 
 ## Code documentation standard
 
@@ -636,14 +636,13 @@ Every pilot lesson will establish the full explanation, diagram, comparison, sou
 - Security
 - Scaling, reliability, and cost
 
-### Chunk 4: Professional learning paths
+### Chunk 4: Curriculum completion and integration
 
-- Administrator
-- Developer
-- DevOps
-- Security
-- Data
-- Solutions architect
+- Complete the remaining detailed curriculum areas
+- Connect concepts through cross-topic architecture scenarios
+- Add prerequisite and previous and next lesson relationships
+- Strengthen curriculum progress and continue-learning behavior
+- Review the complete curriculum for gaps and unnecessary repetition
 
 ### Chunk 5: Job preparation
 

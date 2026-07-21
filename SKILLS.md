@@ -194,7 +194,7 @@ Let a learner search by concept, abbreviation, provider term, or job topic.
 ### Workflow
 
 1. Index generated static lesson content with Pagefind.
-2. Add metadata filters for provider, topic, difficulty, role, and learning path.
+2. Add metadata filters for provider, curriculum module, topic, and difficulty.
 3. Maintain a reviewed synonym dictionary.
 4. Connect vendor terms to their vendor-neutral concept.
 5. Return section-level results with useful excerpts.
@@ -324,4 +324,3 @@ Publish a reproducible static build without server-only dependencies.
 6. Deploy through the official GitHub Pages Actions flow.
 7. Test the deployed base path, assets, search, navigation, and offline behavior.
 8. Record the deployed version and content verification date.
-
