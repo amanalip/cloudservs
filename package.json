@@ -5,13 +5,15 @@
   "type": "module",
   "scripts": {
     "dev": "astro dev",
-    "build": "astro check && astro build",
+    "build": "npm run syllabus:validate && astro check && astro build",
     "preview": "astro preview",
     "check": "astro check",
     "test": "vitest run",
     "test:watch": "vitest",
     "test:e2e": "npm run build && playwright test",
     "test:e2e:ui": "npm run build && playwright test --ui",
+    "syllabus:status": "node scripts/syllabus-status.ts",
+    "syllabus:validate": "node scripts/validate-syllabus.ts",
     "format:check": "prettier --check .",
     "format": "prettier --write ."
   },

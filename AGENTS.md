@@ -182,6 +182,20 @@ The site should encourage continued learning through clarity and achievable prog
 - Use prerequisites and previous and next lesson links to guide progression.
 - Track progress against the single curriculum.
 - Allow learners to search or filter the curriculum without creating alternate course structures.
+
+## Durable syllabus tracking
+
+`src/data/syllabus.ts` is the source of truth for lesson-level curriculum progress. Conversation memory, file existence, navigation visibility, and module availability are not completion evidence.
+
+- Run `npm run syllabus:status` before continuing curriculum work.
+- Run `npm run syllabus:validate` after every ledger change.
+- When the user says “continue making syllabus,” resume the reported next lesson and its recorded `nextStep`.
+- Keep stable lesson IDs, module order, topics, covered topics, prerequisites, source paths, status history, completed requirements, verification dates, blockers, and next steps current.
+- Distinguish topic coverage from quality-gated completion in every progress report.
+- Mark a lesson `complete` only after every requirement in `lessonRequirements` is recorded, every assigned topic is covered, the source file exists, and a last-verified date is present.
+- Append status history instead of rewriting earlier events.
+- Record a concrete blocker whenever status is `blocked`.
+- Update the ledger in the same change that adds, reviews, blocks, resumes, or completes lesson content.
 - Workplace relevance may be shown as lightweight lesson context, but it must not become a separate navigation or progress system.
 - Reuse the same lesson wherever another page references it. Never duplicate lesson content for a job role.
 - Treat any future curated role view as an optional index over the existing curriculum, not as a separate curriculum.
@@ -319,6 +333,7 @@ Before calling a change complete:
 - Scan authored text for em dashes and replace them.
 - Confirm that copyright text is correct.
 - Run the Playwright UI regression suite against the production build.
+- Run syllabus validation and confirm the next-lesson report remains accurate.
 - Do not deploy when shared card geometry, diagram controls, diagram containment, ASCII copying, contents-pane behavior, or dark-mode diagram contrast regress.
 - Regression-test heading chain links for hash navigation, absolute URL copying, and accessible confirmation.
 - Update project documentation when architecture, commands, conventions, or workflows change.

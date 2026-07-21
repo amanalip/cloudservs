@@ -1,6 +1,6 @@
 /**
- * This file is the single source of truth for the ordered curriculum modules.
- * Pages and components reuse this data so the learner never sees competing paths.
+ * This file is the module-level catalog used by learner-facing navigation.
+ * The detailed lesson order, progress evidence, and checkpoints live in syllabus.ts.
  */
 export interface CurriculumModule {
   number: number;

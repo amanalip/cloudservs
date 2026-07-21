@@ -327,6 +327,8 @@ Release a coherent, reviewed slice of the platform rather than a large set of un
 npm run dev           Start the local development site
 npm run test          Run curriculum and utility tests
 npm run test:e2e      Build and run Playwright UI regression tests
+npm run syllabus:validate  Reject an inconsistent progress ledger
+npm run syllabus:status    Report progress and the next curriculum checkpoint
 npm run check         Type-check Astro, MDX, and TypeScript
 npm run build         Validate and create the production site
 npm run preview       Serve the production output locally
@@ -348,7 +350,52 @@ The Playwright suite must preserve the shared fixes before additional curriculum
 - readable Markmap labels in dark mode
 - heading chain links that navigate to the section, copy the complete URL, and announce success
 
-## 12. Deploy to GitHub Pages
+## 12. Continue the syllabus reliably
+
+### Goal
+
+Resume multi-day curriculum work from repository evidence without depending on chat history.
+
+### Workflow
+
+1. Inspect the working tree and preserve unfinished user changes.
+2. Run `npm run syllabus:validate`.
+3. Run `npm run syllabus:status`.
+4. Select the reported next lesson rather than choosing a new topic from memory.
+5. Read its topics, prerequisites, status history, completed requirements, and `nextStep`.
+6. Complete one coherent research, writing, fact-checking, or review checkpoint.
+7. Update covered topics and completed requirements only when evidence exists in the lesson.
+8. Append a dated status-history event when the workflow status changes.
+9. Record the next concrete action or blocker before ending the development session.
+10. Run syllabus validation, unit tests, production build, and relevant browser checks.
+11. Report topic coverage and quality-gated completion separately.
+
+### Status model
+
+```text
+planned
+   |
+   v
+researching
+   |
+   v
+drafting
+   |
+   v
+fact-checking
+   |
+   v
+visual-review
+   |
+   v
+complete
+
+Any active stage can become blocked when a concrete blocker is recorded.
+```
+
+Never mark a lesson complete merely because its file exists or its source claims are verified. Source verification and whole-lesson completion are separate signals.
+
+## 13. Deploy to GitHub Pages
 
 ### Goal
 

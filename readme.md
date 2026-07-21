@@ -46,10 +46,11 @@ Development is active. The first verified learning chunk is implemented and incl
 - Higher-contrast, larger Markmap labels in light and dark themes
 - Playwright production-build regression tests for shared layout and interaction fixes
 - Shareable heading chain links that copy complete section URLs with accessible confirmation
+- A validated 93-lesson syllabus ledger with durable checkpoints and next-work reporting
 - Two detailed, source-backed foundation lessons
 - GitHub Pages base-path configuration and an automated deployment workflow
 
-The first complete lessons are **What is cloud computing?** and **Shared responsibility**. Their technical claims were checked against current NIST, AWS, Microsoft, and Google primary sources on July 21, 2026.
+The first detailed lesson drafts are **What is cloud computing?** and **Shared responsibility**. Their technical claims were checked against current NIST, AWS, Microsoft, and Google primary sources on July 21, 2026. The syllabus ledger separately records the remaining whole-lesson requirements before either draft is quality-gated as complete.
 
 Core repository documents:
 
@@ -70,6 +71,8 @@ Before publishing a chunk, run:
 
 ```bash
 npm test
+npm run syllabus:validate
+npm run syllabus:status
 npm run build
 npm run test:e2e
 npm run format:check
@@ -77,11 +80,44 @@ npm run format:check
 
 The production build generates static HTML, Pagefind's browser-side search index, a sitemap, and the GitHub Pages artifact in `dist/`.
 
+## Durable syllabus progress
+
+Long-running curriculum development is tracked in `src/data/syllabus.ts`. The ledger currently contains 93 ordered lessons across all nine modules. Each lesson records its stable ID, topics, covered topics, prerequisites, workflow status, source path, completed quality requirements, verification date, status history, next action, and blocker when applicable.
+
+```text
+Conversation request
+       |
+       v
+"continue making syllabus"
+       |
+       v
+Validate the repository ledger
+       |
+       v
+Read the generated status report
+       |
+       v
+Resume the earliest ready lesson and its next step
+       |
+       v
+Update evidence, history, and the next checkpoint
+```
+
+Use these commands at the beginning and end of a curriculum session:
+
+```bash
+npm run syllabus:validate
+npm run syllabus:status
+```
+
+The report deliberately separates topic coverage from complete lesson quality. A published lesson may contain verified claims while still needing glossary, flashcard, architecture, accessibility, or review work. File existence and navigation visibility never count as completion by themselves.
+
 ## Current source structure
 
 ```text
 cloudservs/
   .github/workflows/static.yml   GitHub Pages build and deployment
+  scripts/                       Syllabus validation and status commands
   public/                        Static favicon and public assets
   src/assets/                    Brand artwork
   src/components/                Learning and diagram components
