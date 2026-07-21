@@ -5,6 +5,12 @@
  * styles establish a calmer, more distinctive learning environment on top of it.
  */
 
+/* Local font files make the reading experience consistent without a third-party font request. */
+@import '@fontsource/atkinson-hyperlegible/400.css';
+@import '@fontsource/atkinson-hyperlegible/700.css';
+@import '@fontsource-variable/manrope';
+@import '@fontsource-variable/jetbrains-mono';
+
 /* Light-theme tokens use cool neutrals with indigo, cyan, and violet accents. */
 :root,
 ::backdrop {
@@ -27,8 +33,9 @@
   --cloudservs-surface: color-mix(in srgb, var(--sl-color-black) 92%, white);
   --cloudservs-border: color-mix(in srgb, var(--sl-color-gray-4) 58%, transparent);
   --cloudservs-shadow: 0 18px 50px rgba(49, 46, 129, 0.09);
-  --sl-font: 'Inter', 'Avenir Next', 'Segoe UI', system-ui, sans-serif;
+  --sl-font: 'Atkinson Hyperlegible', 'Segoe UI', system-ui, sans-serif;
   --sl-font-mono: 'JetBrains Mono', 'SFMono-Regular', Consolas, monospace;
+  --cloudservs-font-heading: 'Manrope Variable', 'Atkinson Hyperlegible', system-ui, sans-serif;
 }
 
 /* Dark-theme tokens reduce glare while preserving diagram and text contrast. */
@@ -57,6 +64,11 @@
 
 /* A subtle background grid gives architecture pages depth without adding noise. */
 body {
+  font-family: var(--sl-font);
+  font-size: 1rem;
+  line-height: 1.68;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
   background-image:
     linear-gradient(
       color-mix(in srgb, var(--sl-color-gray-5) 28%, transparent) 1px,
@@ -69,6 +81,32 @@ body {
     );
   background-position: center top;
   background-size: 48px 48px;
+}
+
+/* Manrope gives headings a clear identity while Atkinson keeps long lessons easy to scan. */
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+.site-title {
+  font-family: var(--cloudservs-font-heading);
+  font-variation-settings: 'wght' 720;
+  letter-spacing: -0.025em;
+}
+
+.sl-markdown-content {
+  font-size: 1.025rem;
+  line-height: 1.75;
+}
+
+code,
+pre,
+kbd,
+samp {
+  font-family: var(--sl-font-mono);
+  font-variant-ligatures: none;
 }
 
 /* The page surface remains readable above the quiet grid. */
@@ -177,10 +215,16 @@ input,
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(min(100%, 15rem), 1fr));
   gap: 1rem;
+  grid-auto-rows: 1fr;
+  align-items: stretch;
   margin-block: 2rem 3rem;
 }
 
 .learning-card {
+  display: flex;
+  min-height: 12.5rem;
+  box-sizing: border-box;
+  flex-direction: column;
   padding: 1.35rem;
 }
 
@@ -280,9 +324,9 @@ input,
 }
 
 .diagram-card__header {
-  display: flex;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
   align-items: start;
-  justify-content: space-between;
   gap: 1rem;
   padding: 1rem 1.15rem;
   border-bottom: 1px solid var(--cloudservs-border);
@@ -291,10 +335,13 @@ input,
 .diagram-toolbar {
   display: flex;
   flex: none;
-  flex-wrap: wrap;
+  flex-wrap: nowrap;
   align-items: center;
   justify-content: end;
   gap: 0.4rem;
+  max-width: 100%;
+  overflow-x: auto;
+  white-space: nowrap;
 }
 
 .diagram-toolbar button,
@@ -311,7 +358,11 @@ input,
 }
 
 .diagram-toolbar button {
+  display: grid;
+  height: 2.5rem;
+  place-items: center;
   padding-inline: 0.65rem;
+  line-height: 1;
   cursor: pointer;
 }
 
@@ -350,6 +401,13 @@ input,
   border: 0;
   background: transparent;
   box-shadow: none;
+}
+
+/* ASCII remains left-aligned internally while the complete drawing is centered as one unit. */
+[data-ascii-diagram] .diagram-card__body pre {
+  width: max-content;
+  margin-inline: auto;
+  text-align: left;
 }
 
 .diagram-card__body .mermaid {
@@ -524,10 +582,12 @@ input,
   }
 
   .diagram-card__header {
+    display: flex;
     flex-direction: column;
   }
 
   .diagram-toolbar {
+    width: 100%;
     justify-content: start;
   }
 }

@@ -37,6 +37,9 @@ Development is active. The first verified learning chunk is implemented and incl
 - Reusable ASCII, Mermaid, Markmap, and provider-comparison components
 - Diagram zoom, reset, scrolling, and native full-screen viewing controls
 - A working Start now curriculum action that opens the first available lesson
+- Locally bundled Atkinson Hyperlegible, Manrope, and JetBrains Mono typography
+- Reliable ASCII copying with a restricted-browser fallback
+- Centered ASCII drawings and equal-sized learning cards
 - Two detailed, source-backed foundation lessons
 - GitHub Pages base-path configuration and an automated deployment workflow
 

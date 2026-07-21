@@ -112,6 +112,9 @@ What must the learner understand?
 8. Confirm that the visual remains accurate after simplification.
 9. Verify zoom out, zoom in, reset, scrolling, and full-screen controls on dense interactive visuals.
 10. Force or simulate a rendering failure and confirm that a useful text fallback replaces blank space.
+11. Confirm diagram toolbars remain on one row or scroll as one unit at narrow widths.
+12. Test ASCII copy on the first page load and after client-side navigation.
+13. Confirm ASCII drawings are centered as blocks without centering their internal text.
 
 ## 4. Build an interactive mind map
 
@@ -286,6 +289,8 @@ Ensure the site encourages learning without overwhelming or pressuring the learn
 - Does the page work with keyboard, zoom, and a screen reader?
 - Is motion optional?
 - Does the mobile layout preserve the learning sequence?
+- Do related cards have equal dimensions at every responsive column count?
+- Are the locally bundled body, heading, and code fonts loaded in both themes?
 
 ## 11. Validate a release chunk
 
