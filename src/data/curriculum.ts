@@ -7,6 +7,7 @@ export interface CurriculumModule {
   title: string;
   summary: string;
   status: 'available' | 'planned';
+  href?: string;
 }
 
 /** The nine modules preserve the detailed syllabus while giving it one clear order. */
@@ -16,6 +17,7 @@ export const curriculumModules: CurriculumModule[] = [
     title: 'Cloud and computing foundations',
     summary: 'Build the vocabulary and mental models used throughout the curriculum.',
     status: 'available',
+    href: 'learn/foundations/what-is-cloud-computing/',
   },
   {
     number: 2,

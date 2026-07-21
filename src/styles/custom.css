@@ -162,6 +162,16 @@ input,
   box-shadow: var(--cloudservs-shadow);
 }
 
+.curriculum-stage--available {
+  color: inherit;
+  text-decoration: none;
+}
+
+.curriculum-stage--available:focus-visible {
+  outline: 3px solid var(--sl-color-accent-high);
+  outline-offset: 3px;
+}
+
 /* The toolkit grid scales from one column to three without cramped intermediate states. */
 .learning-toolkit {
   display: grid;
@@ -278,6 +288,45 @@ input,
   border-bottom: 1px solid var(--cloudservs-border);
 }
 
+.diagram-toolbar {
+  display: flex;
+  flex: none;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: end;
+  gap: 0.4rem;
+}
+
+.diagram-toolbar button,
+.diagram-toolbar output {
+  min-width: 2.25rem;
+  min-height: 2.25rem;
+  border: 1px solid var(--cloudservs-border);
+  border-radius: 0.6rem;
+  color: var(--sl-color-gray-1);
+  background: color-mix(in srgb, var(--cloudservs-surface) 88%, var(--sl-color-white));
+  font: inherit;
+  font-size: 0.76rem;
+  font-weight: 750;
+}
+
+.diagram-toolbar button {
+  padding-inline: 0.65rem;
+  cursor: pointer;
+}
+
+.diagram-toolbar button:hover,
+.diagram-toolbar button:focus-visible {
+  border-color: var(--sl-color-accent);
+  color: var(--sl-color-white);
+}
+
+.diagram-toolbar output {
+  display: grid;
+  place-items: center;
+  padding-inline: 0.4rem;
+}
+
 .diagram-card__header h3,
 .diagram-card__header p {
   margin: 0;
@@ -290,8 +339,10 @@ input,
 }
 
 .diagram-card__body {
+  max-height: 38rem;
   padding: 1.15rem;
-  overflow-x: auto;
+  overflow: auto;
+  overscroll-behavior: contain;
 }
 
 .diagram-card__body pre {
@@ -302,13 +353,47 @@ input,
 }
 
 .diagram-card__body .mermaid {
-  min-width: min(100%, 34rem);
+  min-width: 36rem;
   text-align: center;
 }
 
-.diagram-card__body svg {
-  max-width: 100%;
+.mermaid-canvas {
+  width: calc(100% * var(--diagram-zoom, 1));
+  min-width: calc(36rem * var(--diagram-zoom, 1));
+}
+
+.mermaid-canvas svg {
+  width: 100% !important;
+  max-width: none !important;
   height: auto;
+}
+
+.markmap {
+  width: 100%;
+  min-width: 44rem;
+  height: 32rem;
+}
+
+.diagram-error {
+  margin: 2rem;
+  padding: 1rem;
+  border: 1px solid var(--cloudservs-border);
+  border-radius: 0.75rem;
+  color: var(--sl-color-gray-1);
+  text-align: center;
+}
+
+.diagram-card:fullscreen {
+  width: 100vw;
+  height: 100vh;
+  margin: 0;
+  border: 0;
+  border-radius: 0;
+  background: var(--sl-color-bg);
+}
+
+.diagram-card:fullscreen .diagram-card__body {
+  max-height: calc(100vh - 7rem);
 }
 
 .diagram-copy {
@@ -436,6 +521,14 @@ input,
 
   .cloudservs-footer {
     flex-direction: column;
+  }
+
+  .diagram-card__header {
+    flex-direction: column;
+  }
+
+  .diagram-toolbar {
+    justify-content: start;
   }
 }
 

@@ -10,24 +10,36 @@ interface Props {
 }
 
 const { title, caption, markdown } = Astro.props;
+
+import DiagramToolbar from './DiagramToolbar.astro';
 ---
 
-<figure class="diagram-card" data-markmap-source={markdown}>
+<figure
+  class="diagram-card"
+  data-interactive-diagram
+  data-diagram-kind="markmap"
+  data-markmap-source={markdown}
+>
   <figcaption class="diagram-card__header">
     <div>
       <h3>{title}</h3>
       <p>{caption}</p>
     </div>
+    <DiagramToolbar />
   </figcaption>
-  <div class="diagram-card__body">
-    <svg class="markmap" style="width: 100%; min-width: 36rem; height: 28rem" aria-label={title}
-    ></svg>
+  <div class="diagram-card__body" tabindex="0" aria-label={`Interactive mind map: ${title}`}>
+    <svg class="markmap" aria-label={title}></svg>
+    <p class="diagram-error" role="status" hidden>
+      This interactive map could not load. Please use the complete text outline below it.
+    </p>
   </div>
 </figure>
 
 <script>
   import { Transformer } from 'markmap-lib';
   import { Markmap } from 'markmap-view';
+
+  const mindMapInstances = new WeakMap<HTMLElement, Markmap>();
 
   /** Create each map once after the page becomes active. */
   function renderMindMaps() {
@@ -37,15 +49,36 @@ const { title, caption, markdown } = Astro.props;
       const svg = container.querySelector<SVGSVGElement>('svg.markmap');
       const markdown = container.dataset.markmapSource;
 
-      if (!svg || !markdown || svg.dataset.ready === 'true') return;
-      svg.dataset.ready = 'true';
+      if (!svg || !markdown || mindMapInstances.has(container)) return;
 
-      const { root } = transformer.transform(markdown);
-      const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      try {
+        const { root } = transformer.transform(markdown);
+        const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        const map = Markmap.create(svg, { autoFit: true, duration: reducedMotion ? 0 : 300 }, root);
 
-      Markmap.create(svg, { autoFit: true, duration: reducedMotion ? 0 : 300 }, root);
+        mindMapInstances.set(container, map);
+        svg.dataset.ready = 'true';
+
+        container.addEventListener('cloudservs:diagram-zoom', async (event) => {
+          const detail = (
+            event as CustomEvent<{ action: string; currentZoom: number; requestedZoom: number }>
+          ).detail;
+          if (detail.action === 'reset') {
+            await map.fit();
+          } else {
+            await map.rescale(detail.requestedZoom / detail.currentZoom);
+          }
+        });
+
+        requestAnimationFrame(() => map.fit());
+      } catch (error) {
+        const message = container.querySelector<HTMLElement>('.diagram-error');
+        if (message) message.hidden = false;
+        console.error('cloudservs could not render a mind map.', error);
+      }
     });
   }
 
+  renderMindMaps();
   document.addEventListener('astro:page-load', renderMindMaps);
 </script>

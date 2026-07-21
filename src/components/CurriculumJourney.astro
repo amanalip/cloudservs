@@ -4,23 +4,37 @@
  * It intentionally presents a sequence rather than separate profession-based paths.
  */
 import { curriculumModules } from '../data/curriculum';
+
+const basePath = import.meta.env.BASE_URL.endsWith('/')
+  ? import.meta.env.BASE_URL
+  : `${import.meta.env.BASE_URL}/`;
 ---
 
 <div class="curriculum-journey" aria-label="The nine curriculum modules">
   {
-    curriculumModules.map((module) => (
-      <article class="curriculum-stage">
-        <span class="curriculum-stage__number" aria-hidden="true">
-          {module.number}
-        </span>
-        <div>
-          <h3>{module.title}</h3>
-          <p>{module.summary}</p>
-        </div>
-        <span class="curriculum-stage__status">
-          {module.status === 'available' ? 'Start now' : 'Planned'}
-        </span>
-      </article>
-    ))
+    curriculumModules.map((module) => {
+      const contents = (
+        <>
+          <span class="curriculum-stage__number" aria-hidden="true">
+            {module.number}
+          </span>
+          <div>
+            <h3>{module.title}</h3>
+            <p>{module.summary}</p>
+          </div>
+          <span class="curriculum-stage__status">
+            {module.status === 'available' ? 'Start now' : 'Planned'}
+          </span>
+        </>
+      );
+
+      return module.href ? (
+        <a class="curriculum-stage curriculum-stage--available" href={`${basePath}${module.href}`}>
+          {contents}
+        </a>
+      ) : (
+        <article class="curriculum-stage">{contents}</article>
+      );
+    })
   }
 </div>

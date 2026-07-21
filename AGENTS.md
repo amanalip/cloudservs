@@ -8,7 +8,7 @@ The primary learner is a student, recent graduate, career changer, or new employ
 
 ## Current project status
 
-Development began after the owner approved the plan. The first working chunk includes the Astro and Starlight foundation, a custom responsive interface, persisted light and dark themes, static full-text search, curriculum metadata, local lesson progress, interactive quizzes, reusable diagram components, and the first two fact-checked foundation lessons.
+Development began after the owner approved the plan. The first working chunk includes the Astro and Starlight foundation, a custom responsive interface, persisted light and dark themes, static full-text search, curriculum metadata, local lesson progress, interactive quizzes, reusable diagram components with zoom and full-screen viewing, and the first two fact-checked foundation lessons.
 
 Build the remaining curriculum in coherent, verified chunks. A chunk is complete only when its lessons, visuals, interactions, source review, browser checks, and documentation are complete.
 
@@ -85,6 +85,8 @@ For every complex or interactive visual:
 - Respect `prefers-reduced-motion`.
 - Make the visual usable on narrow mobile screens.
 - Offer zoom, pan, expansion, or a larger view when density requires it.
+- Dense Mermaid and Markmap visuals must provide visible zoom out, zoom in, reset, and full-screen controls.
+- Never leave an empty diagram frame after a rendering failure. Show an accessible fallback that points to the equivalent text explanation.
 
 ASCII diagrams must remain readable as text, use a suitable monospace font, support horizontal scrolling when necessary, and include a copy control where helpful.
 

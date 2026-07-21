@@ -10,17 +10,27 @@ interface Props {
 }
 
 const { title, caption, code } = Astro.props;
+
+import DiagramToolbar from './DiagramToolbar.astro';
 ---
 
-<figure class="diagram-card" data-mermaid-source={code}>
+<figure
+  class="diagram-card"
+  data-interactive-diagram
+  data-diagram-kind="mermaid"
+  data-mermaid-source={code}
+>
   <figcaption class="diagram-card__header">
     <div>
       <h3>{title}</h3>
       <p>{caption}</p>
     </div>
+    <DiagramToolbar />
   </figcaption>
-  <div class="diagram-card__body">
-    <pre class="mermaid">{code}</pre>
+  <div class="diagram-card__body" tabindex="0" aria-label={`Scrollable diagram: ${title}`}>
+    <div class="mermaid-canvas">
+      <pre class="mermaid">{code}</pre>
+    </div>
   </div>
 </figure>
 
@@ -44,5 +54,21 @@ const { title, caption, code } = Astro.props;
     await mermaid.run({ querySelector: '.mermaid:not([data-processed="true"])' });
   }
 
+  /** Change the rendered SVG size so the surrounding viewport can scroll at higher zoom levels. */
+  function prepareMermaidZoom() {
+    document.querySelectorAll<HTMLElement>('[data-diagram-kind="mermaid"]').forEach((diagram) => {
+      if (diagram.dataset.zoomReady === 'true') return;
+      diagram.dataset.zoomReady = 'true';
+
+      diagram.addEventListener('cloudservs:diagram-zoom', (event) => {
+        const { requestedZoom } = (event as CustomEvent<{ requestedZoom: number }>).detail;
+        diagram.style.setProperty('--diagram-zoom', String(requestedZoom));
+      });
+    });
+  }
+
+  prepareMermaidZoom();
+  renderMermaidDiagrams();
   document.addEventListener('astro:page-load', renderMermaidDiagrams);
+  document.addEventListener('astro:page-load', prepareMermaidZoom);
 </script>

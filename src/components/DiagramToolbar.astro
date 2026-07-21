@@ -1,0 +1,73 @@
+---
+/**
+ * Every dense visual receives the same keyboard-accessible reading controls.
+ * The surrounding diagram component decides how a zoom request is applied.
+ */
+---
+
+<div class="diagram-toolbar" role="group" aria-label="Diagram viewing controls">
+  <button type="button" data-diagram-action="zoom-out" aria-label="Zoom out">−</button>
+  <output data-diagram-zoom aria-live="polite">100%</output>
+  <button type="button" data-diagram-action="zoom-in" aria-label="Zoom in">+</button>
+  <button type="button" data-diagram-action="reset">Reset</button>
+  <button type="button" data-diagram-action="fullscreen">Full screen</button>
+</div>
+
+<script>
+  /** Add controls once, including after Starlight client-side navigation. */
+  function prepareDiagramControls() {
+    document.querySelectorAll<HTMLElement>('[data-interactive-diagram]').forEach((diagram) => {
+      if (diagram.dataset.controlsReady === 'true') return;
+      diagram.dataset.controlsReady = 'true';
+      diagram.dataset.zoom = '1';
+
+      const toolbar = diagram.querySelector<HTMLElement>('.diagram-toolbar');
+      const zoomOutput = toolbar?.querySelector<HTMLOutputElement>('[data-diagram-zoom]');
+      if (!toolbar || !zoomOutput) return;
+
+      toolbar.addEventListener('click', async (event) => {
+        const button = (event.target as HTMLElement).closest<HTMLButtonElement>('button');
+        const action = button?.dataset.diagramAction;
+        if (!button || !action) return;
+
+        if (action === 'fullscreen') {
+          if (document.fullscreenElement === diagram) {
+            await document.exitFullscreen();
+          } else {
+            await diagram.requestFullscreen();
+          }
+          return;
+        }
+
+        const currentZoom = Number(diagram.dataset.zoom ?? '1');
+        const requestedZoom =
+          action === 'zoom-in'
+            ? Math.min(currentZoom + 0.25, 3)
+            : action === 'zoom-out'
+              ? Math.max(currentZoom - 0.25, 0.5)
+              : 1;
+
+        diagram.dataset.zoom = String(requestedZoom);
+        zoomOutput.value = `${Math.round(requestedZoom * 100)}%`;
+        diagram.dispatchEvent(
+          new CustomEvent('cloudservs:diagram-zoom', {
+            detail: { action, currentZoom, requestedZoom },
+          }),
+        );
+      });
+    });
+  }
+
+  /** Keep the full-screen button label truthful when Escape exits the native view. */
+  document.addEventListener('fullscreenchange', () => {
+    document.querySelectorAll<HTMLElement>('[data-interactive-diagram]').forEach((diagram) => {
+      const button = diagram.querySelector<HTMLButtonElement>('[data-diagram-action="fullscreen"]');
+      if (!button) return;
+      button.textContent =
+        document.fullscreenElement === diagram ? 'Exit full screen' : 'Full screen';
+    });
+  });
+
+  prepareDiagramControls();
+  document.addEventListener('astro:page-load', prepareDiagramControls);
+</script>

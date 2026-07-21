@@ -35,6 +35,8 @@ Development is active. The first verified learning chunk is implemented and incl
 - Local lesson progress and an encouraging completion control
 - Accessible knowledge checks with answer explanations
 - Reusable ASCII, Mermaid, Markmap, and provider-comparison components
+- Diagram zoom, reset, scrolling, and native full-screen viewing controls
+- A working Start now curriculum action that opens the first available lesson
 - Two detailed, source-backed foundation lessons
 - GitHub Pages base-path configuration and an automated deployment workflow
 

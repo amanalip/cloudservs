@@ -110,6 +110,8 @@ What must the learner understand?
 6. Style the visual for both themes.
 7. Test narrow screens, zoom, keyboard use, and reduced motion.
 8. Confirm that the visual remains accurate after simplification.
+9. Verify zoom out, zoom in, reset, scrolling, and full-screen controls on dense interactive visuals.
+10. Force or simulate a rendering failure and confirm that a useful text fallback replaces blank space.
 
 ## 4. Build an interactive mind map
 
