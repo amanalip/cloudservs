@@ -49,6 +49,7 @@ Development is active. The first verified learning chunk is implemented and incl
 - A validated 93-lesson syllabus ledger with durable checkpoints and next-work reporting
 - Enforced whole-module quality audits at 25%, 50%, 75%, and 100% topic coverage
 - An append-only, timestamped `audit.md` history for completed module checkpoints
+- An append-only `lessons_learned.md` post-mortem for user and Codex discoveries
 - Two detailed, source-backed foundation lessons
 - GitHub Pages base-path configuration and an automated deployment workflow
 
@@ -59,6 +60,7 @@ Core repository documents:
 - `AGENTS.md` defines the project's non-negotiable requirements and engineering standards.
 - `SKILLS.md` defines repeatable workflows for content, diagrams, fact-checking, search, accessibility, testing, and deployment.
 - `audit.md` preserves timestamped module-audit outcomes, evidence, corrections, validation results, and next actions.
+- `lessons_learned.md` preserves questions, corrections, successful ideas, and the future practices learned by Aman and Codex.
 - `readme.md` describes the product vision, learning experience, architecture, curriculum, and delivery plan.
 
 ## Run the website locally
@@ -135,6 +137,7 @@ Module 1 has already crossed 25%. Its first audit was completed on July 21, 2026
 ```text
 cloudservs/
   audit.md                       Append-only module audit history
+  lessons_learned.md             User and Codex post-mortem history
   .github/workflows/static.yml   GitHub Pages build and deployment
   scripts/                       Syllabus validation and status commands
   public/                        Static favicon and public assets

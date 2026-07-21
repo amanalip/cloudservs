@@ -25,7 +25,7 @@ Build the remaining curriculum in coherent, verified chunks. A chunk is complete
 - Lessons must contain many useful visuals, not a single decorative diagram.
 - Avoid em dashes in all interface copy, lessons, documentation, comments, and examples.
 - The footer must display `© 2026 Aman Ali Pogaku`.
-- Keep `AGENTS.md`, `SKILLS.md`, `audit.md`, and `readme.md` current as the project changes.
+- Keep `AGENTS.md`, `SKILLS.md`, `audit.md`, `lessons_learned.md`, and `readme.md` current as the project changes.
 
 ## Teaching model
 
@@ -205,6 +205,10 @@ The site should encourage continued learning through clarity and achievable prog
 - Include the checkpoint scope, outcome, findings, actions, sources, validation results, and next action in every audit entry.
 - Preserve prior audit entries. Record later corrections as dated amendments instead of silently rewriting history.
 - Keep the stable audit marker directly above each entry so `npm run syllabus:validate` can match the log to the ledger.
+- Treat `lessons_learned.md` as the append-only post-mortem and decision-memory log.
+- Append a timestamped entry after a meaningful question, corrected assumption, recurring defect, workflow improvement, or successful user idea produces a reusable lesson.
+- Separate lessons learned by the user from lessons learned by Codex, explain the future practice, and preserve earlier entries.
+- Store verified audit results in `audit.md`. Store reflective learning and changed future practice in `lessons_learned.md`.
 - Workplace relevance may be shown as lightweight lesson context, but it must not become a separate navigation or progress system.
 - Reuse the same lesson wherever another page references it. Never duplicate lesson content for a job role.
 - Treat any future curated role view as an optional index over the existing curriculum, not as a separate curriculum.
@@ -348,6 +352,7 @@ Before calling a change complete:
 - Do not deploy when shared card geometry, diagram controls, diagram containment, ASCII copying, contents-pane behavior, or dark-mode diagram contrast regress.
 - Regression-test heading chain links for hash navigation, absolute URL copying, and accessible confirmation.
 - Update project documentation when architecture, commands, conventions, or workflows change.
+- Review the completed change for reusable learning and update `lessons_learned.md` when a meaningful lesson exists.
 
 ## Repository hygiene
 

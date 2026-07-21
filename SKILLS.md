@@ -437,3 +437,26 @@ Publish a reproducible static build without server-only dependencies.
 ### PWA compatibility gate
 
 The project currently uses Astro 7 through Starlight. The evaluated Vite PWA Astro adapter does not declare Astro 7 compatibility, so offline installation is deferred. Never bypass the peer dependency check merely to include the feature. Reevaluate the adapter during dependency upgrades, then test installation, updates, cached navigation, and the `/cloudservs/` base path before enabling it.
+
+## 14. Record a lesson learned
+
+### Goal
+
+Turn a useful question, defect, correction, decision, or successful idea into durable project memory.
+
+### Workflow
+
+1. Investigate what happened before recording a conclusion.
+2. Decide whether the result belongs in the factual audit log, the reflective lessons log, or both.
+3. Append a timestamped entry to `lessons_learned.md` when the discovery changes future practice.
+4. Record lessons learned by the user and lessons learned by Codex separately.
+5. Explain the prompting event in beginner-friendly language.
+6. State the future practice that follows from the lesson.
+7. Update `AGENTS.md` for permanent requirements and `SKILLS.md` for repeatable procedures when needed.
+8. Add regression coverage when the lesson came from a reproducible defect.
+9. Preserve previous entries and append a dated amendment if a conclusion later changes.
+10. Avoid duplicating raw audit evidence when a concise link or explanation is enough.
+
+### Recording boundary
+
+`audit.md` answers what was checked and what passed. `src/data/syllabus.ts` answers what curriculum work is done and what comes next. `lessons_learned.md` answers what the team now understands and what it will do differently.
