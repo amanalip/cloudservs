@@ -74,15 +74,128 @@ export interface SyllabusLesson {
   history: LessonStatusEvent[];
 }
 
-/** Modules group the ordered lesson records without creating competing learning paths. */
+/** Four milestone reviews catch module-wide drift before it compounds. */
+export const moduleAuditThresholds = [25, 50, 75, 100] as const;
+
+export type ModuleAuditThreshold = (typeof moduleAuditThresholds)[number];
+export type ModuleAuditStatus = 'planned' | 'in-progress' | 'complete';
+
+/** Every checkpoint examines content, evidence, pedagogy, visuals, and learner experience. */
+export const moduleAuditRequirements = [
+  'syllabus-coverage',
+  'factual-accuracy',
+  'primary-source-quality',
+  'beginner-pedagogy',
+  'lesson-sequence',
+  'provider-comparisons',
+  'visual-quality',
+  'accessibility',
+  'navigation-and-search',
+  'browser-regressions',
+  'terminology-and-consistency',
+] as const;
+
+export type ModuleAuditRequirement = (typeof moduleAuditRequirements)[number];
+export type ModuleAuditFindingDisposition = 'open' | 'corrected' | 'tracked' | 'accepted';
+
+/** Findings remain visible after correction so later audits can detect recurrence. */
+export interface ModuleAuditFinding {
+  id: string;
+  summary: string;
+  disposition: ModuleAuditFindingDisposition;
+  resolution: string;
+}
+
+/** One audit record proves that a threshold review happened and records its outcome. */
+export interface ModuleAudit {
+  threshold: ModuleAuditThreshold;
+  status: ModuleAuditStatus;
+  completedRequirements: ModuleAuditRequirement[];
+  findings: ModuleAuditFinding[];
+  evidence: string[];
+  summary: string;
+  startedAt?: string;
+  completedAt?: string;
+}
+
+/** Modules group ordered lessons and their enforced milestone reviews. */
 export interface SyllabusModule {
   number: number;
   title: string;
   lessons: SyllabusLesson[];
+  audits: ModuleAudit[];
 }
 
 /** The initial planning date keeps generated records deterministic and reviewable. */
 const initialPlanningDate = '2026-07-21';
+
+/** Each module receives independent audit records so later updates cannot leak between modules. */
+function plannedModuleAudits(): ModuleAudit[] {
+  return moduleAuditThresholds.map((threshold) => ({
+    threshold,
+    status: 'planned',
+    completedRequirements: [],
+    findings: [],
+    evidence: [],
+    summary: 'Audit will begin when topic coverage reaches this threshold.',
+  }));
+}
+
+/** Module 1 has crossed 25%, so its first whole-module audit is recorded immediately. */
+const moduleOneAudits: ModuleAudit[] = [
+  {
+    threshold: 25,
+    status: 'complete',
+    startedAt: '2026-07-21',
+    completedAt: '2026-07-21',
+    completedRequirements: [...moduleAuditRequirements],
+    findings: [
+      {
+        id: 'm1-a25-01',
+        summary: 'Published lesson files had been described as fully complete too early.',
+        disposition: 'corrected',
+        resolution:
+          'Separated verified source claims from whole-lesson completion and recorded the remaining requirements in each lesson checkpoint.',
+      },
+      {
+        id: 'm1-a25-02',
+        summary: 'Long-running progress depended too heavily on conversation context.',
+        disposition: 'corrected',
+        resolution:
+          'Added the durable syllabus ledger, status history, requirement evidence, validation, and next-work reporting.',
+      },
+      {
+        id: 'm1-a25-03',
+        summary: 'The two current drafts still lack some standard lesson sections.',
+        disposition: 'tracked',
+        resolution:
+          'Recorded exact remaining sections in each lesson nextStep so continuation finishes them before starting later lessons.',
+      },
+      {
+        id: 'm1-a25-04',
+        summary: 'No factual contradiction was found in the currently covered foundation claims.',
+        disposition: 'accepted',
+        resolution:
+          'Rechecked NIST, AWS, Microsoft, and Google Cloud primary sources on July 21, 2026.',
+      },
+    ],
+    evidence: [
+      'https://csrc.nist.gov/pubs/sp/800/145/final',
+      'https://docs.aws.amazon.com/whitepapers/latest/aws-overview/what-is-cloud-computing.html',
+      'https://learn.microsoft.com/en-us/training/modules/describe-cloud-compute/',
+      'https://docs.cloud.google.com/docs/overview',
+      'https://aws.amazon.com/compliance/shared-responsibility-model/',
+      'https://learn.microsoft.com/en-us/azure/security/fundamentals/shared-responsibility',
+      'https://docs.cloud.google.com/architecture/framework/security/shared-responsibility-shared-fate',
+      'npm run syllabus:validate',
+      'npm test',
+      'npm run test:e2e',
+    ],
+    summary:
+      'The 25% audit confirmed current factual claims, corrected completion tracking, and converted remaining lesson gaps into explicit checkpoints.',
+  },
+  ...plannedModuleAudits().filter((audit) => audit.threshold !== 25),
+];
 
 /** Planned lessons share safe defaults while retaining explicit topics and prerequisites. */
 function plannedLesson(
@@ -231,6 +344,7 @@ export const syllabusModules: SyllabusModule[] = [
   {
     number: 1,
     title: 'Cloud and computing foundations',
+    audits: moduleOneAudits,
     lessons: [
       whatIsCloudComputing,
       sharedResponsibility,
@@ -258,6 +372,7 @@ export const syllabusModules: SyllabusModule[] = [
   {
     number: 2,
     title: 'Identity and core infrastructure',
+    audits: plannedModuleAudits(),
     lessons: [
       plannedLesson(2, 1, 'identity-foundations', 'Identity, authentication, and authorization', [
         'identity',
@@ -351,6 +466,7 @@ export const syllabusModules: SyllabusModule[] = [
   {
     number: 3,
     title: 'Networking and application delivery',
+    audits: plannedModuleAudits(),
     lessons: [
       plannedLesson(3, 1, 'ip-and-cidr', 'IP addressing and CIDR', ['IP', 'CIDR', 'IPv4', 'IPv6']),
       plannedLesson(3, 2, 'ports-tcp-and-udp', 'Ports, TCP, and UDP', ['ports', 'TCP', 'UDP']),
@@ -398,6 +514,7 @@ export const syllabusModules: SyllabusModule[] = [
   {
     number: 4,
     title: 'Containers and modern applications',
+    audits: plannedModuleAudits(),
     lessons: [
       plannedLesson(4, 1, 'container-foundations', 'Container foundations', [
         'containers',
@@ -483,6 +600,7 @@ export const syllabusModules: SyllabusModule[] = [
   {
     number: 5,
     title: 'Security, observability, and reliability',
+    audits: plannedModuleAudits(),
     lessons: [
       plannedLesson(5, 1, 'security-foundations', 'Defense in depth and zero trust', [
         'defense in depth',
@@ -545,6 +663,7 @@ export const syllabusModules: SyllabusModule[] = [
   {
     number: 6,
     title: 'DevOps, infrastructure, cost, and governance',
+    audits: plannedModuleAudits(),
     lessons: [
       plannedLesson(6, 1, 'source-control-and-branching', 'Source control and branching', [
         'source control',
@@ -622,6 +741,7 @@ export const syllabusModules: SyllabusModule[] = [
   {
     number: 7,
     title: 'Data, analytics, AI, and migration',
+    audits: plannedModuleAudits(),
     lessons: [
       plannedLesson(7, 1, 'data-platforms', 'Lakes, warehouses, and lakehouses', [
         'data lakes',
@@ -687,6 +807,7 @@ export const syllabusModules: SyllabusModule[] = [
   {
     number: 8,
     title: 'Architecture patterns and scenarios',
+    audits: plannedModuleAudits(),
     lessons: [
       plannedLesson(
         8,
@@ -742,6 +863,7 @@ export const syllabusModules: SyllabusModule[] = [
   {
     number: 9,
     title: 'Hands-on skills and job preparation',
+    audits: plannedModuleAudits(),
     lessons: [
       plannedLesson(
         9,

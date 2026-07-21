@@ -1,10 +1,20 @@
 /** The build calls this script so an invalid progress ledger blocks deployment. */
 import { existsSync, readFileSync } from 'node:fs';
 import { resolve } from 'node:path';
-import { syllabusLessons } from '../src/data/syllabus.ts';
+import { validateAuditLog } from '../src/data/audit-validation.ts';
+import { syllabusLessons, syllabusModules } from '../src/data/syllabus.ts';
 import { validateSyllabus, type SyllabusValidationError } from '../src/data/syllabus-validation.ts';
 
 const errors: SyllabusValidationError[] = validateSyllabus();
+
+/** A completed checkpoint is invalid until its readable, timestamped audit record exists. */
+const auditLogPath = resolve('audit.md');
+if (!existsSync(auditLogPath)) {
+  errors.push({ message: 'audit.md does not exist' });
+} else {
+  const auditLog = readFileSync(auditLogPath, 'utf8');
+  validateAuditLog(auditLog, syllabusModules).forEach((message) => errors.push({ message }));
+}
 
 /** Source-backed records must point to real lesson files with matching core metadata. */
 syllabusLessons.forEach((lesson) => {

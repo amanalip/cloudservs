@@ -25,7 +25,7 @@ Build the remaining curriculum in coherent, verified chunks. A chunk is complete
 - Lessons must contain many useful visuals, not a single decorative diagram.
 - Avoid em dashes in all interface copy, lessons, documentation, comments, and examples.
 - The footer must display `© 2026 Aman Ali Pogaku`.
-- Keep `AGENTS.md`, `SKILLS.md`, and `readme.md` current as the project changes.
+- Keep `AGENTS.md`, `SKILLS.md`, `audit.md`, and `readme.md` current as the project changes.
 
 ## Teaching model
 
@@ -196,6 +196,15 @@ The site should encourage continued learning through clarity and achievable prog
 - Append status history instead of rewriting earlier events.
 - Record a concrete blocker whenever status is `blocked`.
 - Update the ledger in the same change that adds, reviews, blocks, resumes, or completes lesson content.
+- Complete whole-module quality audits when topic coverage first reaches 25%, 50%, 75%, and 100%.
+- Treat a reached audit threshold as a release blocker until every module-audit requirement is checked and every finding is corrected, explicitly tracked, or accepted with a reason.
+- Recheck syllabus coverage, factual accuracy, primary sources, pedagogy, sequence, provider comparisons, visuals, accessibility, navigation, search, browser regressions, terminology, and consistency during every module audit.
+- Preserve completed audit findings and resolutions so later checkpoints can detect recurring problems.
+- Treat `audit.md` as the append-only, human-readable history of completed module checkpoints.
+- Append a timestamped `audit.md` entry in the same change that marks a module audit complete.
+- Include the checkpoint scope, outcome, findings, actions, sources, validation results, and next action in every audit entry.
+- Preserve prior audit entries. Record later corrections as dated amendments instead of silently rewriting history.
+- Keep the stable audit marker directly above each entry so `npm run syllabus:validate` can match the log to the ledger.
 - Workplace relevance may be shown as lightweight lesson context, but it must not become a separate navigation or progress system.
 - Reuse the same lesson wherever another page references it. Never duplicate lesson content for a job role.
 - Treat any future curated role view as an optional index over the existing curriculum, not as a separate curriculum.
@@ -334,6 +343,8 @@ Before calling a change complete:
 - Confirm that copyright text is correct.
 - Run the Playwright UI regression suite against the production build.
 - Run syllabus validation and confirm the next-lesson report remains accurate.
+- Confirm every reached module-audit threshold is complete and contains no open finding.
+- Confirm every completed module audit has a matching timestamped entry in `audit.md`.
 - Do not deploy when shared card geometry, diagram controls, diagram containment, ASCII copying, contents-pane behavior, or dark-mode diagram contrast regress.
 - Regression-test heading chain links for hash navigation, absolute URL copying, and accessible confirmation.
 - Update project documentation when architecture, commands, conventions, or workflows change.

@@ -2,10 +2,14 @@
 import { curriculumModules } from './curriculum.ts';
 import {
   lessonRequirements,
+  moduleAuditRequirements,
+  moduleAuditThresholds,
   syllabusLessons,
   syllabusModules,
+  type ModuleAudit,
   type LessonStatus,
   type SyllabusLesson,
+  type SyllabusModule,
 } from './syllabus.ts';
 
 /** Validation errors identify the exact record and rule that needs attention. */
@@ -99,6 +103,59 @@ function validateLesson(lesson: SyllabusLesson): SyllabusValidationError[] {
   return errors;
 }
 
+/** Validate a milestone review and prevent unresolved findings from being signed off. */
+function validateModuleAudit(
+  module: SyllabusModule,
+  audit: ModuleAudit,
+  topicCoveragePercent: number,
+): SyllabusValidationError[] {
+  const errors: SyllabusValidationError[] = [];
+  const report = (message: string) =>
+    errors.push({ message: `module ${module.number} ${audit.threshold}% audit ${message}` });
+
+  if (topicCoveragePercent >= audit.threshold && audit.status === 'planned') {
+    report('is due and must be completed before validation can pass');
+  }
+  if (topicCoveragePercent < audit.threshold && audit.status !== 'planned') {
+    report('started before its topic-coverage threshold was reached');
+  }
+  if (new Set(audit.completedRequirements).size !== audit.completedRequirements.length) {
+    report('contains duplicate requirements');
+  }
+  audit.completedRequirements.forEach((requirement) => {
+    if (!moduleAuditRequirements.includes(requirement)) {
+      report(`contains unknown requirement "${requirement}"`);
+    }
+  });
+
+  if (audit.status === 'complete') {
+    const missingRequirements = moduleAuditRequirements.filter(
+      (requirement) => !audit.completedRequirements.includes(requirement),
+    );
+    if (missingRequirements.length > 0) {
+      report(`misses requirements: ${missingRequirements.join(', ')}`);
+    }
+    if (!audit.startedAt || !isIsoDate(audit.startedAt)) report('has an invalid start date');
+    if (!audit.completedAt || !isIsoDate(audit.completedAt))
+      report('has an invalid completion date');
+    if (audit.startedAt && audit.completedAt && audit.completedAt < audit.startedAt) {
+      report('finishes before it starts');
+    }
+    if (!audit.summary.trim()) report('must include an outcome summary');
+    if (audit.evidence.length === 0) report('must include review evidence');
+    if (audit.findings.some((finding) => finding.disposition === 'open')) {
+      report('cannot complete while a finding remains open');
+    }
+    audit.findings.forEach((finding) => {
+      if (!finding.id.trim() || !finding.summary.trim() || !finding.resolution.trim()) {
+        report('contains an incomplete finding record');
+      }
+    });
+  }
+
+  return errors;
+}
+
 /** Validate the complete ledger, including order, uniqueness, prerequisites, and module parity. */
 export function validateSyllabus(): SyllabusValidationError[] {
   const errors: SyllabusValidationError[] = [];
@@ -118,6 +175,23 @@ export function validateSyllabus(): SyllabusValidationError[] {
     if (!curriculumModule || curriculumModule.title !== module.title) {
       errors.push({ message: `module ${module.number} title does not match curriculum.ts` });
     }
+
+    const totalTopics = module.lessons.reduce((total, lesson) => total + lesson.topics.length, 0);
+    const coveredTopics = module.lessons.reduce(
+      (total, lesson) => total + lesson.coveredTopics.length,
+      0,
+    );
+    const topicCoveragePercent =
+      totalTopics === 0 ? 0 : Math.round((coveredTopics / totalTopics) * 100);
+    if (module.audits.length !== moduleAuditThresholds.length) {
+      errors.push({ message: `module ${module.number} must define four milestone audits` });
+    }
+    module.audits.forEach((audit, auditIndex) => {
+      if (audit.threshold !== moduleAuditThresholds[auditIndex]) {
+        errors.push({ message: `module ${module.number} audit thresholds are out of order` });
+      }
+      errors.push(...validateModuleAudit(module, audit, topicCoveragePercent));
+    });
 
     module.lessons.forEach((lesson, lessonIndex) => {
       globalOrder.set(lesson.id, globalOrder.size);

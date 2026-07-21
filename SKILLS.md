@@ -369,6 +369,28 @@ Resume multi-day curriculum work from repository evidence without depending on c
 9. Record the next concrete action or blocker before ending the development session.
 10. Run syllabus validation, unit tests, production build, and relevant browser checks.
 11. Report topic coverage and quality-gated completion separately.
+12. When coverage crosses 25%, 50%, 75%, or 100%, stop expansion and complete the due whole-module audit.
+
+### Module milestone audit
+
+At each threshold:
+
+1. Review every available lesson and the remaining module outline together.
+2. Compare ledger topics with the agreed detailed curriculum.
+3. Recheck technical claims against current primary sources.
+4. Review beginner clarity, analogy boundaries, technical depth, and lesson order.
+5. Review AWS, Azure, and Google Cloud comparisons and mapping confidence.
+6. Inspect diagrams, responsive behavior, themes, accessibility, search, and navigation.
+7. Run unit, production-build, and browser regression checks.
+8. Correct genuine defects immediately.
+9. Record unfinished planned work as tracked findings with exact next actions.
+10. Keep justified decisions as accepted findings with an explanation.
+11. Leave the audit incomplete while any finding remains open.
+12. Record evidence, findings, resolutions, summary, and completion date in the module ledger.
+13. Append the response-style audit summary to `audit.md` with the exact date, time, and timezone.
+14. Include the stable marker, scope, outcome, findings, actions, source links, validation results, and next checkpoint.
+15. Preserve previous entries and use a dated amendment when an earlier result needs correction.
+16. Run `npm run syllabus:validate` and confirm the log entry matches the completed ledger audit.
 
 ### Status model
 
