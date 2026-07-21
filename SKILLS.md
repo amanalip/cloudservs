@@ -291,10 +291,12 @@ Ensure the site encourages learning without overwhelming or pressuring the learn
 - Is motion optional?
 - Does the mobile layout preserve the learning sequence?
 - Do related cards have equal dimensions at every responsive column count?
+- Do toolkit cards in different rows have the same measured height?
 - Do AWS, Azure, and Google Cloud cards share the same top edge, bottom edge, and internal padding?
 - Are the locally bundled body, heading, and code fonts loaded in both themes?
 - Can the desktop contents pane move left and right, resize by dragging, resize by keyboard, and retain its preference?
 - Are Markmap labels readable at default zoom in both light and dark themes?
+- Are SVG plus and minus strokes optically centered inside equal-height zoom controls?
 
 ## 11. Validate a release chunk
 

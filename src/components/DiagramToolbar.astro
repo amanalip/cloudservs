@@ -6,9 +6,17 @@
 ---
 
 <div class="diagram-toolbar" role="group" aria-label="Diagram viewing controls">
-  <button type="button" data-diagram-action="zoom-out" aria-label="Zoom out">−</button>
+  <button type="button" data-diagram-action="zoom-out" aria-label="Zoom out">
+    <svg class="diagram-toolbar__icon" viewBox="0 0 20 20" aria-hidden="true">
+      <path d="M5 10h10"></path>
+    </svg>
+  </button>
   <output data-diagram-zoom aria-live="polite">100%</output>
-  <button type="button" data-diagram-action="zoom-in" aria-label="Zoom in">+</button>
+  <button type="button" data-diagram-action="zoom-in" aria-label="Zoom in">
+    <svg class="diagram-toolbar__icon" viewBox="0 0 20 20" aria-hidden="true">
+      <path d="M5 10h10M10 5v10"></path>
+    </svg>
+  </button>
   <button type="button" data-diagram-action="reset">Reset</button>
   <button type="button" data-diagram-action="fullscreen">Full screen</button>
 </div>

@@ -210,21 +210,24 @@ input,
   outline-offset: 3px;
 }
 
-/* The toolkit grid scales from one column to three without cramped intermediate states. */
+/* Explicit row sizing keeps all six toolkit cards identical across both rows. */
 .learning-toolkit {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 1rem;
-  grid-auto-rows: 1fr;
+  grid-auto-rows: 14rem;
   align-items: stretch;
   margin-block: 2rem 3rem;
 }
 
 .learning-card {
   display: flex;
-  min-height: 12.5rem;
+  width: 100%;
+  height: 100%;
+  min-height: 0;
   box-sizing: border-box;
   flex-direction: column;
+  margin: 0 !important;
   padding: 1.35rem;
 }
 
@@ -346,8 +349,12 @@ input,
 
 .diagram-toolbar button,
 .diagram-toolbar output {
+  display: grid;
+  height: 2.5rem;
   min-width: 2.25rem;
-  min-height: 2.25rem;
+  box-sizing: border-box;
+  place-items: center;
+  margin: 0;
   border: 1px solid var(--cloudservs-border);
   border-radius: 0.6rem;
   color: var(--sl-color-gray-1);
@@ -358,12 +365,21 @@ input,
 }
 
 .diagram-toolbar button {
-  display: grid;
-  height: 2.5rem;
-  place-items: center;
   padding-inline: 0.65rem;
   line-height: 1;
   cursor: pointer;
+}
+
+/* SVG strokes avoid the uneven optical baselines of text plus and minus glyphs. */
+.diagram-toolbar__icon {
+  display: block;
+  width: 1rem;
+  height: 1rem;
+  overflow: visible;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2;
+  stroke-linecap: round;
 }
 
 .diagram-toolbar button:hover,
@@ -373,9 +389,8 @@ input,
 }
 
 .diagram-toolbar output {
-  display: grid;
-  place-items: center;
   padding-inline: 0.4rem;
+  line-height: 1;
 }
 
 .diagram-card__header h3,

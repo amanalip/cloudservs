@@ -39,8 +39,9 @@ Development is active. The first verified learning chunk is implemented and incl
 - A working Start now curriculum action that opens the first available lesson
 - Locally bundled Atkinson Hyperlegible, Manrope, and JetBrains Mono typography
 - Reliable ASCII copying with a restricted-browser fallback
-- Centered ASCII drawings and equal-sized learning cards
+- Centered ASCII drawings and fixed-height learning cards across both toolkit rows
 - Equal-height provider comparison cards with aligned edges
+- Equal-height diagram controls with optically centered SVG zoom icons
 - A persisted desktop contents pane that can move left or right and resize like a split view
 - Higher-contrast, larger Markmap labels in light and dark themes
 - Two detailed, source-backed foundation lessons
