@@ -40,6 +40,9 @@ Development is active. The first verified learning chunk is implemented and incl
 - Locally bundled Atkinson Hyperlegible, Manrope, and JetBrains Mono typography
 - Reliable ASCII copying with a restricted-browser fallback
 - Centered ASCII drawings and equal-sized learning cards
+- Equal-height provider comparison cards with aligned edges
+- A persisted desktop contents pane that can move left or right and resize like a split view
+- Higher-contrast, larger Markmap labels in light and dark themes
 - Two detailed, source-backed foundation lessons
 - GitHub Pages base-path configuration and an automated deployment workflow
 

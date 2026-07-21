@@ -190,6 +190,10 @@ The site should encourage continued learning through clarity and achievable prog
 - Bundle project fonts locally so typography remains consistent without third-party requests.
 - Use Atkinson Hyperlegible for lesson text, Manrope for headings, and JetBrains Mono for code and ASCII.
 - Cards in the same visual collection must have consistent dimensions and internal spacing.
+- Provider comparison cards must reset inherited Markdown sibling margins and share identical top and bottom alignment.
+- Desktop readers must be able to move the page contents pane left or right and resize it with a pointer or keyboard.
+- Persist contents-pane position and width locally, while keeping the mobile contents experience compact.
+- Style Markmap HTML labels through Markmap theme variables and verify their contrast in both themes.
 - Keep line lengths comfortable for learning.
 - Use provider colors carefully and never as the only identifier.
 - Maintain clear focus states and large touch targets.

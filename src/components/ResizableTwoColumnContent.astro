@@ -1,0 +1,295 @@
+---
+/**
+ * This Starlight layout override turns the desktop table of contents into a reader-controlled pane.
+ * Mobile keeps Starlight's compact in-page contents control without an unnecessary drag handle.
+ */
+const hasTableOfContents = Astro.locals.starlightRoute.toc;
+---
+
+<div class="cloudservs-columns" data-resizable-toc data-toc-side="right">
+  {
+    hasTableOfContents && (
+      <aside class="right-sidebar-container print:hidden" aria-label="Page contents pane">
+        <div class="right-sidebar">
+          <div
+            class="toc-layout-controls sl-hidden lg:sl-flex"
+            role="group"
+            aria-label="Contents pane layout"
+          >
+            <span>Contents pane</span>
+            <button
+              type="button"
+              data-toc-position="left"
+              aria-label="Move contents pane to the left"
+            >
+              Left
+            </button>
+            <button
+              type="button"
+              data-toc-position="right"
+              aria-label="Move contents pane to the right"
+            >
+              Right
+            </button>
+          </div>
+          <slot name="right-sidebar" />
+        </div>
+        <button
+          class="toc-resize-handle sl-hidden lg:sl-block"
+          type="button"
+          role="separator"
+          aria-label="Resize contents pane"
+          aria-orientation="vertical"
+          aria-valuemin="224"
+          aria-valuemax="448"
+          aria-valuenow="288"
+          title="Drag to resize. Double-click to reset."
+        />
+      </aside>
+    )
+  }
+  <div class="main-pane"><slot /></div>
+</div>
+
+<script>
+  const widthStorageKey = 'cloudservs:toc-width';
+  const sideStorageKey = 'cloudservs:toc-side';
+  const minimumWidth = 224;
+  const maximumWidth = 448;
+  const defaultWidth = 288;
+
+  /** Keep saved or dragged widths within the range that preserves readable lesson content. */
+  function constrainWidth(width: number): number {
+    return Math.min(Math.max(width, minimumWidth), maximumWidth);
+  }
+
+  /** Apply one width consistently to the layout, separator semantics, and local preference. */
+  function setContentsWidth(layout: HTMLElement, width: number) {
+    const constrainedWidth = constrainWidth(width);
+    const handle = layout.querySelector<HTMLButtonElement>('.toc-resize-handle');
+    layout.style.setProperty('--cloudservs-toc-width', `${constrainedWidth}px`);
+    handle?.setAttribute('aria-valuenow', String(Math.round(constrainedWidth)));
+    localStorage.setItem(widthStorageKey, String(constrainedWidth));
+  }
+
+  /** Notify visual components once after a layout adjustment is complete. */
+  function notifyLayoutChange() {
+    window.requestAnimationFrame(() => window.dispatchEvent(new Event('resize')));
+  }
+
+  /** Update pane order and communicate the active choice through pressed button states. */
+  function setContentsSide(layout: HTMLElement, side: 'left' | 'right') {
+    layout.dataset.tocSide = side;
+    layout.querySelectorAll<HTMLButtonElement>('[data-toc-position]').forEach((button) => {
+      button.setAttribute('aria-pressed', String(button.dataset.tocPosition === side));
+    });
+    localStorage.setItem(sideStorageKey, side);
+    notifyLayoutChange();
+  }
+
+  /** Prepare each layout once, including after Starlight client-side navigation. */
+  function prepareResizableContents() {
+    document.querySelectorAll<HTMLElement>('[data-resizable-toc]').forEach((layout) => {
+      if (layout.dataset.resizeReady === 'true') return;
+      layout.dataset.resizeReady = 'true';
+
+      const savedWidth = Number(localStorage.getItem(widthStorageKey)) || defaultWidth;
+      const savedSide = localStorage.getItem(sideStorageKey) === 'left' ? 'left' : 'right';
+      const handle = layout.querySelector<HTMLButtonElement>('.toc-resize-handle');
+
+      setContentsWidth(layout, savedWidth);
+      setContentsSide(layout, savedSide);
+
+      layout.querySelectorAll<HTMLButtonElement>('[data-toc-position]').forEach((button) => {
+        button.addEventListener('click', () => {
+          setContentsSide(layout, button.dataset.tocPosition === 'left' ? 'left' : 'right');
+        });
+      });
+
+      if (!handle) return;
+
+      handle.addEventListener('pointerdown', (event) => {
+        const startingX = event.clientX;
+        const startingWidth =
+          layout.querySelector<HTMLElement>('.right-sidebar-container')?.getBoundingClientRect()
+            .width ?? defaultWidth;
+        const side = layout.dataset.tocSide === 'left' ? 'left' : 'right';
+
+        handle.setPointerCapture(event.pointerId);
+        document.documentElement.dataset.resizingToc = 'true';
+
+        const resize = (moveEvent: PointerEvent) => {
+          const movement = moveEvent.clientX - startingX;
+          setContentsWidth(layout, startingWidth + (side === 'left' ? movement : -movement));
+        };
+
+        const stop = () => {
+          handle.removeEventListener('pointermove', resize);
+          delete document.documentElement.dataset.resizingToc;
+          notifyLayoutChange();
+        };
+
+        handle.addEventListener('pointermove', resize);
+        handle.addEventListener('pointerup', stop, { once: true });
+        handle.addEventListener('pointercancel', stop, { once: true });
+      });
+
+      handle.addEventListener('keydown', (event) => {
+        if (event.key !== 'ArrowLeft' && event.key !== 'ArrowRight') return;
+        event.preventDefault();
+        const currentWidth = Number(handle.getAttribute('aria-valuenow')) || defaultWidth;
+        setContentsWidth(layout, currentWidth + (event.key === 'ArrowRight' ? 16 : -16));
+        notifyLayoutChange();
+      });
+
+      handle.addEventListener('dblclick', () => {
+        setContentsWidth(layout, defaultWidth);
+        notifyLayoutChange();
+      });
+    });
+  }
+
+  prepareResizableContents();
+  document.addEventListener('astro:page-load', prepareResizableContents);
+</script>
+
+<style>
+  @layer starlight.core {
+    .main-pane {
+      min-width: 0;
+      isolation: isolate;
+    }
+
+    @media (min-width: 72rem) {
+      .cloudservs-columns {
+        --cloudservs-toc-width: 288px;
+
+        display: flex;
+        align-items: start;
+      }
+
+      .right-sidebar-container {
+        position: relative;
+        z-index: 1;
+        width: var(--cloudservs-toc-width);
+        min-width: var(--cloudservs-toc-width);
+        flex: 0 0 var(--cloudservs-toc-width);
+      }
+
+      .right-sidebar {
+        position: sticky;
+        top: var(--sl-nav-height);
+        height: calc(100vh - var(--sl-nav-height));
+        border-inline: 1px solid var(--sl-color-hairline);
+        overflow-y: auto;
+        background: color-mix(in srgb, var(--sl-color-black) 96%, transparent);
+        scrollbar-width: thin;
+      }
+
+      .right-sidebar-container,
+      .right-sidebar {
+        --sl-sidebar-width: var(--cloudservs-toc-width);
+      }
+
+      .main-pane {
+        width: calc(100% - var(--cloudservs-toc-width));
+        flex: 1 1 auto;
+      }
+
+      [data-toc-side='right'] .main-pane {
+        order: 1;
+      }
+
+      [data-toc-side='right'] .right-sidebar-container {
+        order: 2;
+      }
+
+      [data-toc-side='left'] .right-sidebar-container {
+        order: 1;
+      }
+
+      [data-toc-side='left'] .main-pane {
+        order: 2;
+      }
+
+      .toc-layout-controls {
+        position: sticky;
+        z-index: 2;
+        top: 0;
+        align-items: center;
+        gap: 0.35rem;
+        padding: 0.65rem var(--sl-sidebar-pad-x);
+        border-bottom: 1px solid var(--sl-color-hairline);
+        background: var(--sl-color-black);
+      }
+
+      .toc-layout-controls span {
+        margin-inline-end: auto;
+        color: var(--sl-color-gray-2);
+        font-size: var(--sl-text-xs);
+        font-weight: 700;
+      }
+
+      .toc-layout-controls button {
+        min-height: 2rem;
+        border: 1px solid var(--cloudservs-border);
+        padding-inline: 0.55rem;
+        color: var(--sl-color-gray-2);
+        background: var(--cloudservs-surface);
+        font-size: 0.7rem;
+        font-weight: 700;
+        cursor: pointer;
+      }
+
+      .toc-layout-controls button[aria-pressed='true'] {
+        border-color: var(--sl-color-accent);
+        color: var(--sl-color-white);
+        background: var(--sl-color-accent-low);
+      }
+
+      .toc-resize-handle {
+        position: absolute;
+        z-index: 4;
+        top: 0;
+        bottom: 0;
+        width: 0.75rem;
+        border: 0;
+        border-radius: 0;
+        padding: 0;
+        background: transparent;
+        cursor: col-resize;
+        touch-action: none;
+      }
+
+      [data-toc-side='right'] .toc-resize-handle {
+        left: -0.375rem;
+      }
+
+      [data-toc-side='left'] .toc-resize-handle {
+        right: -0.375rem;
+      }
+
+      .toc-resize-handle::after {
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        left: 50%;
+        width: 2px;
+        background: transparent;
+        content: '';
+        transform: translateX(-50%);
+      }
+
+      .toc-resize-handle:hover::after,
+      .toc-resize-handle:focus-visible::after,
+      :global([data-resizing-toc='true']) .toc-resize-handle::after {
+        background: var(--sl-color-accent);
+      }
+
+      :global([data-resizing-toc='true']) {
+        cursor: col-resize;
+        user-select: none;
+      }
+    }
+  }
+</style>
