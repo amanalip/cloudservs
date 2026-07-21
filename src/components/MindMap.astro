@@ -1,0 +1,51 @@
+---
+/**
+ * Markmap converts Markdown hierarchy into a zoomable SVG mind map.
+ * A visible text outline follows each use so the same information remains accessible.
+ */
+interface Props {
+  title: string;
+  caption: string;
+  markdown: string;
+}
+
+const { title, caption, markdown } = Astro.props;
+---
+
+<figure class="diagram-card" data-markmap-source={markdown}>
+  <figcaption class="diagram-card__header">
+    <div>
+      <h3>{title}</h3>
+      <p>{caption}</p>
+    </div>
+  </figcaption>
+  <div class="diagram-card__body">
+    <svg class="markmap" style="width: 100%; min-width: 36rem; height: 28rem" aria-label={title}
+    ></svg>
+  </div>
+</figure>
+
+<script>
+  import { Transformer } from 'markmap-lib';
+  import { Markmap } from 'markmap-view';
+
+  /** Create each map once after the page becomes active. */
+  function renderMindMaps() {
+    const transformer = new Transformer();
+
+    document.querySelectorAll<HTMLElement>('[data-markmap-source]').forEach((container) => {
+      const svg = container.querySelector<SVGSVGElement>('svg.markmap');
+      const markdown = container.dataset.markmapSource;
+
+      if (!svg || !markdown || svg.dataset.ready === 'true') return;
+      svg.dataset.ready = 'true';
+
+      const { root } = transformer.transform(markdown);
+      const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+      Markmap.create(svg, { autoFit: true, duration: reducedMotion ? 0 : 300 }, root);
+    });
+  }
+
+  document.addEventListener('astro:page-load', renderMindMaps);
+</script>

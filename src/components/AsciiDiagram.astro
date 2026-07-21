@@ -1,0 +1,48 @@
+---
+/**
+ * ASCII diagrams remain useful when copied into notes, terminals, and interview prep.
+ * The copy button is progressively enhanced, so the diagram remains readable without JavaScript.
+ */
+interface Props {
+  title: string;
+  caption: string;
+  diagram: string;
+}
+
+const { title, caption, diagram } = Astro.props;
+---
+
+<figure class="diagram-card" data-ascii-diagram>
+  <figcaption class="diagram-card__header">
+    <div>
+      <h3>{title}</h3>
+      <p>{caption}</p>
+    </div>
+    <button class="diagram-copy" type="button" aria-label={`Copy ${title}`}>Copy</button>
+  </figcaption>
+  <div class="diagram-card__body">
+    <pre><code>{diagram}</code></pre>
+  </div>
+</figure>
+
+<script>
+  /** Bind copy behavior after each Starlight page navigation. */
+  document.addEventListener('astro:page-load', () => {
+    document.querySelectorAll<HTMLElement>('[data-ascii-diagram]').forEach((card) => {
+      const button = card.querySelector<HTMLButtonElement>('.diagram-copy');
+      const code = card.querySelector<HTMLElement>('code');
+
+      /** A data flag prevents duplicate listeners when a page is revisited. */
+      if (!button || !code || button.dataset.ready === 'true') return;
+      button.dataset.ready = 'true';
+
+      button.addEventListener('click', async () => {
+        await navigator.clipboard.writeText(code.textContent ?? '');
+        button.textContent = 'Copied';
+        window.setTimeout(() => {
+          button.textContent = 'Copy';
+        }, 1600);
+      });
+    });
+  });
+</script>

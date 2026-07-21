@@ -1,0 +1,301 @@
+---
+title: Shared responsibility
+description: Understand which cloud security and operational tasks belong to the provider and which remain with the customer.
+sidebar:
+  order: 2
+module: 1
+difficulty: beginner
+estimatedMinutes: 24
+providers:
+  - AWS
+  - Azure
+  - Google Cloud
+prerequisites:
+  - What is cloud computing?
+objectives:
+  - Explain security of the cloud and security in the cloud
+  - Describe how responsibility changes across IaaS, PaaS, and SaaS
+  - Identify customer responsibilities that do not disappear in managed services
+  - Compare provider language without assuming identical models
+lastVerified: 2026-07-21
+reviewStatus: verified
+searchTerms:
+  - shared responsibility
+  - shared fate
+  - security of the cloud
+  - security in the cloud
+  - customer responsibility
+---
+
+import LessonMeta from '../../../../components/LessonMeta.astro';
+import AsciiDiagram from '../../../../components/AsciiDiagram.astro';
+import MermaidDiagram from '../../../../components/MermaidDiagram.astro';
+import ProviderComparison from '../../../../components/ProviderComparison.astro';
+import KnowledgeCheck from '../../../../components/KnowledgeCheck';
+import LessonProgress from '../../../../components/LessonProgress';
+
+<LessonMeta difficulty="Beginner" minutes={24} module={1} verified="July 21, 2026" />
+
+## What you will understand
+
+By the end of this lesson, you should be able to look at a cloud service and ask the most important operational question: who is responsible for each layer?
+
+## Begin with the problem
+
+Moving an application to a cloud provider does not transfer every security and operational task to that provider. The provider operates some layers. The customer operates or configures others. The boundary changes according to the service being used.
+
+If the boundary is misunderstood, important work may be left undone because each side assumes the other is handling it.
+
+## Everyday analogy: renting a home
+
+When you rent an apartment, the building owner is usually responsible for the structure and common infrastructure. You remain responsible for locking your door, controlling who receives a key, and protecting your belongings.
+
+<AsciiDiagram
+  title="Apartment responsibility analogy"
+  caption="The owner and tenant protect different parts of the same living environment."
+  diagram={`Building owner                         Tenant
+--------------                         ------
+Building structure                     Lock the apartment door
+Shared plumbing                        Control copies of the key
+Common electrical systems              Protect personal belongings
+Elevator maintenance                   Report dangerous conditions
+Physical building access               Follow safe usage practices
+
+                 Shared outcome
+                       |
+                       v
+              A safe living environment`}
+
+/>
+
+### Where the analogy stops
+
+Cloud services differ much more than apartment leases. The responsibility boundary for a virtual machine differs from the boundary for a managed database or a complete SaaS application. Contracts, service documentation, architecture, law, and configuration all matter.
+
+## The core mental model
+
+AWS commonly describes the distinction as security **of** the cloud and security **in** the cloud.
+
+- The provider secures and operates the underlying cloud infrastructure within its documented scope.
+- The customer secures its data, identities, access, configuration, application behavior, and the cloud components it controls.
+
+Azure explains that customer and provider responsibility changes across on-premises, IaaS, PaaS, and SaaS. Google Cloud explains shared responsibility and extends the conversation with its shared-fate approach, which emphasizes partnership, guidance, and secure foundations.
+
+<MermaidDiagram
+  title="Responsibility moves, but it does not disappear"
+  caption="Managed services move more technology operations to the provider while customer data, identity, access, and configuration duties remain."
+  code={`flowchart LR
+    accTitle: How responsibility changes across service models
+    accDescr: Customer responsibility is greatest on premises, then decreases through IaaS, PaaS, and SaaS, while provider responsibility increases.
+    A[On premises<br/>Customer manages the stack] --> B[IaaS<br/>Provider manages physical foundation]
+    B --> C[PaaS<br/>Provider also manages platform layers]
+    C --> D[SaaS<br/>Provider also manages the application service]
+    E[Customer always evaluates data, identity, access, and configuration] --- A
+    E --- B
+    E --- C
+    E --- D`}
+/>
+
+## A layered view
+
+The following matrix is a learning model. Actual responsibility must be confirmed for the specific service.
+
+| Layer                      | On premises | IaaS     | PaaS                           | SaaS                                         |
+| -------------------------- | ----------- | -------- | ------------------------------ | -------------------------------------------- |
+| Physical facility          | Customer    | Provider | Provider                       | Provider                                     |
+| Physical network and hosts | Customer    | Provider | Provider                       | Provider                                     |
+| Hypervisor                 | Customer    | Provider | Provider                       | Provider                                     |
+| Guest operating system     | Customer    | Customer | Provider                       | Provider                                     |
+| Runtime and middleware     | Customer    | Customer | Mostly provider                | Provider                                     |
+| Application                | Customer    | Customer | Customer and provider boundary | Provider service with customer configuration |
+| Data                       | Customer    | Customer | Customer                       | Customer                                     |
+| Identities and access      | Customer    | Customer | Customer                       | Customer                                     |
+| Configuration              | Customer    | Customer | Customer                       | Customer                                     |
+
+:::caution[Do not use the table as a contract]
+Cloud products combine service models in different ways. Consult the service-specific security, reliability, backup, and configuration documentation before making a production decision.
+:::
+
+## IaaS example: a virtual machine
+
+For a typical cloud virtual machine:
+
+### The provider commonly manages
+
+- Physical facility security
+- Physical servers, storage, and networking
+- The virtualization layer
+- Availability and maintenance of the underlying service within its documented commitments
+
+### The customer commonly manages
+
+- Guest operating system configuration and patching
+- Installed application software
+- User and administrative access
+- Firewall and network rules under customer control
+- Data protection choices
+- Application logging, monitoring, and recovery design
+
+AWS explicitly states that an Amazon EC2 customer manages the guest operating system, application software, and security group configuration. Azure similarly states that IaaS customers manage virtual machines, operating systems, and applications.
+
+## PaaS example: a managed application platform
+
+In PaaS, the provider manages the underlying hosts, virtualization, operating system, and significant parts of the runtime platform. The customer still manages its code, data, identities, application configuration, access, dependencies within its control, and workload behavior.
+
+The operational burden is smaller than IaaS, but the need for secure design remains.
+
+## SaaS example: a complete application
+
+In SaaS, the provider operates the application service and most of its technology stack. The customer still decides who can sign in, what data is placed into the service, how access is governed, which settings are enabled, and how the service fits organizational requirements.
+
+## Compare provider language
+
+<ProviderComparison
+  items={[
+    {
+      provider: 'AWS',
+      title: 'Of the cloud and in the cloud',
+      description:
+        'AWS secures the infrastructure that runs AWS services. Customer duties depend on the services selected and their configuration.',
+    },
+    {
+      provider: 'Azure',
+      title: 'Responsibility by service model',
+      description:
+        'Microsoft documents a changing division across on-premises, IaaS, PaaS, and SaaS, while customers retain data and identity duties.',
+    },
+    {
+      provider: 'Google Cloud',
+      title: 'Shared responsibility and shared fate',
+      description:
+        'Google documents customer and provider duties, then emphasizes partnership, secure foundations, guidance, and ongoing improvement.',
+    },
+  ]}
+/>
+
+**Mapping confidence: approximate.** The providers share the broad principle that responsibility is divided and changes by service. Their terminology, documentation, service boundaries, tools, and broader security approaches are not identical.
+
+## Responsibilities that beginners should always investigate
+
+### Data
+
+Who classifies it? Who can read it? How is it encrypted? Where is it stored? How is it retained, backed up, restored, and deleted?
+
+### Identity and access
+
+Who creates accounts and roles? Are permissions minimal? Is multi-factor authentication required? How are inactive accounts removed?
+
+### Configuration
+
+Is public access enabled? Are network rules too broad? Are logs enabled? Are default settings appropriate for the workload?
+
+### Application behavior
+
+Does the application validate input? Protect secrets? Handle errors safely? Retry without duplicating work? Continue operating when a dependency fails?
+
+### Recovery
+
+Does a backup exist? Has restoration been tested? Does the selected service or tier meet the workload's recovery and availability needs?
+
+## A practical decision flow
+
+<MermaidDiagram
+  title="How to find your responsibility"
+  caption="Start with the exact service and workload instead of relying on a generic cloud diagram."
+  code={`flowchart TD
+    accTitle: A process for finding cloud responsibilities
+    accDescr: Identify the service and workload, read service documentation, list provider and customer duties, validate configuration, and test the controls.
+    A[Identify the exact service and workload] --> B[Read service-specific responsibility documentation]
+    B --> C[List provider-operated layers]
+    B --> D[List customer-controlled layers]
+    C --> E[Review architecture and configuration]
+    D --> E
+    E --> F[Test access, logging, backup, and recovery]
+    F --> G[Record ownership and review dates]`}
+/>
+
+## Common beginner mistakes
+
+### Assuming managed means automatically secure
+
+Managed services reduce certain operational tasks. A public-access setting, overly broad role, leaked credential, or unsafe application can still create exposure.
+
+### Copying one responsibility diagram to every service
+
+Generic diagrams are orientation tools. A managed Kubernetes service, serverless function, object store, and SaaS product have different boundaries.
+
+### Focusing only on security
+
+Responsibility also affects reliability, backup, recovery, monitoring, cost, performance, compliance, and change management.
+
+### Forgetting the customer's users
+
+The provider cannot decide which employees should have access to your data. Identity lifecycle and access decisions remain central customer duties.
+
+## Workplace scenario
+
+A team launches a virtual machine and assumes the provider patches everything. Months later, the guest operating system contains known vulnerabilities.
+
+The provider maintained the physical infrastructure and virtualization layer. The customer retained responsibility for the guest operating system. The mistake was not a failure of the shared-responsibility model. It was a failure to identify and assign the customer's work.
+
+```text
+Unassigned responsibility
+          |
+          v
+No owner --> No recurring task --> Missed patches --> Increased risk
+
+Documented responsibility
+          |
+          v
+Named owner --> Scheduled patching --> Verification --> Evidence
+```
+
+## Knowledge check
+
+<KnowledgeCheck
+  client:load
+  question="A company runs its application on cloud virtual machines. Who normally patches the guest operating system?"
+  hint="Separate the provider's physical and virtualization layers from the software inside the virtual machine."
+  options={[
+    {
+      label: 'The cloud provider in every case',
+      correct: false,
+      explanation:
+        'For typical IaaS virtual machines, the customer manages the guest operating system. Always verify the exact service documentation.',
+    },
+    {
+      label: 'The customer operating the virtual machine',
+      correct: true,
+      explanation:
+        'Correct. The provider manages the underlying infrastructure, while the customer normally configures and patches the guest operating system.',
+    },
+    {
+      label: 'Nobody, because cloud virtual machines patch themselves',
+      correct: false,
+      explanation:
+        'Automation may help, but it must be configured, monitored, and owned. Cloud use does not remove the responsibility.',
+    },
+  ]}
+/>
+
+## Recap
+
+- Cloud security and operations are divided between provider and customer.
+- The boundary changes by service and service model.
+- More managed technology does not mean zero customer responsibility.
+- Data, identity, access, configuration, and workload decisions remain important customer concerns.
+- Provider models share a broad principle but use different language and supporting approaches.
+- Service-specific documentation is more reliable than a generic diagram.
+- Every customer responsibility needs a named owner and a repeatable process.
+
+## Official sources
+
+- [AWS Shared Responsibility Model](https://aws.amazon.com/compliance/shared-responsibility-model/)
+- [Microsoft Azure: Shared responsibility in the cloud](https://learn.microsoft.com/en-us/azure/security/fundamentals/shared-responsibility)
+- [Google Cloud: Shared responsibilities and shared fate](https://docs.cloud.google.com/architecture/framework/security/shared-responsibility-shared-fate)
+
+Last verified: **July 21, 2026**
+
+<LessonProgress client:load slug="shared-responsibility" />
+
+Previous: [What is cloud computing?](./what-is-cloud-computing/)

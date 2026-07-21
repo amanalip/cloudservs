@@ -1,0 +1,48 @@
+---
+/**
+ * Mermaid turns text definitions into accessible flow and architecture diagrams.
+ * The source stays in the lesson, so technical reviewers can inspect every relationship.
+ */
+interface Props {
+  title: string;
+  caption: string;
+  code: string;
+}
+
+const { title, caption, code } = Astro.props;
+---
+
+<figure class="diagram-card" data-mermaid-source={code}>
+  <figcaption class="diagram-card__header">
+    <div>
+      <h3>{title}</h3>
+      <p>{caption}</p>
+    </div>
+  </figcaption>
+  <div class="diagram-card__body">
+    <pre class="mermaid">{code}</pre>
+  </div>
+</figure>
+
+<script>
+  import mermaid from 'mermaid';
+
+  /** Render all unprocessed diagrams after Starlight completes page navigation. */
+  async function renderMermaidDiagrams() {
+    const darkThemeIsActive = document.documentElement.dataset.theme === 'dark';
+
+    mermaid.initialize({
+      startOnLoad: false,
+      securityLevel: 'strict',
+      theme: darkThemeIsActive ? 'dark' : 'base',
+      flowchart: { htmlLabels: false, curve: 'basis' },
+      themeVariables: darkThemeIsActive
+        ? { primaryColor: '#24234f', primaryTextColor: '#f8fafc', lineColor: '#a5b4fc' }
+        : { primaryColor: '#eef2ff', primaryTextColor: '#172033', lineColor: '#4f46e5' },
+    });
+
+    await mermaid.run({ querySelector: '.mermaid:not([data-processed="true"])' });
+  }
+
+  document.addEventListener('astro:page-load', renderMermaidDiagrams);
+</script>

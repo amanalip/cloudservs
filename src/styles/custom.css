@@ -1,0 +1,464 @@
+/*
+ * cloudservs visual system
+ *
+ * Starlight provides a strong accessible foundation. These tokens and component
+ * styles establish a calmer, more distinctive learning environment on top of it.
+ */
+
+/* Light-theme tokens use cool neutrals with indigo, cyan, and violet accents. */
+:root,
+::backdrop {
+  --sl-color-accent-low: #e8eafe;
+  --sl-color-accent: #4f46e5;
+  --sl-color-accent-high: #24205f;
+  --sl-color-white: #172033;
+  --sl-color-gray-1: #26334a;
+  --sl-color-gray-2: #46546b;
+  --sl-color-gray-3: #69778c;
+  --sl-color-gray-4: #aeb8c8;
+  --sl-color-gray-5: #dce2eb;
+  --sl-color-gray-6: #eef2f7;
+  --sl-color-black: #f8fafc;
+  --cloudservs-cyan: #0891b2;
+  --cloudservs-indigo: #4f46e5;
+  --cloudservs-violet: #9333ea;
+  --cloudservs-success: #047857;
+  --cloudservs-warning: #b45309;
+  --cloudservs-surface: color-mix(in srgb, var(--sl-color-black) 92%, white);
+  --cloudservs-border: color-mix(in srgb, var(--sl-color-gray-4) 58%, transparent);
+  --cloudservs-shadow: 0 18px 50px rgba(49, 46, 129, 0.09);
+  --sl-font: 'Inter', 'Avenir Next', 'Segoe UI', system-ui, sans-serif;
+  --sl-font-mono: 'JetBrains Mono', 'SFMono-Regular', Consolas, monospace;
+}
+
+/* Dark-theme tokens reduce glare while preserving diagram and text contrast. */
+:root[data-theme='dark'],
+[data-theme='dark'] ::backdrop {
+  --sl-color-accent-low: #24234f;
+  --sl-color-accent: #a5b4fc;
+  --sl-color-accent-high: #eef2ff;
+  --sl-color-white: #f8fafc;
+  --sl-color-gray-1: #e2e8f0;
+  --sl-color-gray-2: #c0cada;
+  --sl-color-gray-3: #8f9bb0;
+  --sl-color-gray-4: #4b5870;
+  --sl-color-gray-5: #293449;
+  --sl-color-gray-6: #182236;
+  --sl-color-black: #090e1a;
+  --cloudservs-cyan: #67e8f9;
+  --cloudservs-indigo: #a5b4fc;
+  --cloudservs-violet: #d8b4fe;
+  --cloudservs-success: #6ee7b7;
+  --cloudservs-warning: #fbbf24;
+  --cloudservs-surface: color-mix(in srgb, var(--sl-color-black) 88%, #172554);
+  --cloudservs-border: color-mix(in srgb, var(--sl-color-gray-4) 72%, transparent);
+  --cloudservs-shadow: 0 20px 60px rgba(0, 0, 0, 0.28);
+}
+
+/* A subtle background grid gives architecture pages depth without adding noise. */
+body {
+  background-image:
+    linear-gradient(
+      color-mix(in srgb, var(--sl-color-gray-5) 28%, transparent) 1px,
+      transparent 1px
+    ),
+    linear-gradient(
+      90deg,
+      color-mix(in srgb, var(--sl-color-gray-5) 28%, transparent) 1px,
+      transparent 1px
+    );
+  background-position: center top;
+  background-size: 48px 48px;
+}
+
+/* The page surface remains readable above the quiet grid. */
+.main-pane {
+  background: color-mix(in srgb, var(--sl-color-black) 96%, transparent);
+}
+
+/* The navigation uses a translucent surface so context remains visible while scrolling. */
+header.header {
+  border-bottom: 1px solid var(--cloudservs-border);
+  background: color-mix(in srgb, var(--sl-color-black) 88%, transparent);
+  backdrop-filter: blur(18px);
+}
+
+/* The custom logo receives enough space to stay legible beside the wordmark. */
+.site-title img {
+  width: 2rem;
+  height: 2rem;
+}
+
+/* Rounded controls make search and theme actions feel part of one system. */
+button,
+select,
+input,
+.social-icons a {
+  border-radius: 0.75rem;
+}
+
+/* The splash hero uses a soft glow that works in both themes. */
+.hero {
+  position: relative;
+  padding-block: clamp(3.5rem, 10vw, 7rem);
+}
+
+.hero::before {
+  position: absolute;
+  z-index: -1;
+  inset: 8% 8% auto;
+  height: 70%;
+  border-radius: 999px;
+  background: radial-gradient(
+    circle,
+    color-mix(in srgb, var(--sl-color-accent) 20%, transparent),
+    transparent 68%
+  );
+  content: '';
+  filter: blur(18px);
+}
+
+/* The hero title is large but wraps naturally on phones. */
+.hero h1 {
+  max-width: 14ch;
+  font-size: clamp(2.8rem, 8vw, 5.8rem);
+  line-height: 0.98;
+  letter-spacing: -0.055em;
+}
+
+/* A gradient emphasizes the brand without coloring long passages of text. */
+.hero h1,
+.gradient-text {
+  color: transparent;
+  background: linear-gradient(
+    118deg,
+    var(--cloudservs-cyan),
+    var(--cloudservs-indigo) 50%,
+    var(--cloudservs-violet)
+  );
+  background-clip: text;
+  -webkit-background-clip: text;
+}
+
+/* Action links remain prominent and preserve visible keyboard focus. */
+.hero .actions a,
+.cloudservs-action {
+  min-height: 2.9rem;
+  border-radius: 0.85rem;
+  box-shadow: none;
+  font-weight: 750;
+}
+
+/* Shared card surfaces hold diagrams, comparisons, lessons, and learning tools. */
+.learning-card,
+.diagram-card,
+.provider-card,
+.progress-card,
+.quiz-card,
+.curriculum-stage {
+  border: 1px solid var(--cloudservs-border);
+  border-radius: 1.1rem;
+  background: var(--cloudservs-surface);
+  box-shadow: var(--cloudservs-shadow);
+}
+
+/* The toolkit grid scales from one column to three without cramped intermediate states. */
+.learning-toolkit {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 15rem), 1fr));
+  gap: 1rem;
+  margin-block: 2rem 3rem;
+}
+
+.learning-card {
+  padding: 1.35rem;
+}
+
+.learning-card svg {
+  width: 1.65rem;
+  height: 1.65rem;
+  color: var(--cloudservs-indigo);
+}
+
+.learning-card h3 {
+  margin-block: 0.8rem 0.35rem;
+  font-size: 1rem;
+}
+
+.learning-card p {
+  margin: 0;
+  color: var(--sl-color-gray-2);
+  font-size: 0.9rem;
+}
+
+/* Curriculum stages form a visible route rather than a collection of unrelated cards. */
+.curriculum-journey {
+  display: grid;
+  gap: 0.85rem;
+  margin-block: 2rem 3rem;
+}
+
+.curriculum-stage {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  gap: 1rem;
+  padding: 1rem 1.15rem;
+  transition:
+    transform 160ms ease,
+    border-color 160ms ease;
+}
+
+.curriculum-stage:hover {
+  border-color: var(--sl-color-accent);
+  transform: translateY(-2px);
+}
+
+.curriculum-stage__number {
+  display: grid;
+  width: 2.4rem;
+  height: 2.4rem;
+  place-items: center;
+  border-radius: 0.8rem;
+  color: white;
+  background: linear-gradient(135deg, var(--cloudservs-indigo), var(--cloudservs-violet));
+  font-weight: 800;
+}
+
+.curriculum-stage h3,
+.curriculum-stage p {
+  margin: 0;
+}
+
+.curriculum-stage p {
+  margin-top: 0.2rem;
+  color: var(--sl-color-gray-2);
+  font-size: 0.88rem;
+}
+
+.curriculum-stage__status {
+  color: var(--cloudservs-success);
+  font-size: 0.78rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+/* Lesson metadata makes scope and effort visible before the explanation begins. */
+.lesson-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.55rem;
+  margin-block: 1rem 1.5rem;
+}
+
+.lesson-meta span,
+.mapping-badge {
+  border: 1px solid var(--cloudservs-border);
+  border-radius: 999px;
+  padding: 0.35rem 0.65rem;
+  color: var(--sl-color-gray-1);
+  background: var(--cloudservs-surface);
+  font-size: 0.78rem;
+  font-weight: 700;
+}
+
+/* Diagram frames keep dense visuals separate from explanatory prose. */
+.diagram-card {
+  margin-block: 1.5rem 2rem;
+  overflow: hidden;
+}
+
+.diagram-card__header {
+  display: flex;
+  align-items: start;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 1rem 1.15rem;
+  border-bottom: 1px solid var(--cloudservs-border);
+}
+
+.diagram-card__header h3,
+.diagram-card__header p {
+  margin: 0;
+}
+
+.diagram-card__header p {
+  margin-top: 0.25rem;
+  color: var(--sl-color-gray-2);
+  font-size: 0.85rem;
+}
+
+.diagram-card__body {
+  padding: 1.15rem;
+  overflow-x: auto;
+}
+
+.diagram-card__body pre {
+  margin: 0;
+  border: 0;
+  background: transparent;
+  box-shadow: none;
+}
+
+.diagram-card__body .mermaid {
+  min-width: min(100%, 34rem);
+  text-align: center;
+}
+
+.diagram-card__body svg {
+  max-width: 100%;
+  height: auto;
+}
+
+.diagram-copy {
+  flex: none;
+  border: 1px solid var(--cloudservs-border);
+  padding: 0.45rem 0.7rem;
+  color: var(--sl-color-gray-1);
+  background: transparent;
+  font-size: 0.78rem;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+/* Provider comparison cards use labels and border positions in addition to color. */
+.provider-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.85rem;
+  margin-block: 1.5rem 2rem;
+}
+
+.provider-card {
+  padding: 1.1rem;
+  border-top-width: 4px;
+}
+
+.provider-card[data-provider='aws'] {
+  border-top-color: #f59e0b;
+}
+
+.provider-card[data-provider='azure'] {
+  border-top-color: #0ea5e9;
+}
+
+.provider-card[data-provider='gcp'] {
+  border-top-color: #22c55e;
+}
+
+.provider-card h3,
+.provider-card p {
+  margin: 0;
+}
+
+.provider-card p {
+  margin-top: 0.45rem;
+  color: var(--sl-color-gray-2);
+  font-size: 0.9rem;
+}
+
+/* Quiz and progress controls use the same card language as static lesson content. */
+.quiz-card,
+.progress-card {
+  margin-block: 1.5rem 2rem;
+  padding: 1.25rem;
+}
+
+.quiz-options {
+  display: grid;
+  gap: 0.65rem;
+  margin-block: 1rem;
+}
+
+.quiz-option,
+.progress-button {
+  width: 100%;
+  border: 1px solid var(--cloudservs-border);
+  padding: 0.8rem 0.95rem;
+  color: var(--sl-color-white);
+  background: color-mix(in srgb, var(--cloudservs-surface) 86%, var(--sl-color-accent-low));
+  text-align: left;
+  cursor: pointer;
+}
+
+.quiz-option:hover,
+.progress-button:hover {
+  border-color: var(--sl-color-accent);
+}
+
+.quiz-feedback {
+  border-left: 4px solid var(--sl-color-accent);
+  padding: 0.8rem 1rem;
+  background: var(--sl-color-accent-low);
+}
+
+.progress-button[data-complete='true'] {
+  border-color: var(--cloudservs-success);
+  color: var(--cloudservs-success);
+}
+
+/* The custom footer keeps project ownership and purpose visible. */
+.cloudservs-footer {
+  display: flex;
+  justify-content: space-between;
+  gap: 1.5rem;
+  margin-top: 4rem;
+  padding: 1.5rem;
+  border-top: 1px solid var(--cloudservs-border);
+  color: var(--sl-color-gray-2);
+  font-size: 0.82rem;
+}
+
+.cloudservs-footer div {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem 0.8rem;
+}
+
+.cloudservs-footer strong {
+  color: var(--sl-color-white);
+}
+
+/* Narrow layouts stack comparisons and simplify secondary status text. */
+@media (max-width: 50rem) {
+  .provider-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .curriculum-stage {
+    grid-template-columns: auto 1fr;
+  }
+
+  .curriculum-stage__status {
+    display: none;
+  }
+
+  .cloudservs-footer {
+    flex-direction: column;
+  }
+}
+
+/* User motion preferences override all decorative transitions. */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    scroll-behavior: auto !important;
+    transition-duration: 0.01ms !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+  }
+}
+
+/* Forced-color mode preserves boundaries when custom colors are unavailable. */
+@media (forced-colors: active) {
+  .learning-card,
+  .diagram-card,
+  .provider-card,
+  .progress-card,
+  .quiz-card,
+  .curriculum-stage {
+    border: 1px solid CanvasText;
+  }
+}

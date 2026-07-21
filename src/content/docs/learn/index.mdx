@@ -1,0 +1,62 @@
+---
+title: Curriculum
+description: Follow one ordered curriculum from cloud foundations to job preparation.
+sidebar:
+  order: 1
+module: 0
+difficulty: beginner
+estimatedMinutes: 5
+reviewStatus: reviewed
+searchTerms:
+  - curriculum
+  - syllabus
+  - learning order
+---
+
+import CurriculumJourney from '../../../components/CurriculumJourney.astro';
+import AsciiDiagram from '../../../components/AsciiDiagram.astro';
+
+You do not need to learn AWS, Azure, and Google Cloud as three unrelated subjects. Begin with the underlying concept, compare how each provider implements it, and then practice using that knowledge in realistic systems.
+
+<AsciiDiagram
+  title="How the curriculum builds knowledge"
+  caption="Later modules reuse ideas established earlier instead of teaching them from scratch."
+  diagram={`Foundations
+    |
+    v
+Core infrastructure
+    |
+    v
+Networking and delivery
+    |
+    v
+Modern applications
+    |
+    v
+Security and operations
+    |
+    v
+Delivery and governance
+    |
+    v
+Data and migration
+    |
+    v
+Architecture scenarios
+    |
+    v
+Job preparation`}
+/>
+
+## The ordered modules
+
+<CurriculumJourney />
+
+## Begin with Module 1
+
+Module 1 gives you the language and mental models used by every later topic.
+
+1. [What is cloud computing?](./foundations/what-is-cloud-computing/)
+2. [Shared responsibility](./foundations/shared-responsibility/)
+
+Before beginning, read [How to learn with cloudservs](./how-to-use-cloudservs/) to understand the diagram, comparison, quiz, progress, and source conventions.

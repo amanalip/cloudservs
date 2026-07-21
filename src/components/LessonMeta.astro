@@ -1,0 +1,18 @@
+---
+/** This small component makes lesson expectations visible before study begins. */
+interface Props {
+  difficulty: string;
+  minutes: number;
+  module: number;
+  verified: string;
+}
+
+const { difficulty, minutes, module, verified } = Astro.props;
+---
+
+<div class="lesson-meta" aria-label="Lesson information">
+  <span>Module {module}</span>
+  <span>{difficulty}</span>
+  <span>{minutes} minute study</span>
+  <span>Verified {verified}</span>
+</div>

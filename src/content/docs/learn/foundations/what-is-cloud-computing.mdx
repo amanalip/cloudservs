@@ -1,0 +1,302 @@
+---
+title: What is cloud computing?
+description: Build a durable mental model of cloud computing before learning provider product names.
+sidebar:
+  order: 1
+module: 1
+difficulty: beginner
+estimatedMinutes: 22
+providers:
+  - AWS
+  - Azure
+  - Google Cloud
+prerequisites: []
+objectives:
+  - Explain cloud computing without using provider product names
+  - Recognize the five NIST cloud characteristics
+  - Distinguish service models from deployment models
+  - Describe what AWS, Azure, and Google Cloud provide at a high level
+lastVerified: 2026-07-21
+reviewStatus: verified
+searchTerms:
+  - cloud computing
+  - on demand
+  - IaaS
+  - PaaS
+  - SaaS
+  - elasticity
+  - resource pooling
+---
+
+import LessonMeta from '../../../../components/LessonMeta.astro';
+import AsciiDiagram from '../../../../components/AsciiDiagram.astro';
+import MermaidDiagram from '../../../../components/MermaidDiagram.astro';
+import MindMap from '../../../../components/MindMap.astro';
+import ProviderComparison from '../../../../components/ProviderComparison.astro';
+import KnowledgeCheck from '../../../../components/KnowledgeCheck';
+import LessonProgress from '../../../../components/LessonProgress';
+
+<LessonMeta difficulty="Beginner" minutes={22} module={1} verified="July 21, 2026" />
+
+## What you will understand
+
+By the end of this lesson, you should be able to explain cloud computing as an operating model, recognize its essential characteristics, and describe how the three providers fit into the same mental model.
+
+## Begin with the problem
+
+Imagine that a small company wants to launch an application. Without cloud computing, the company may need to estimate demand, buy physical servers, wait for delivery, prepare a room, install hardware, configure networks, and maintain spare capacity for busy periods.
+
+If demand is lower than expected, expensive hardware sits unused. If demand is higher than expected, customers experience slow responses while the company waits for more equipment.
+
+Cloud computing changes how the company obtains those computing resources.
+
+## A plain-language definition
+
+Cloud computing is a way to obtain configurable computing resources over a network when they are needed, provision them quickly, and measure their use.
+
+Those resources can include processing power, storage, networks, databases, application platforms, and complete applications.
+
+The important idea is not that the computers are floating somewhere. The important idea is that computing becomes an accessible service rather than equipment that every customer must purchase and operate alone.
+
+:::note[Standards definition]
+NIST Special Publication 800-145 describes cloud computing using five essential characteristics, three service models, and four deployment models. The wording above is a beginner-friendly interpretation, not a replacement for the formal definition.
+:::
+
+## Everyday analogy: electricity from a utility
+
+Most homes do not operate a private power station. A utility operates large shared infrastructure. You connect to the service, consume electricity when needed, and a meter records usage.
+
+<AsciiDiagram
+  title="Utility analogy for cloud computing"
+  caption="The analogy highlights shared infrastructure, on-demand access, and measured consumption."
+  diagram={`Electricity utility                     Cloud provider
+-------------------                     --------------
+Power stations                           Data centers
+Power grid                               Provider network
+Wall outlet                              Service interface
+Turn on an appliance                     Provision a resource
+Electricity meter                        Usage measurement
+Utility maintains generation            Provider maintains infrastructure`}
+/>
+
+### Where the analogy stops
+
+Electricity is comparatively uniform. Cloud services are not. A virtual machine, object store, managed database, and event queue have different behavior, configuration, security responsibilities, and pricing dimensions.
+
+The analogy helps explain the operating model. It does not explain the architecture of every service.
+
+## The five essential characteristics
+
+### 1. On-demand self-service
+
+A consumer can provision capabilities without waiting for a provider employee to perform each request manually. A developer may create a test resource through a console, command-line tool, or API.
+
+### 2. Broad network access
+
+Capabilities are available over networks through standard mechanisms used by different kinds of clients. This does not mean every resource must be exposed to the public internet. Private connectivity is still network access.
+
+### 3. Resource pooling
+
+The provider pools resources to serve multiple consumers. Physical and virtual resources are assigned and reassigned according to demand. Security and isolation controls keep one customer's workload logically separated from another.
+
+### 4. Rapid elasticity
+
+Resources can expand and contract as demand changes. To the consumer, available capacity can appear very large. Elasticity is about changing capacity with demand, while scalability is the broader ability of a system to handle growth.
+
+### 5. Measured service
+
+Cloud systems measure resource usage. Measurement supports monitoring, reporting, capacity management, and consumption-based billing. It does not mean every service uses the same unit or price model.
+
+<MermaidDiagram
+  title="The cloud resource loop"
+  caption="Provisioning and release can follow demand, while measurement makes use visible."
+  code={`flowchart LR
+    accTitle: The cloud resource loop
+    accDescr: Demand leads to provisioning, resource use, measurement, adjustment, and eventual release.
+    A[Demand appears] --> B[Provision resources]
+    B --> C[Use resources]
+    C --> D[Measure usage]
+    D --> E{Demand changed?}
+    E -->|Higher| F[Add capacity]
+    E -->|Lower| G[Remove capacity]
+    F --> C
+    G --> C
+    C --> H[Release when finished]`}
+/>
+
+## Service models answer: how much do you manage?
+
+### Infrastructure as a Service
+
+IaaS provides foundational resources such as virtual computing, storage, and networking. You generally retain more control and more operational responsibility.
+
+### Platform as a Service
+
+PaaS provides a managed platform on which you deploy applications. The provider manages more of the underlying operating environment, allowing you to focus more on application code and data.
+
+### Software as a Service
+
+SaaS provides a complete application that you use. You still manage matters such as users, access, configuration, and the data you choose to place in the application.
+
+```text
+More customer control and responsibility
+                |
+                v
+              IaaS
+                |
+              PaaS
+                |
+              SaaS
+                |
+                v
+More provider-managed technology
+```
+
+:::caution[Service categories are starting points]
+Real services do not always fit perfectly into one label. Always check the responsibility documentation for the particular service you use.
+:::
+
+## Deployment models answer: who uses and operates the environment?
+
+- **Public cloud:** Cloud infrastructure is available for use by multiple organizations and is operated by a cloud provider.
+- **Private cloud:** Cloud infrastructure is provisioned for exclusive use by one organization.
+- **Community cloud:** Infrastructure is provisioned for a specific community of organizations with shared concerns.
+- **Hybrid cloud:** Distinct cloud environments remain separate but are connected to support portability or coordinated operation.
+
+## Where the three providers fit
+
+AWS, Microsoft Azure, and Google Cloud are public cloud platforms. Each provides many services covering infrastructure, managed platforms, data, security, analytics, application development, and operations.
+
+<ProviderComparison
+  items={[
+    {
+      provider: 'AWS',
+      title: 'Amazon Web Services',
+      description:
+        'Provides cloud resources and managed services through consoles, APIs, command-line tools, and software development kits.',
+    },
+    {
+      provider: 'Azure',
+      title: 'Microsoft Azure',
+      description:
+        'Provides cloud infrastructure, platforms, applications, identity integrations, management tools, and developer services.',
+    },
+    {
+      provider: 'Google Cloud',
+      title: 'Google Cloud',
+      description:
+        'Provides cloud services organized into projects, with console, command-line, client-library, API, and infrastructure-as-code access.',
+    },
+  ]}
+/>
+
+These platforms are not single products. They are collections of services, management systems, global infrastructure, commercial agreements, and support processes.
+
+## A mental map of the cloud landscape
+
+<MindMap
+  title="Cloud computing mental map"
+  caption="The map separates characteristics, service models, deployment models, and provider examples."
+  markdown={`# Cloud computing
+## Characteristics
+- On-demand self-service
+- Broad network access
+- Resource pooling
+- Rapid elasticity
+- Measured service
+## Service models
+- IaaS
+- PaaS
+- SaaS
+## Deployment models
+- Public
+- Private
+- Community
+- Hybrid
+## Public cloud platforms
+- AWS
+- Microsoft Azure
+- Google Cloud
+## Resource categories
+- Compute
+- Storage
+- Networking
+- Databases
+- Security
+- Observability`}
+/>
+
+Text equivalent: Cloud computing can be understood through five characteristics, three main service models, four deployment models, three public cloud platforms studied here, and resource categories such as compute, storage, networking, databases, security, and observability.
+
+## What cloud computing does not guarantee
+
+Cloud computing does not automatically make an application secure, highly available, inexpensive, compliant, or well designed. Providers supply capabilities and operate defined parts of the system. Customers must still select, configure, monitor, and use those capabilities appropriately.
+
+## Common beginner confusions
+
+### Cloud means public internet
+
+False. Cloud resources can use private addressing, private endpoints, dedicated connections, and access controls. The provider operates shared infrastructure, but your workload does not need to be publicly reachable.
+
+### Cloud means serverless
+
+False. Cloud platforms offer virtual machines, containers, physical hosts, managed platforms, serverless services, and many other operating models.
+
+### Pay for use always means cheaper
+
+False. Consumption pricing changes how cost is incurred. Poor sizing, idle resources, unnecessary data transfer, and weak governance can still produce high bills.
+
+### Managed means no responsibility
+
+False. A managed service changes the responsibility boundary. It does not eliminate customer responsibility for data, identity, access, configuration, and workload design.
+
+## Knowledge check
+
+<KnowledgeCheck
+  client:load
+  question="Which statement best captures cloud computing?"
+  hint="Focus on how resources are obtained, adjusted, and measured."
+  options={[
+    {
+      label: 'It is any computer connected to the public internet.',
+      correct: false,
+      explanation:
+        'Network access is important, but cloud resources can remain private and not every internet-connected computer is a cloud service.',
+    },
+    {
+      label:
+        'It provides configurable computing resources as rapidly provisioned, measured services.',
+      correct: true,
+      explanation:
+        'Correct. This captures the service model, rapid provisioning, configurable resources, and measured use.',
+    },
+    {
+      label: 'It is a replacement for every on-premises system.',
+      correct: false,
+      explanation:
+        'Cloud is one operating model. Private, hybrid, edge, and on-premises systems can remain appropriate depending on requirements.',
+    },
+  ]}
+/>
+
+## Recap
+
+- Cloud computing delivers configurable computing capabilities as services.
+- On-demand access, network access, resource pooling, elasticity, and measurement are essential characteristics.
+- Service models describe how responsibility is divided across the technology stack.
+- Deployment models describe how cloud infrastructure is made available and combined.
+- AWS, Azure, and Google Cloud express the same broad concepts through different services and management systems.
+- Cloud capabilities still require sound customer decisions.
+
+## Official sources
+
+- [NIST SP 800-145: The NIST Definition of Cloud Computing](https://csrc.nist.gov/pubs/sp/800/145/final)
+- [AWS: What is cloud computing?](https://docs.aws.amazon.com/whitepapers/latest/aws-overview/what-is-cloud-computing.html)
+- [Microsoft Learn: Describe cloud computing](https://learn.microsoft.com/en-us/training/modules/describe-cloud-compute/)
+- [Google Cloud overview](https://docs.cloud.google.com/docs/overview)
+
+Last verified: **July 21, 2026**
+
+<LessonProgress client:load slug="what-is-cloud-computing" />
+
+Next: [Shared responsibility](./shared-responsibility/)

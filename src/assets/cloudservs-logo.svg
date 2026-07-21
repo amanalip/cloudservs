@@ -1,0 +1,24 @@
+<!--
+  The cloudservs mark combines three provider-neutral nodes with an open book.
+  It intentionally avoids the shapes and colors of any vendor trademark.
+-->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" role="img" aria-labelledby="logo-title logo-description">
+  <title id="logo-title">cloudservs</title>
+  <desc id="logo-description">Three connected cloud nodes rising from an open book</desc>
+  <defs>
+    <!-- The gradient stays vivid on both light and dark navigation surfaces. -->
+    <linearGradient id="cloudservs-gradient" x1="18" y1="18" x2="110" y2="110" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#22d3ee" />
+      <stop offset="0.52" stop-color="#6366f1" />
+      <stop offset="1" stop-color="#a855f7" />
+    </linearGradient>
+  </defs>
+  <!-- Three nodes represent learning one idea across three cloud providers. -->
+  <path d="M33 46 64 26l31 20M33 46l31 24 31-24M64 26v44" fill="none" stroke="url(#cloudservs-gradient)" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" />
+  <circle cx="64" cy="24" r="11" fill="#6366f1" />
+  <circle cx="30" cy="48" r="11" fill="#22d3ee" />
+  <circle cx="98" cy="48" r="11" fill="#a855f7" />
+  <!-- The open book represents structured learning and durable understanding. -->
+  <path d="M17 77c16-3 31 1 47 12v24c-16-11-31-15-47-12V77Z" fill="none" stroke="currentColor" stroke-width="7" stroke-linejoin="round" />
+  <path d="M111 77c-16-3-31 1-47 12v24c16-11 31-15 47-12V77Z" fill="none" stroke="currentColor" stroke-width="7" stroke-linejoin="round" />
+</svg>

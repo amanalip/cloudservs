@@ -1,0 +1,13 @@
+<!-- This compact brand mark remains recognizable at favicon size. -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="cloudservs">
+  <defs>
+    <linearGradient id="favicon-gradient" x1="8" y1="8" x2="56" y2="56" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#22d3ee" />
+      <stop offset="0.52" stop-color="#6366f1" />
+      <stop offset="1" stop-color="#a855f7" />
+    </linearGradient>
+  </defs>
+  <rect width="64" height="64" rx="16" fill="#0b1020" />
+  <path d="M17 23 32 13l15 10M17 23l15 12 15-12M32 13v22" fill="none" stroke="url(#favicon-gradient)" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" />
+  <path d="M10 40c8-2 15 1 22 6v10c-7-5-14-8-22-6V40Zm44 0c-8-2-15 1-22 6v10c7-5 14-8 22-6V40Z" fill="none" stroke="#f8fafc" stroke-width="4" stroke-linejoin="round" />
+</svg>

@@ -1,0 +1,26 @@
+---
+/**
+ * This component renders the one ordered curriculum from shared project data.
+ * It intentionally presents a sequence rather than separate profession-based paths.
+ */
+import { curriculumModules } from '../data/curriculum';
+---
+
+<div class="curriculum-journey" aria-label="The nine curriculum modules">
+  {
+    curriculumModules.map((module) => (
+      <article class="curriculum-stage">
+        <span class="curriculum-stage__number" aria-hidden="true">
+          {module.number}
+        </span>
+        <div>
+          <h3>{module.title}</h3>
+          <p>{module.summary}</p>
+        </div>
+        <span class="curriculum-stage__status">
+          {module.status === 'available' ? 'Start now' : 'Planned'}
+        </span>
+      </article>
+    ))
+  }
+</div>

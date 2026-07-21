@@ -1,0 +1,30 @@
+---
+/** Provider cards keep the three-cloud order consistent on every lesson. */
+interface ProviderDetail {
+  provider: 'AWS' | 'Azure' | 'Google Cloud';
+  title: string;
+  description: string;
+}
+
+interface Props {
+  items: ProviderDetail[];
+}
+
+const { items } = Astro.props;
+
+/** Data attributes use stable lowercase names for theme styling. */
+const providerKey = (provider: ProviderDetail['provider']) =>
+  provider === 'Google Cloud' ? 'gcp' : provider.toLowerCase();
+---
+
+<div class="provider-grid">
+  {
+    items.map((item) => (
+      <article class="provider-card" data-provider={providerKey(item.provider)}>
+        <small>{item.provider}</small>
+        <h3>{item.title}</h3>
+        <p>{item.description}</p>
+      </article>
+    ))
+  }
+</div>

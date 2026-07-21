@@ -1,0 +1,68 @@
+---
+title: How to learn with cloudservs
+description: Understand the lesson structure, diagrams, comparisons, progress, and fact-checking system.
+sidebar:
+  order: 2
+module: 0
+difficulty: beginner
+estimatedMinutes: 7
+reviewStatus: reviewed
+searchTerms:
+  - study guide
+  - how to learn
+  - diagrams
+  - fact checking
+---
+
+import MermaidDiagram from '../../../components/MermaidDiagram.astro';
+import AsciiDiagram from '../../../components/AsciiDiagram.astro';
+
+You do not need previous cloud experience. Each lesson introduces required terms before relying on them and keeps the full technical explanation available.
+
+## Follow the lesson sequence
+
+<MermaidDiagram
+  title="The structure of a complete lesson"
+  caption="The analogy opens the door, while the technical model and practice build durable understanding."
+  code={`flowchart TD
+    accTitle: The structure of a cloudservs lesson
+    accDescr: A lesson moves from objectives through explanation, analogy, diagrams, provider comparison, architecture, practice, recap, and sources.
+    A[Objectives] --> B[Plain-language concept]
+    B --> C[Everyday analogy]
+    C --> D[Analogy boundary]
+    D --> E[Technical model]
+    E --> F[AWS, Azure, and GCP]
+    F --> G[Real architecture]
+    G --> H[Practice and recap]
+    H --> I[Sources and review date]`}
+/>
+
+## Read diagrams in two passes
+
+First, follow the main direction of the arrows. Second, return to the branches, boundaries, and labels. Captions tell you what the diagram is intended to teach.
+
+<AsciiDiagram
+  title="A two-pass diagram reading strategy"
+  caption="Start with the main story, then inspect the details."
+  diagram={`Pass 1: What is the main flow?
+Start ----------------------------> Result
+
+Pass 2: What changes the flow?
+Start --> Decision --> Branch A --> Result
+|
++------> Branch B --> Result`}
+/>
+
+## Understand mapping labels
+
+- **Direct:** The products have closely comparable primary purposes and behavior.
+- **Approximate:** The products solve similar problems, but important differences exist.
+- **No direct equivalent:** Another product combination or architecture is needed.
+
+## Use progress without pressure
+
+Lesson completion and bookmarks are stored in your browser. There is no streak and no penalty for returning to an earlier topic. Revisiting material is part of learning.
+
+## Check the evidence
+
+Technical lessons include links to official provider documentation, original project documentation, or standards bodies. A verification date tells you when the comparison was last reviewed.

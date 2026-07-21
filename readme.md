@@ -20,19 +20,66 @@
                Apply the idea in real systems
 ```
 
-`cloudservs` is a planned visual learning platform for beginners who need to understand cloud computing across the three major providers. It is designed for students, recent graduates, career changers, and early-career professionals preparing for cloud-related jobs.
+`cloudservs` is a visual learning platform for beginners who need to understand cloud computing across the three major providers. It is designed for students, recent graduates, career changers, and early-career professionals preparing for cloud-related jobs.
 
-The project will be built as a static website and deployed through GitHub Pages.
+The project is built as a static website for deployment through GitHub Pages.
 
 ## Project status
 
-The project is currently in the planning and documentation stage. The implementation has not started yet.
+Development is active. The first verified learning chunk is implemented and includes:
 
-Current repository documents:
+- A custom responsive Astro and Starlight interface
+- Persisted light, dark, and system theme choices
+- Static Pagefind full-text search across rendered lesson text
+- One ordered nine-module curriculum model
+- Local lesson progress and an encouraging completion control
+- Accessible knowledge checks with answer explanations
+- Reusable ASCII, Mermaid, Markmap, and provider-comparison components
+- Two detailed, source-backed foundation lessons
+- GitHub Pages base-path configuration and an automated deployment workflow
+
+The first complete lessons are **What is cloud computing?** and **Shared responsibility**. Their technical claims were checked against current NIST, AWS, Microsoft, and Google primary sources on July 21, 2026.
+
+Core repository documents:
 
 - `AGENTS.md` defines the project's non-negotiable requirements and engineering standards.
 - `SKILLS.md` defines repeatable workflows for content, diagrams, fact-checking, search, accessibility, testing, and deployment.
 - `readme.md` describes the product vision, learning experience, architecture, curriculum, and delivery plan.
+
+## Run the website locally
+
+```bash
+npm install
+npm run dev
+```
+
+Open `http://localhost:4321/cloudservs/`. The repository base path is part of the local URL so navigation behaves like the GitHub Pages deployment.
+
+Before publishing a chunk, run:
+
+```bash
+npm test
+npm run build
+npm run format:check
+```
+
+The production build generates static HTML, Pagefind's browser-side search index, a sitemap, and the GitHub Pages artifact in `dist/`.
+
+## Current source structure
+
+```text
+cloudservs/
+  .github/workflows/static.yml   GitHub Pages build and deployment
+  public/                        Static favicon and public assets
+  src/assets/                    Brand artwork
+  src/components/                Learning and diagram components
+  src/content/docs/              Curriculum pages and lessons
+  src/data/                      Ordered curriculum data and tests
+  src/stores/                    Persisted learner progress
+  src/styles/                    Custom visual system
+  astro.config.mjs              Site, base path, navigation, and theme setup
+  package.json                  Exact development and runtime dependencies
+```
 
 ## The problem
 
@@ -373,27 +420,27 @@ The site will support light mode, dark mode, system-preference detection, persis
 
 The site will use a static-first architecture. Interactive libraries will load only where they improve the learning experience.
 
-| Technology | Planned responsibility |
-| --- | --- |
-| Astro | Static site generation and GitHub Pages output |
-| Starlight | Accessible curriculum layout, navigation, search integration, and documentation structure |
-| Markdown and MDX | Lessons with reusable interactive components |
-| Preact | Quizzes, flashcards, comparison tools, and focused interactions |
-| Pagefind | Static full-text search and filtering |
-| Mermaid | Flow, sequence, state, timeline, and architecture diagrams |
-| Markmap | Interactive Markdown mind maps |
-| Cytoscape.js | Service relationship and prerequisite graphs |
-| Lucide | Consistent generic interface icons |
-| Nano Stores | Small shared learning-state stores |
-| Nano Stores Persistent | Local progress, bookmarks, and preferences |
-| Vite PWA | Offline access, installation, and update prompts |
-| Chart.js | Selective quantitative visuals with table alternatives |
-| Driver.js | Optional first-visit guidance |
-| Expressive Code | Code examples, command blocks, and styled ASCII visuals |
-| TypeScript | Typed interactive components and content utilities |
-| Vitest | Unit and component testing |
-| Playwright | Browser, interaction, responsive, and deployment testing |
-| axe-core | Automated accessibility checks |
+| Technology             | Planned responsibility                                                                    |
+| ---------------------- | ----------------------------------------------------------------------------------------- |
+| Astro                  | Static site generation and GitHub Pages output                                            |
+| Starlight              | Accessible curriculum layout, navigation, search integration, and documentation structure |
+| Markdown and MDX       | Lessons with reusable interactive components                                              |
+| Preact                 | Quizzes, flashcards, comparison tools, and focused interactions                           |
+| Pagefind               | Static full-text search and filtering                                                     |
+| Mermaid                | Flow, sequence, state, timeline, and architecture diagrams                                |
+| Markmap                | Interactive Markdown mind maps                                                            |
+| Cytoscape.js           | Service relationship and prerequisite graphs                                              |
+| Lucide                 | Consistent generic interface icons                                                        |
+| Nano Stores            | Small shared learning-state stores                                                        |
+| Nano Stores Persistent | Local progress, bookmarks, and preferences                                                |
+| Vite PWA               | Future offline access after an adapter supports the installed Astro version               |
+| Chart.js               | Selective quantitative visuals with table alternatives                                    |
+| Driver.js              | Optional first-visit guidance                                                             |
+| Expressive Code        | Code examples, command blocks, and styled ASCII visuals                                   |
+| TypeScript             | Typed interactive components and content utilities                                        |
+| Vitest                 | Unit and component testing                                                                |
+| Playwright             | Browser, interaction, responsive, and deployment testing                                  |
+| axe-core               | Automated accessibility checks                                                            |
 
 Libraries will be used generously when they add learning value. Overlapping dependencies will be avoided. Heavy libraries will be loaded only on pages that need them so a text lesson does not pay the performance cost of every visualization tool.
 
@@ -409,11 +456,11 @@ flowchart LR
     G[Mermaid, Markmap, and Cytoscape visuals] --> E
     E --> H[Static HTML, CSS, and scoped JavaScript]
     H --> I[Pagefind index]
-    H --> J[PWA cache and manifest]
     I --> K[GitHub Pages artifact]
-    J --> K
     K --> L[GitHub Pages]
 ```
+
+Offline installation is intentionally deferred. The evaluated Vite PWA Astro adapter does not declare compatibility with Astro 7, which is required by the current Starlight release. The project will not force an incompatible peer dependency. PWA support will be reconsidered when the adapter declares compatibility and its GitHub Pages base-path behavior can be verified.
 
 ```text
 Most lesson content              Interactive learning component
@@ -486,34 +533,34 @@ Every technical lesson will include source links and a last-verified date. Time-
 
 The curriculum is intended to be broad enough for serious job preparation. It will grow in reviewed chunks rather than through shallow placeholder pages.
 
-| Area | Topics |
-| --- | --- |
-| Computing and cloud foundations | Service models, deployment models, control plane, data plane, elasticity, scalability, availability, durability, reliability, economics, and shared responsibility |
-| Identity and access | Users, groups, roles, policies, service identities, authentication, authorization, least privilege, federation, temporary credentials, and workload identity |
-| Global infrastructure | Regions, zones, edge locations, data residency, latency, multi-zone design, multi-region design, and regional failures |
-| Compute | Virtualization, virtual machines, images, sizing, autoscaling, placement, spot capacity, dedicated hosts, metadata, patching, and batch computing |
-| Containers | Images, registries, runtimes, networking, storage, configuration, secrets, security, orchestration, and use-case selection |
-| Kubernetes | Clusters, nodes, pods, deployments, services, namespaces, ingress, storage, health checks, scheduling, scaling, networking, and security |
-| Serverless | Functions, triggers, event sources, cold starts, statelessness, concurrency, retries, idempotency, orchestration, cost, and tradeoffs |
-| Storage | Object, block, and file storage, classes, tiers, replication, versioning, lifecycle, encryption, temporary access, backup, and archival |
-| Databases | Relational, document, key-value, graph, time-series, and wide-column models, transactions, indexes, replication, backups, scaling, and migration |
-| Networking fundamentals | IP, CIDR, IPv4, IPv6, ports, TCP, UDP, DNS, routing, NAT, firewalls, proxies, VPNs, packet flow, and troubleshooting |
-| Cloud networking | Virtual networks, subnets, routes, gateways, firewall rules, private endpoints, peering, transit, hybrid connectivity, load balancing, and flow logs |
-| Application delivery | Domains, DNS, TLS, reverse proxies, Layer 4, Layer 7, health checks, CDNs, web application firewalls, API gateways, caching, and global traffic |
-| Messaging and integration | Queues, publish and subscribe, event buses, streams, consumer groups, dead-letter queues, ordering, delivery guarantees, retries, and workflows |
-| Security | Defense in depth, zero trust, encryption, keys, secrets, certificates, vulnerability scanning, threat detection, audit logs, data protection, and incidents |
-| Observability and operations | Metrics, logs, traces, dashboards, alerts, performance monitoring, SLI, SLO, SLA, error budgets, on-call work, root cause analysis, and runbooks |
-| Reliability and recovery | Fault tolerance, redundancy, RTO, RPO, backups, restore tests, active-active, active-passive, retries, backoff, circuit breakers, and graceful degradation |
-| DevOps and delivery | Source control, branching, CI/CD, artifacts, environments, configuration, feature flags, release strategies, rollbacks, GitOps, and supply-chain security |
-| Infrastructure as code | Declarative configuration, state, modules, variables, dependencies, drift, planning, secrets, Terraform, native tools, testing, and safe deployment |
-| Cost management and FinOps | Pricing models, compute, storage, network, egress, commitments, spot capacity, rightsizing, budgets, allocation, forecasting, and unit economics |
-| Governance and organization | Accounts, subscriptions, projects, folders, resource hierarchy, naming, tags, policies, landing zones, centralized services, and compliance |
-| Data engineering and analytics | Lakes, warehouses, lakehouses, ETL, ELT, batch, streaming, pipelines, ingestion, catalogs, governance, query engines, and business intelligence |
-| AI and machine learning | Training, inference, models, datasets, endpoints, managed AI, generative AI, embeddings, vector search, retrieval, monitoring, privacy, and cost |
-| Migration and modernization | Assessment, dependency discovery, migration strategies, database migration, transfer, hybrid operation, cutover, rollback, and optimization |
-| Architecture patterns | Three-tier, microservices, events, serverless, static sites, APIs, batch, streams, SaaS, caching, saga, CQRS, and multi-region systems |
-| Hands-on job skills | Consoles, command-line tools, logs, permissions, network diagnosis, deployments, databases, monitoring, backups, cost estimation, and incident response |
-| Interview and career preparation | Concept questions, comparisons, troubleshooting, architecture scenarios, security, cost, behavioral questions, whiteboards, resumes, and portfolios |
+| Area                             | Topics                                                                                                                                                             |
+| -------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| Computing and cloud foundations  | Service models, deployment models, control plane, data plane, elasticity, scalability, availability, durability, reliability, economics, and shared responsibility |
+| Identity and access              | Users, groups, roles, policies, service identities, authentication, authorization, least privilege, federation, temporary credentials, and workload identity       |
+| Global infrastructure            | Regions, zones, edge locations, data residency, latency, multi-zone design, multi-region design, and regional failures                                             |
+| Compute                          | Virtualization, virtual machines, images, sizing, autoscaling, placement, spot capacity, dedicated hosts, metadata, patching, and batch computing                  |
+| Containers                       | Images, registries, runtimes, networking, storage, configuration, secrets, security, orchestration, and use-case selection                                         |
+| Kubernetes                       | Clusters, nodes, pods, deployments, services, namespaces, ingress, storage, health checks, scheduling, scaling, networking, and security                           |
+| Serverless                       | Functions, triggers, event sources, cold starts, statelessness, concurrency, retries, idempotency, orchestration, cost, and tradeoffs                              |
+| Storage                          | Object, block, and file storage, classes, tiers, replication, versioning, lifecycle, encryption, temporary access, backup, and archival                            |
+| Databases                        | Relational, document, key-value, graph, time-series, and wide-column models, transactions, indexes, replication, backups, scaling, and migration                   |
+| Networking fundamentals          | IP, CIDR, IPv4, IPv6, ports, TCP, UDP, DNS, routing, NAT, firewalls, proxies, VPNs, packet flow, and troubleshooting                                               |
+| Cloud networking                 | Virtual networks, subnets, routes, gateways, firewall rules, private endpoints, peering, transit, hybrid connectivity, load balancing, and flow logs               |
+| Application delivery             | Domains, DNS, TLS, reverse proxies, Layer 4, Layer 7, health checks, CDNs, web application firewalls, API gateways, caching, and global traffic                    |
+| Messaging and integration        | Queues, publish and subscribe, event buses, streams, consumer groups, dead-letter queues, ordering, delivery guarantees, retries, and workflows                    |
+| Security                         | Defense in depth, zero trust, encryption, keys, secrets, certificates, vulnerability scanning, threat detection, audit logs, data protection, and incidents        |
+| Observability and operations     | Metrics, logs, traces, dashboards, alerts, performance monitoring, SLI, SLO, SLA, error budgets, on-call work, root cause analysis, and runbooks                   |
+| Reliability and recovery         | Fault tolerance, redundancy, RTO, RPO, backups, restore tests, active-active, active-passive, retries, backoff, circuit breakers, and graceful degradation         |
+| DevOps and delivery              | Source control, branching, CI/CD, artifacts, environments, configuration, feature flags, release strategies, rollbacks, GitOps, and supply-chain security          |
+| Infrastructure as code           | Declarative configuration, state, modules, variables, dependencies, drift, planning, secrets, Terraform, native tools, testing, and safe deployment                |
+| Cost management and FinOps       | Pricing models, compute, storage, network, egress, commitments, spot capacity, rightsizing, budgets, allocation, forecasting, and unit economics                   |
+| Governance and organization      | Accounts, subscriptions, projects, folders, resource hierarchy, naming, tags, policies, landing zones, centralized services, and compliance                        |
+| Data engineering and analytics   | Lakes, warehouses, lakehouses, ETL, ELT, batch, streaming, pipelines, ingestion, catalogs, governance, query engines, and business intelligence                    |
+| AI and machine learning          | Training, inference, models, datasets, endpoints, managed AI, generative AI, embeddings, vector search, retrieval, monitoring, privacy, and cost                   |
+| Migration and modernization      | Assessment, dependency discovery, migration strategies, database migration, transfer, hybrid operation, cutover, rollback, and optimization                        |
+| Architecture patterns            | Three-tier, microservices, events, serverless, static sites, APIs, batch, streams, SaaS, caching, saga, CQRS, and multi-region systems                             |
+| Hands-on job skills              | Consoles, command-line tools, logs, permissions, network diagnosis, deployments, databases, monitoring, backups, cost estimation, and incident response            |
+| Interview and career preparation | Concept questions, comparisons, troubleshooting, architecture scenarios, security, cost, behavioral questions, whiteboards, resumes, and portfolios                |
 
 ## One ordered curriculum
 
@@ -703,7 +750,7 @@ sequenceDiagram
     Actions->>Tests: Run validation and quality gates
     Tests-->>Actions: Report results
     alt Checks pass
-        Actions->>Actions: Build Astro, Pagefind, and PWA output
+        Actions->>Actions: Build Astro and Pagefind output
         Actions->>Pages: Deploy static artifact
         Pages-->>Author: Publish cloudservs
     else Checks fail

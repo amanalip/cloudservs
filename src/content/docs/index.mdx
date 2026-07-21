@@ -1,0 +1,66 @@
+---
+title: cloudservs
+description: Learn cloud concepts visually, then compare AWS, Azure, and Google Cloud with confidence.
+template: splash
+module: 0
+difficulty: beginner
+estimatedMinutes: 3
+reviewStatus: reviewed
+hero:
+  tagline: One visual curriculum for understanding cloud concepts across AWS, Azure, and Google Cloud.
+  actions:
+    - text: Start learning
+      link: ./learn/
+      icon: right-arrow
+      variant: primary
+    - text: View the curriculum
+      link: ./learn/curriculum-roadmap/
+      icon: open-book
+---
+
+import LearningToolkit from '../../components/LearningToolkit';
+import CurriculumJourney from '../../components/CurriculumJourney.astro';
+import AsciiDiagram from '../../components/AsciiDiagram.astro';
+
+## Cloud should make sense before it becomes a list of product names
+
+Most beginners are asked to learn three different cloud vocabularies before they have a stable mental model of cloud computing itself. `cloudservs` reverses that order.
+
+<AsciiDiagram
+  title="The cloudservs learning loop"
+  caption="Each topic moves from understanding to comparison and then to application."
+  diagram={`Concept
+   |
+   v
+Everyday analogy
+   |
+   v
+Visual mental model
+   |
+   +----------+----------+
+   |          |          |
+   v          v          v
+  AWS       Azure       GCP
+   |          |          |
+   +----------+----------+
+              |
+              v
+     Real architecture
+              |
+              v
+    Practice and recall`}
+/>
+
+<LearningToolkit />
+
+## One curriculum, one clear direction
+
+The curriculum is ordered so that each module prepares you for the next. You can still search and revisit any topic, but you never need to choose between competing paths.
+
+<CurriculumJourney />
+
+## Thorough without being overwhelming
+
+Lessons keep the depth needed for work and interviews. Clear stages, diagrams, comparisons, expandable details, recaps, and knowledge checks make that depth easier to navigate.
+
+Every technical lesson includes official sources and a visible verification date. Provider mappings are labeled as direct, approximate, or having no direct equivalent.

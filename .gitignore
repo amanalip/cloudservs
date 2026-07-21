@@ -1,0 +1,19 @@
+# Dependency packages are restored from package-lock.json.
+node_modules/
+
+# Astro generates the production website in this directory.
+dist/
+
+# Astro and Starlight use this directory for generated caches and types.
+.astro/
+
+# Playwright CLI artifacts stay local during visual verification.
+output/playwright/
+.playwright-cli/
+
+# Local environment files may contain machine-specific settings or secrets.
+.env
+.env.*
+
+# Common operating-system metadata does not belong in source control.
+.DS_Store

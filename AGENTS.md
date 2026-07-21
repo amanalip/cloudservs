@@ -8,7 +8,9 @@ The primary learner is a student, recent graduate, career changer, or new employ
 
 ## Current project status
 
-The project is in planning and documentation. Do not begin the website implementation until the owner explicitly confirms the build plan.
+Development began after the owner approved the plan. The first working chunk includes the Astro and Starlight foundation, a custom responsive interface, persisted light and dark themes, static full-text search, curriculum metadata, local lesson progress, interactive quizzes, reusable diagram components, and the first two fact-checked foundation lessons.
+
+Build the remaining curriculum in coherent, verified chunks. A chunk is complete only when its lessons, visuals, interactions, source review, browser checks, and documentation are complete.
 
 ## Non-negotiable requirements
 
@@ -121,7 +123,7 @@ Use a static-first architecture based on:
 - Cytoscape.js for interactive service and prerequisite graphs
 - Lucide for consistent generic interface icons
 - Nano Stores and Nano Stores Persistent for local progress, bookmarks, and preferences
-- Vite PWA integration for offline learning and update prompts
+- Vite PWA integration for offline learning and update prompts when an adapter supports the project's Astro version
 - Chart.js for selective data visualizations with accessible table alternatives
 - Driver.js for an optional first-visit tour when it adds real value
 - Expressive Code for code examples and styled ASCII blocks
@@ -131,6 +133,8 @@ Use a static-first architecture based on:
 - axe-core with Playwright for automated accessibility checks
 
 Use libraries generously when they materially improve learning, clarity, accessibility, or maintainability. Do not add overlapping libraries merely to increase the dependency count. Load expensive visualization libraries only on pages that need them. Pin exact dependency versions in the lockfile and review them during upgrades.
+
+The current Vite PWA Astro adapter does not declare compatibility with Astro 7. Do not force an incompatible peer dependency. Reevaluate PWA support during dependency upgrades and add it only after compatibility and GitHub Pages behavior are verified.
 
 ## Search requirements
 

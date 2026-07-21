@@ -308,6 +308,19 @@ Release a coherent, reviewed slice of the platform rather than a large set of un
 13. Verify the footer copyright.
 14. Update `AGENTS.md`, `SKILLS.md`, and `readme.md`.
 
+### Current project commands
+
+```text
+npm run dev           Start the local development site
+npm run test          Run curriculum and utility tests
+npm run check         Type-check Astro, MDX, and TypeScript
+npm run build         Validate and create the production site
+npm run preview       Serve the production output locally
+npm run format:check  Verify repository formatting
+```
+
+Set `ASTRO_TELEMETRY_DISABLED=1` in automated builds. Test production behavior under `/cloudservs/`, because local root-path success does not prove that GitHub Pages base-path routing works.
+
 ## 12. Deploy to GitHub Pages
 
 ### Goal
@@ -319,8 +332,12 @@ Publish a reproducible static build without server-only dependencies.
 1. Configure Astro `site` and `base` values for the repository URL.
 2. Generate static output.
 3. Build the Pagefind index.
-4. Generate or update the PWA assets and service worker.
+4. Generate or update PWA assets only when the selected adapter supports the installed Astro version.
 5. Run the complete release validation workflow.
 6. Deploy through the official GitHub Pages Actions flow.
 7. Test the deployed base path, assets, search, navigation, and offline behavior.
 8. Record the deployed version and content verification date.
+
+### PWA compatibility gate
+
+The project currently uses Astro 7 through Starlight. The evaluated Vite PWA Astro adapter does not declare Astro 7 compatibility, so offline installation is deferred. Never bypass the peer dependency check merely to include the feature. Reevaluate the adapter during dependency upgrades, then test installation, updates, cached navigation, and the `/cloudservs/` base path before enabling it.
