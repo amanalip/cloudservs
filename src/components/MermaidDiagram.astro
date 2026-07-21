@@ -52,9 +52,71 @@ import DiagramToolbar from './DiagramToolbar.astro';
     });
 
     await mermaid.run({ querySelector: '.mermaid:not([data-processed="true"])' });
+
+    document.querySelectorAll<HTMLElement>('[data-diagram-kind="mermaid"]').forEach((diagram) => {
+      measureAndScaleDiagram(diagram);
+    });
   }
 
-  /** Change the rendered SVG size so the surrounding viewport can scroll at higher zoom levels. */
+  /** Scale one complete rendered diagram so labels, boxes, and arrows remain together. */
+  function applyDiagramScale(diagram: HTMLElement, zoom: number, preserveFocus = true) {
+    const viewport = diagram.querySelector<HTMLElement>('.diagram-card__body');
+    const canvas = diagram.querySelector<HTMLElement>('.mermaid-canvas');
+    const content = diagram.querySelector<HTMLElement>('.mermaid');
+    const baseWidth = Number(diagram.dataset.mermaidBaseWidth);
+    const baseHeight = Number(diagram.dataset.mermaidBaseHeight);
+
+    if (!viewport || !canvas || !content || !baseWidth || !baseHeight) return;
+
+    const previousZoom = Number(diagram.dataset.renderedZoom ?? '1');
+    const focalX = (viewport.scrollLeft + viewport.clientWidth / 2) / previousZoom;
+    const focalY = (viewport.scrollTop + viewport.clientHeight / 2) / previousZoom;
+
+    content.style.transform = `scale(${zoom})`;
+    canvas.style.width = `${baseWidth * zoom}px`;
+    canvas.style.height = `${baseHeight * zoom}px`;
+    diagram.dataset.renderedZoom = String(zoom);
+
+    window.requestAnimationFrame(() => {
+      if (preserveFocus) {
+        viewport.scrollLeft = focalX * zoom - viewport.clientWidth / 2;
+        viewport.scrollTop = focalY * zoom - viewport.clientHeight / 2;
+      } else {
+        viewport.scrollLeft = Math.max((baseWidth * zoom - viewport.clientWidth) / 2, 0);
+        viewport.scrollTop = 0;
+      }
+    });
+  }
+
+  /** Measure the readable 100% layout before applying the learner's selected scale. */
+  function measureAndScaleDiagram(diagram: HTMLElement) {
+    const viewport = diagram.querySelector<HTMLElement>('.diagram-card__body');
+    const canvas = diagram.querySelector<HTMLElement>('.mermaid-canvas');
+    const content = diagram.querySelector<HTMLElement>('.mermaid');
+    const svg = content?.querySelector<SVGSVGElement>('svg');
+
+    if (!viewport || !canvas || !content || !svg) return;
+
+    const viewportStyles = window.getComputedStyle(viewport);
+    const horizontalPadding =
+      Number.parseFloat(viewportStyles.paddingLeft) +
+      Number.parseFloat(viewportStyles.paddingRight);
+    const readableWidth = Math.max(viewport.clientWidth - horizontalPadding, 576);
+
+    content.style.transform = 'none';
+    content.style.width = `${readableWidth}px`;
+    canvas.style.removeProperty('width');
+    canvas.style.removeProperty('height');
+
+    const contentBounds = content.getBoundingClientRect();
+    diagram.dataset.mermaidBaseWidth = String(readableWidth);
+    diagram.dataset.mermaidBaseHeight = String(contentBounds.height);
+    diagram.dataset.renderedZoom = '1';
+
+    applyDiagramScale(diagram, Number(diagram.dataset.zoom ?? '1'), false);
+  }
+
+  /** Connect the shared controls to whole-diagram scaling. */
   function prepareMermaidZoom() {
     document.querySelectorAll<HTMLElement>('[data-diagram-kind="mermaid"]').forEach((diagram) => {
       if (diagram.dataset.zoomReady === 'true') return;
@@ -62,7 +124,16 @@ import DiagramToolbar from './DiagramToolbar.astro';
 
       diagram.addEventListener('cloudservs:diagram-zoom', (event) => {
         const { requestedZoom } = (event as CustomEvent<{ requestedZoom: number }>).detail;
-        diagram.style.setProperty('--diagram-zoom', String(requestedZoom));
+        applyDiagramScale(diagram, requestedZoom);
+      });
+    });
+  }
+
+  /** Recalculate the readable base size after entering full screen or resizing the window. */
+  function refreshMermaidSizes() {
+    window.requestAnimationFrame(() => {
+      document.querySelectorAll<HTMLElement>('[data-diagram-kind="mermaid"]').forEach((diagram) => {
+        measureAndScaleDiagram(diagram);
       });
     });
   }
@@ -71,4 +142,6 @@ import DiagramToolbar from './DiagramToolbar.astro';
   renderMermaidDiagrams();
   document.addEventListener('astro:page-load', renderMermaidDiagrams);
   document.addEventListener('astro:page-load', prepareMermaidZoom);
+  document.addEventListener('fullscreenchange', refreshMermaidSizes);
+  window.addEventListener('resize', refreshMermaidSizes);
 </script>

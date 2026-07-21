@@ -86,6 +86,7 @@ For every complex or interactive visual:
 - Make the visual usable on narrow mobile screens.
 - Offer zoom, pan, expansion, or a larger view when density requires it.
 - Dense Mermaid and Markmap visuals must provide visible zoom out, zoom in, reset, and full-screen controls.
+- Diagram zoom must scale labels, nodes, arrows, and spacing as one unit. Text must never escape or clip inside its node at any supported zoom level.
 - Never leave an empty diagram frame after a rendering failure. Show an accessible fallback that points to the equivalent text explanation.
 
 ASCII diagrams must remain readable as text, use a suitable monospace font, support horizontal scrolling when necessary, and include a copy control where helpful.

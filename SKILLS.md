@@ -111,10 +111,11 @@ What must the learner understand?
 7. Test narrow screens, zoom, keyboard use, and reduced motion.
 8. Confirm that the visual remains accurate after simplification.
 9. Verify zoom out, zoom in, reset, scrolling, and full-screen controls on dense interactive visuals.
-10. Force or simulate a rendering failure and confirm that a useful text fallback replaces blank space.
-11. Confirm diagram toolbars remain on one row or scroll as one unit at narrow widths.
-12. Test ASCII copy on the first page load and after client-side navigation.
-13. Confirm ASCII drawings are centered as blocks without centering their internal text.
+10. At minimum and maximum zoom, confirm that labels remain contained within their nodes and every diagram element scales together.
+11. Force or simulate a rendering failure and confirm that a useful text fallback replaces blank space.
+12. Confirm diagram toolbars remain on one row or scroll as one unit at narrow widths.
+13. Test ASCII copy on the first page load and after client-side navigation.
+14. Confirm ASCII drawings are centered as blocks without centering their internal text.
 
 ## 4. Build an interactive mind map
 

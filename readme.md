@@ -35,7 +35,7 @@ Development is active. The first verified learning chunk is implemented and incl
 - Local lesson progress and an encouraging completion control
 - Accessible knowledge checks with answer explanations
 - Reusable ASCII, Mermaid, Markmap, and provider-comparison components
-- Diagram zoom, reset, scrolling, and native full-screen viewing controls
+- Whole-diagram zoom, reset, scrolling, and native full-screen viewing controls
 - A working Start now curriculum action that opens the first available lesson
 - Locally bundled Atkinson Hyperlegible, Manrope, and JetBrains Mono typography
 - Reliable ASCII copying with a restricted-browser fallback

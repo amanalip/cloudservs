@@ -411,13 +411,13 @@ input,
 }
 
 .diagram-card__body .mermaid {
-  min-width: 36rem;
+  min-width: 0;
+  transform-origin: top left;
   text-align: center;
 }
 
 .mermaid-canvas {
-  width: calc(100% * var(--diagram-zoom, 1));
-  min-width: calc(36rem * var(--diagram-zoom, 1));
+  margin-inline: auto;
 }
 
 .mermaid-canvas svg {
