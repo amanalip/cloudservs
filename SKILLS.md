@@ -326,6 +326,7 @@ Release a coherent, reviewed slice of the platform rather than a large set of un
 ```text
 npm run dev           Start the local development site
 npm run test          Run curriculum and utility tests
+npm run test:e2e      Build and run Playwright UI regression tests
 npm run check         Type-check Astro, MDX, and TypeScript
 npm run build         Validate and create the production site
 npm run preview       Serve the production output locally
@@ -333,6 +334,19 @@ npm run format:check  Verify repository formatting
 ```
 
 Set `ASTRO_TELEMETRY_DISABLED=1` in automated builds. Test production behavior under `/cloudservs/`, because local root-path success does not prove that GitHub Pages base-path routing works.
+
+### UI regression coverage
+
+The Playwright suite must preserve the shared fixes before additional curriculum chunks ship:
+
+- six equal toolkit cards in a three-by-two desktop grid
+- equal AWS, Azure, and Google Cloud comparison-card geometry
+- equal-height diagram controls with centered SVG plus and minus icons
+- Mermaid node-label containment through maximum zoom
+- centered ASCII drawings and reliable clipboard behavior
+- movable, keyboard-resizable, and persisted desktop contents-pane state
+- readable Markmap labels in dark mode
+- heading chain links that navigate to the section, copy the complete URL, and announce success
 
 ## 12. Deploy to GitHub Pages
 

@@ -43,9 +43,12 @@ jobs:
       # Tests protect shared curriculum and learning-state utilities.
       - name: Run unit tests
         run: npm test
-      # Astro validates lesson metadata before producing static GitHub Pages files.
-      - name: Build cloudservs
-        run: npm run build
+      # Chromium renders the generated site for interaction and layout regression checks.
+      - name: Install Playwright browser
+        run: npx playwright install --with-deps chromium
+      # Astro validates the site before Playwright checks the production output.
+      - name: Build and run UI regression tests
+        run: npm run test:e2e
         env:
           ASTRO_TELEMETRY_DISABLED: 1
       - name: Setup Pages

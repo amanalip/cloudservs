@@ -44,6 +44,8 @@ Development is active. The first verified learning chunk is implemented and incl
 - Equal-height diagram controls with optically centered SVG zoom icons
 - A persisted desktop contents pane that can move left or right and resize like a split view
 - Higher-contrast, larger Markmap labels in light and dark themes
+- Playwright production-build regression tests for shared layout and interaction fixes
+- Shareable heading chain links that copy complete section URLs with accessible confirmation
 - Two detailed, source-backed foundation lessons
 - GitHub Pages base-path configuration and an automated deployment workflow
 
@@ -69,6 +71,7 @@ Before publishing a chunk, run:
 ```bash
 npm test
 npm run build
+npm run test:e2e
 npm run format:check
 ```
 
@@ -452,6 +455,8 @@ The site will use a static-first architecture. Interactive libraries will load o
 | axe-core               | Automated accessibility checks                                                            |
 
 Libraries will be used generously when they add learning value. Overlapping dependencies will be avoided. Heavy libraries will be loaded only on pages that need them so a text lesson does not pay the performance cost of every visualization tool.
+
+The deployment workflow installs Chromium and runs the Playwright UI regression suite before uploading the GitHub Pages artifact. A known shared-layout or interaction regression therefore blocks deployment.
 
 ## Planned system architecture
 

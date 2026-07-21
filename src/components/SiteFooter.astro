@@ -16,3 +16,67 @@ const repositoryUrl = 'https://github.com/amanalip/cloudservs';
     <a href={repositoryUrl}>View on GitHub</a>
   </div>
 </footer>
+
+<span class="sr-only" data-section-link-status aria-live="polite"></span>
+
+<script>
+  /** Copy text with the modern Clipboard API and preserve a restricted-browser fallback. */
+  async function copySectionUrl(url: string): Promise<void> {
+    if (navigator.clipboard?.writeText && window.isSecureContext) {
+      try {
+        await navigator.clipboard.writeText(url);
+        return;
+      } catch {
+        // Continue to the selection-based fallback when clipboard permission is denied.
+      }
+    }
+
+    const temporaryInput = document.createElement('textarea');
+    temporaryInput.value = url;
+    temporaryInput.setAttribute('readonly', '');
+    temporaryInput.style.position = 'fixed';
+    temporaryInput.style.inset = '0 auto auto -9999px';
+    document.body.append(temporaryInput);
+    temporaryInput.select();
+    const legacyDocument = document as unknown as { execCommand(commandId: string): boolean };
+    const copied = legacyDocument.execCommand('copy');
+    temporaryInput.remove();
+
+    if (!copied) throw new Error('The browser rejected both clipboard methods.');
+  }
+
+  /** Enhance every generated heading anchor without changing its normal bookmark navigation. */
+  function prepareSectionLinkCopy() {
+    document.querySelectorAll<HTMLAnchorElement>('.sl-anchor-link').forEach((anchor) => {
+      if (anchor.dataset.copyReady === 'true') return;
+      anchor.dataset.copyReady = 'true';
+
+      anchor.addEventListener('click', async () => {
+        const href = anchor.getAttribute('href');
+        if (!href) return;
+
+        const sectionUrl = new URL(href, window.location.href).href;
+        const wrapper = anchor.closest<HTMLElement>('.sl-heading-wrapper');
+        const heading = wrapper?.querySelector<HTMLElement>('h1, h2, h3, h4, h5, h6');
+        const status = document.querySelector<HTMLElement>('[data-section-link-status]');
+
+        try {
+          await copySectionUrl(sectionUrl);
+          anchor.dataset.copyState = 'copied';
+          if (status) status.textContent = `Copied link to ${heading?.textContent ?? 'section'}`;
+        } catch (error) {
+          anchor.dataset.copyState = 'failed';
+          if (status) status.textContent = 'The section link could not be copied.';
+          console.error('cloudservs could not copy this section link.', error);
+        }
+
+        window.setTimeout(() => {
+          delete anchor.dataset.copyState;
+        }, 1600);
+      });
+    });
+  }
+
+  prepareSectionLinkCopy();
+  document.addEventListener('astro:page-load', prepareSectionLinkCopy);
+</script>

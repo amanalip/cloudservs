@@ -159,6 +159,9 @@ Search is a core feature, not a later enhancement.
 
 The site should encourage continued learning through clarity and achievable progress.
 
+- Clicking a generated heading chain icon must navigate to the section and copy its complete absolute URL.
+- Section-link copying must provide visible and screen-reader confirmation plus a restricted-browser clipboard fallback.
+
 - Show prerequisites before a lesson begins.
 - Show estimated depth or difficulty without pressuring the learner.
 - Break long lessons into visible stages while preserving full detail.
@@ -315,6 +318,9 @@ Before calling a change complete:
 - Verify that new claims have primary sources and review dates.
 - Scan authored text for em dashes and replace them.
 - Confirm that copyright text is correct.
+- Run the Playwright UI regression suite against the production build.
+- Do not deploy when shared card geometry, diagram controls, diagram containment, ASCII copying, contents-pane behavior, or dark-mode diagram contrast regress.
+- Regression-test heading chain links for hash navigation, absolute URL copying, and accessible confirmation.
 - Update project documentation when architecture, commands, conventions, or workflows change.
 
 ## Repository hygiene

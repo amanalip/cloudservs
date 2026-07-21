@@ -127,6 +127,31 @@ header.header {
   height: 2rem;
 }
 
+/* Heading chain links confirm copying without replacing their normal anchor navigation. */
+.sl-markdown-content .sl-anchor-link[data-copy-state='copied']::before,
+.sl-markdown-content .sl-anchor-link[data-copy-state='failed']::before {
+  position: absolute;
+  z-index: 5;
+  inset: auto auto calc(100% + 0.45rem) 50%;
+  border: 1px solid var(--cloudservs-border);
+  border-radius: 0.45rem;
+  padding: 0.3rem 0.5rem;
+  color: var(--sl-color-white);
+  background: var(--sl-color-black);
+  box-shadow: var(--cloudservs-shadow);
+  content: 'Link copied';
+  font-family: var(--sl-font);
+  font-size: 0.72rem;
+  font-weight: 700;
+  line-height: 1;
+  white-space: nowrap;
+  transform: translateX(-50%);
+}
+
+.sl-markdown-content .sl-anchor-link[data-copy-state='failed']::before {
+  content: 'Copy failed';
+}
+
 /* Rounded controls make search and theme actions feel part of one system. */
 button,
 select,
