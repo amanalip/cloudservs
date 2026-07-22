@@ -1,5 +1,7 @@
 # cloudservs Agent Guide
 
+Last documentation sync: `2026-07-22T14:53:30-04:00`
+
 ## Purpose
 
 `cloudservs` is a visual, beginner-friendly cloud learning website that teaches a concept once and then explains how AWS, Microsoft Azure, and Google Cloud implement it.
@@ -8,9 +10,99 @@ The primary learner is a student, recent graduate, career changer, or new employ
 
 ## Current project status
 
-Development began after the owner approved the plan. The first working chunk includes the Astro and Starlight foundation, a custom responsive interface, locally bundled reading fonts, persisted light and dark themes, static full-text search, curriculum metadata, local lesson progress, interactive quizzes, reusable diagram components with zoom and full-screen viewing, and the first two fact-checked foundation lessons.
+Public release `v1` was developed on July 21, 2026. It includes the Astro and Starlight foundation, a custom responsive interface, locally bundled reading fonts, persisted light and dark themes, static full-text search, curriculum metadata, local lesson progress, interactive quizzes, reusable diagram components with zoom and full-screen viewing, and the first two fact-checked foundation lesson drafts.
 
 Build the remaining curriculum in coherent, verified chunks. A chunk is complete only when its lessons, visuals, interactions, source review, browser checks, and documentation are complete.
+
+### Current v1 implementation boundary
+
+- The repository contains 93 planned lessons across 9 ordered modules.
+- Module 1 has 30% topic coverage, 18% requirement progress, and zero quality-gated complete lessons.
+- `What is cloud computing?` and `Shared responsibility` are detailed, source-backed drafts, not complete lessons.
+- Full-text Pagefind search exists, but advanced provider, module, topic, and difficulty filters remain planned.
+- Local lesson-completion storage exists, but bookmarks, recently viewed lessons, and continue-learning automation remain planned.
+- ASCII, Mermaid, and Markmap are active. Chart.js, Cytoscape.js, and Driver.js are installed but have no released v1 use.
+- The platform-aware Command K label was discussed but is not implemented in the repository.
+- axe-core is installed, but the current Playwright suite does not invoke it.
+- Browser regression coverage currently targets desktop Chromium. Dedicated mobile, Firefox, and WebKit projects remain future work.
+- PWA and offline installation are deferred because the evaluated adapter does not support Astro 7.
+- The next learner-facing feature release will be `v2`. Documentation maintenance alone does not create a new release.
+
+## Release and changelog governance
+
+`changelog.md` is the evidence-based public feature history.
+
+- Use simple release labels `v1`, `v2`, `v3`, and later whole-number versions.
+- Add the next release whenever validated learner-facing syllabus content is added, a feature is added, or a website bug is resolved.
+- Keep the current changelog at `v1` until a post-v1 feature is actually implemented.
+- Distinguish released, improved, fixed, verified, planned, deferred, and installed-but-unused capabilities.
+- Verify every release claim against source files, imports, tests, generated behavior, or version history.
+- Never list a conversational confirmation, dependency installation, requirement, or plan as an implemented feature without repository evidence.
+- Include release date, scope, content state, quality evidence, known limits, dependency status, and compatibility notes when applicable.
+- Review `changelog.md` during closeout, but edit it only when a release or its historical evidence materially changes. Questions, policy clarifications, audits, and documentation-only maintenance do not alter the changelog by themselves.
+- Update `changelog.md` in the same change as every qualifying syllabus addition, feature, or resolved website bug. Group related work from one coherent push into one version entry.
+- Do not treat syllabus ledger bookkeeping as learner-facing syllabus delivery. Require the actual lesson, diagram, exercise, curriculum capability, or other content plus its relevant quality checks.
+- Do not call a website bug resolved or record it as fixed until a focused regression test or documented reproducible check verifies the correction.
+
+## Implementation-claim verification protocol
+
+The user depends on Codex for reliable status information. A false positive, such as confirming the platform-aware Command K label without implementation evidence, is a serious process failure even when the feature is small.
+
+Before saying that any feature, fix, test, library integration, content requirement, accessibility behavior, or deployment capability is implemented, complete, working, protected, or released:
+
+1. Re-read the exact user request or acceptance criterion.
+2. Inspect the current working tree instead of relying on conversation memory or an earlier response.
+3. Locate the implementation file, import, component, configuration, or content that performs the claimed behavior.
+4. Trace how a real page or workflow reaches that implementation. An unused component or installed package does not count.
+5. Locate a relevant automated test, or run a focused browser or command-line verification when automation is not practical.
+6. Check the result in the correct environment, viewport, theme, operating-system condition, base path, and browser when the claim depends on them.
+7. Record important limitations. A Chromium desktop check does not prove mobile, Firefox, WebKit, macOS, or assistive-technology behavior.
+8. Use the evidence-supported status word defined below.
+
+```text
+Requirement discussed
+        |
+        v
+Implementation exists in current repository?
+        |
+    +---+---+
+    |       |
+   no      yes
+    |       |
+    v       v
+ planned   Reachable by the real product?
+            |
+        +---+---+
+        |       |
+       no      yes
+        |       |
+        v       v
+  present but  Relevant behavior verified?
+    inactive        |
+               +----+----+
+               |         |
+              no        yes
+               |         |
+               v         v
+          implemented   verified
+          but unverified   |
+                         v
+                 released only when included
+                 in a named validated release
+```
+
+Required language:
+
+- `planned`: requested or documented, but implementation evidence is absent.
+- `present but inactive`: code or a dependency exists, but no real page or workflow uses it.
+- `implemented but unverified`: reachable implementation exists, but relevant behavior has not been demonstrated.
+- `verified`: current implementation and relevant behavior have fresh evidence.
+- `released`: verified behavior is included in a named public release.
+- `not yet verified`: use this whenever the evidence check cannot be completed. Never convert uncertainty into a positive confirmation.
+
+Conversation memory, a previous Codex statement, a requirement in Markdown, a package installation, a filename, a passing unrelated test, or intended CSS is never sufficient evidence by itself. When answering a direct “is this done?” question, include the strongest concise evidence and any meaningful coverage boundary. If later inspection contradicts an earlier response, correct it immediately and append the discrepancy, cause, and prevention change to `lessons_learned.md`.
+
+Platform-dependent behavior has an additional gate. The implementation must detect or derive the relevant platform condition, render the expected result for each supported platform, and have a test that covers at least the differing branches. Until those three facts exist, the platform-aware Command K label remains `planned`.
 
 ## Non-negotiable requirements
 
@@ -25,7 +117,28 @@ Build the remaining curriculum in coherent, verified chunks. A chunk is complete
 - Lessons must contain many useful visuals, not a single decorative diagram.
 - Avoid em dashes in all interface copy, lessons, documentation, comments, and examples.
 - The footer must display `© 2026 Aman Ali Pogaku`.
-- Keep `AGENTS.md`, `SKILLS.md`, `audit.md`, `lessons_learned.md`, and `readme.md` current as the project changes.
+- Update `AGENTS.md`, `SKILLS.md`, `readme.md`, and `lessons_learned.md` at the end of every project work session. Update `changelog.md` only for release evidence, and update `audit.md` whenever a formal module audit occurs.
+
+## Privacy and zero-analytics policy
+
+`cloudservs` must not collect, transmit, sell, profile, or analyze learner data. This prohibition applies to both obvious analytics and indirect tracking.
+
+- Do not add visitor analytics, telemetry, advertising pixels, heatmaps, session replay, fingerprinting, cross-site tracking, unique visitor identifiers, marketing tags, or error-reporting services that transmit browser data.
+- Do not create accounts, user profiles, authentication, comments, contact forms, mailing-list forms, or server-submitted quizzes unless the owner explicitly changes this policy after a separate privacy review. The current policy is that these capabilities must not be added.
+- Do not write application cookies or read browser cookies.
+- Do not transmit search terms, lesson progress, bookmarks, theme choices, contents-pane preferences, quiz answers, clipboard contents, or accessibility preferences to cloudservs, GitHub, a cloud provider, or another third party.
+- Keep Pagefind search in the browser. Search index files may load from the same static site, but the typed query must not be sent to a search service.
+- Keep fonts, icons, scripts, styles, and learning assets inside the deployed static site. Do not add remote scripts or iframes.
+- Allow local browser storage only when it directly benefits the learner, is documented, contains no sensitive information, and never syncs to a server.
+- Current persistent local values are the Starlight theme, completed lesson slugs, contents-pane width, and contents-pane side. Starlight also keeps transient sidebar state in session storage. These values remain in that browser and can be removed by clearing site data.
+- Clipboard controls may write text only after the learner activates them. They must never read unrelated clipboard contents or transmit clipboard data.
+- External source and repository links are ordinary navigation. After a learner follows one, the destination site's privacy rules apply.
+- Astro CLI telemetry must be disabled by the repository-owned Astro launcher and the GitHub Actions job. Do not depend on a machine-wide setting. A transitive telemetry package in Astro is not proof of deployed visitor analytics, but leaving the CLI opt-out implicit is not acceptable.
+- GitHub Pages is the hosting boundary. GitHub states that it logs visitor IP addresses for security when a Pages site is visited. That infrastructure processing is controlled by GitHub, not by cloudservs, and cloudservs has no application backend that receives those logs.
+- Review every new dependency, browser API, network request, embedded resource, and deployment change against this policy before merging.
+- Treat any unexplained third-party browser request or collection-capable API as a release blocker.
+
+Run `npm run privacy:validate` after a production build. The build must reject common collection APIs, analytics dependencies, and automatically loaded remote scripts, frames, styles, or media. The Playwright suite must also confirm that representative learner pages make no third-party requests. Automated scans support, but do not replace, manual code and browser-network review.
 
 ## Teaching model
 
@@ -139,6 +252,9 @@ Use a static-first architecture based on:
 
 Use libraries generously when they materially improve learning, clarity, accessibility, or maintainability. Do not add overlapping libraries merely to increase the dependency count. Load expensive visualization libraries only on pages that need them. Pin exact dependency versions in the lockfile and review them during upgrades.
 
+- Distinguish installed dependencies from active learner features in documentation and release notes.
+- Do not claim Chart.js, Cytoscape.js, Driver.js, or axe-core behavior until source usage and relevant tests exist.
+
 The current Vite PWA Astro adapter does not declare compatibility with Astro 7. Do not force an incompatible peer dependency. Reevaluate PWA support during dependency upgrades and add it only after compatibility and GitHub Pages behavior are verified.
 
 ## Search requirements
@@ -206,9 +322,13 @@ The site should encourage continued learning through clarity and achievable prog
 - Preserve prior audit entries. Record later corrections as dated amendments instead of silently rewriting history.
 - Keep the stable audit marker directly above each entry so `npm run syllabus:validate` can match the log to the ledger.
 - Treat `lessons_learned.md` as the append-only post-mortem and decision-memory log.
-- Append a timestamped entry after a meaningful question, corrected assumption, recurring defect, workflow improvement, or successful user idea produces a reusable lesson.
-- Separate lessons learned by the user from lessons learned by Codex, explain the future practice, and preserve earlier entries.
+- Append a timestamped `lessons_learned.md` entry at the end of every work session, even when the conclusion is that no new reusable lesson emerged.
+- Separate lessons learned by the user from lessons learned by Codex. Include the prompt, beginner explanation, impact, evidence, exposed limitations, future practice, validation, and open risks where applicable.
+- Use ASCII charts, mind maps, tables, or flows when they materially clarify causes, relationships, or prevention steps.
+- Record shortcomings fairly and specifically. This is a non-blaming improvement record, not a defense of Codex or a criticism of the user.
 - Store verified audit results in `audit.md`. Store reflective learning and changed future practice in `lessons_learned.md`.
+- Store evidence-based release history and honest implementation boundaries in `changelog.md`.
+- Update the documentation-sync timestamp in `AGENTS.md`, `SKILLS.md`, `readme.md`, and `lessons_learned.md` during every session closeout. Keep `changelog.md` release-only.
 - Workplace relevance may be shown as lightweight lesson context, but it must not become a separate navigation or progress system.
 - Reuse the same lesson wherever another page references it. Never duplicate lesson content for a job role.
 - Treat any future curated role view as an optional index over the existing curriculum, not as a separate curriculum.
@@ -346,13 +466,20 @@ Before calling a change complete:
 - Scan authored text for em dashes and replace them.
 - Confirm that copyright text is correct.
 - Run the Playwright UI regression suite against the production build.
+- Run the privacy validator and confirm representative pages make no third-party browser requests.
+- Inspect new dependencies and browser APIs for analytics, telemetry, tracking, cookies, outbound data submission, remote scripts, and remote iframes.
+- Confirm Astro CLI telemetry is disabled in npm workflows and deployment automation.
 - Run syllabus validation and confirm the next-lesson report remains accurate.
 - Confirm every reached module-audit threshold is complete and contains no open finding.
 - Confirm every completed module audit has a matching timestamped entry in `audit.md`.
 - Do not deploy when shared card geometry, diagram controls, diagram containment, ASCII copying, contents-pane behavior, or dark-mode diagram contrast regress.
 - Regression-test heading chain links for hash navigation, absolute URL copying, and accessible confirmation.
 - Update project documentation when architecture, commands, conventions, or workflows change.
-- Review the completed change for reusable learning and update `lessons_learned.md` when a meaningful lesson exists.
+- Complete the mandatory four-document synchronization pass and append the session reflection to `lessons_learned.md`.
+- Check whether the work qualifies for a new changelog version. Do not increment the version for documentation-only maintenance.
+- Re-verify every completion or implementation statement against current repository evidence. Treat unverified conversational memory as planned or not yet verified.
+- For each newly claimed feature, identify its implementation, product reachability, relevant verification, and coverage limits.
+- Run `npm run docs:validate` and do not close the session when the four living-document timestamps differ.
 
 ## Repository hygiene
 

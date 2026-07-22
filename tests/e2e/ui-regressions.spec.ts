@@ -37,6 +37,32 @@ function expectAligned(values: number[], tolerance = 1): void {
 }
 
 test.describe('shared visual regressions', () => {
+  test('learner pages make no requests to third-party origins', async ({ page }) => {
+    /** Static same-origin assets are expected, while any different origin is a privacy regression. */
+    const thirdPartyRequests: string[] = [];
+    page.on('request', (request) => {
+      const requestedUrl = new URL(request.url());
+      if (
+        requestedUrl.protocol.startsWith('http') &&
+        requestedUrl.origin !== 'http://127.0.0.1:4330'
+      ) {
+        thirdPartyRequests.push(request.url());
+      }
+    });
+
+    /** Visit representative pages that exercise the homepage, search shell, and rich diagrams. */
+    for (const path of [
+      './',
+      './learn/how-to-use-cloudservs/',
+      './learn/foundations/what-is-cloud-computing/',
+    ]) {
+      await page.goto(path);
+      await page.waitForLoadState('networkidle');
+    }
+
+    expect(thirdPartyRequests).toEqual([]);
+  });
+
   test('learning toolkit remains a three-by-two grid with six equal cards', async ({ page }) => {
     await page.goto('./');
 

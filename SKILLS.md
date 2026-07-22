@@ -1,5 +1,7 @@
 # cloudservs Project Skills and Workflows
 
+Last documentation sync: `2026-07-22T14:53:30-04:00`
+
 This file defines reusable project workflows for building and maintaining `cloudservs`. It is a project guide, not an installable Codex skill package.
 
 ## 1. Author a beginner-friendly lesson
@@ -319,7 +321,8 @@ Release a coherent, reviewed slice of the platform rather than a large set of un
 11. Recheck primary sources for changed claims.
 12. Scan prose and comments for em dashes.
 13. Verify the footer copyright.
-14. Update `AGENTS.md`, `SKILLS.md`, and `readme.md`.
+14. Update `AGENTS.md`, `SKILLS.md`, `readme.md`, and `lessons_learned.md`.
+15. Run the privacy validator and verify that browser pages make no third-party requests.
 
 ### Current project commands
 
@@ -329,6 +332,8 @@ npm run test          Run curriculum and utility tests
 npm run test:e2e      Build and run Playwright UI regression tests
 npm run syllabus:validate  Reject an inconsistent progress ledger
 npm run syllabus:status    Report progress and the next curriculum checkpoint
+npm run docs:validate      Confirm the four living guides share one timestamp
+npm run privacy:validate   Reject common collection APIs and remote embedded resources
 npm run check         Type-check Astro, MDX, and TypeScript
 npm run build         Validate and create the production site
 npm run preview       Serve the production output locally
@@ -349,6 +354,7 @@ The Playwright suite must preserve the shared fixes before additional curriculum
 - movable, keyboard-resizable, and persisted desktop contents-pane state
 - readable Markmap labels in dark mode
 - heading chain links that navigate to the section, copy the complete URL, and announce success
+- representative learner pages that make no requests to third-party origins
 
 ## 12. Continue the syllabus reliably
 
@@ -442,21 +448,204 @@ The project currently uses Astro 7 through Starlight. The evaluated Vite PWA Ast
 
 ### Goal
 
-Turn a useful question, defect, correction, decision, or successful idea into durable project memory.
+End every work session with a fair, beginner-friendly record of what the user and Codex learned, including successes, defects, limitations, safeguards, and open risks.
 
 ### Workflow
 
 1. Investigate what happened before recording a conclusion.
-2. Decide whether the result belongs in the factual audit log, the reflective lessons log, or both.
-3. Append a timestamped entry to `lessons_learned.md` when the discovery changes future practice.
-4. Record lessons learned by the user and lessons learned by Codex separately.
-5. Explain the prompting event in beginner-friendly language.
-6. State the future practice that follows from the lesson.
-7. Update `AGENTS.md` for permanent requirements and `SKILLS.md` for repeatable procedures when needed.
-8. Add regression coverage when the lesson came from a reproducible defect.
-9. Preserve previous entries and append a dated amendment if a conclusion later changes.
-10. Avoid duplicating raw audit evidence when a concise link or explanation is enough.
+2. Gather evidence from files, tests, screenshots, browser behavior, sources, or version history as applicable.
+3. Decide whether the result belongs in the factual audit log, the reflective lessons log, or both.
+4. Append a timestamped entry to `lessons_learned.md` during every session closeout.
+5. Record lessons learned by the user and lessons learned by Codex separately.
+6. Explain the prompt, meaning, impact, and future practice in language a beginner can follow.
+7. Record Codex limitations fairly and connect each limitation to a concrete safeguard.
+8. Add ASCII charts, mind maps, tables, or flows when they make the reasoning easier to understand.
+9. Record successful ideas and practices worth repeating, not only defects.
+10. Add regression coverage when the lesson came from a reproducible defect.
+11. Update `AGENTS.md` rules, `SKILLS.md` procedures, and `readme.md` project guidance in the same session.
+12. Update the documentation-sync timestamp in the four living documents: `AGENTS.md`, `SKILLS.md`, `readme.md`, and `lessons_learned.md`.
+13. If no reusable lesson emerged, append a short entry saying so and list what was reviewed.
+14. Run `npm run docs:validate` and correct any missing or mismatched timestamp.
+15. Preserve previous entries and append a dated amendment if a conclusion later changes.
+16. Avoid duplicating raw audit evidence when a concise reference and explanation are enough.
+
+### Required entry structure
+
+1. Timestamp and scope
+2. Prompt for reflection
+3. Evidence reviewed
+4. Lesson learned by the user
+5. Lesson learned by Codex
+6. Codex limitation exposed
+7. Preventive action
+8. Validation performed
+9. Open risk or next review trigger
 
 ### Recording boundary
 
-`audit.md` answers what was checked and what passed. `src/data/syllabus.ts` answers what curriculum work is done and what comes next. `lessons_learned.md` answers what the team now understands and what it will do differently.
+`audit.md` answers what was checked and what passed. `src/data/syllabus.ts` answers what curriculum work is done and what comes next. `lessons_learned.md` answers what the team now understands, which limitations were exposed, and what it will do differently. `changelog.md` answers which features were actually released, when they were released, and which limits remained. The first three living guides and `AGENTS.md` are synchronized every session. The changelog is reviewed but edited only when release evidence changes.
+
+## 15. Prepare a feature release and changelog
+
+### Goal
+
+Publish an evidence-based release record that helps beginners understand what changed without confusing plans, installed dependencies, and completed features.
+
+### Version rule
+
+```text
+Current public release: v1
+          |
+          v
+Syllabus addition, feature, or website bug fix completed and validated?
+          |
+      +---+---+
+      |       |
+     yes      no
+      |       |
+      v       v
+Create v2   Keep changelog at v1
+```
+
+Validated learner-facing syllabus additions, new features, and resolved website bugs require a changelog entry. Documentation maintenance, post-mortem corrections, planning, and audit-only work do not increment the version by themselves.
+
+### Workflow
+
+1. Inspect the working tree and preserve unrelated user changes.
+2. Read `changelog.md` and identify the current public version.
+3. List candidate syllabus additions, features, and bug fixes from source changes and commit history.
+4. Verify every syllabus addition and feature in source code, rendered content, or browser behavior.
+5. Verify every fix with a focused regression test or documented reproducible check.
+6. Separate learner-facing features from developer tooling and documentation maintenance.
+7. Separate active dependencies from installed-but-unused dependencies.
+8. Compare the release against `readme.md`, `AGENTS.md`, `SKILLS.md`, the syllabus ledger, tests, and current content pages.
+9. Record added, improved, fixed, quality, content, dependency, and known-limit sections.
+10. State curriculum coverage and quality-gated completion separately.
+11. State planned or deferred capabilities explicitly instead of implying that they shipped.
+12. Run unit, production-build, browser, documentation, formatting, and relevant accessibility checks.
+13. Update the four living-document timestamps. Update the changelog timestamp only when this workflow actually changes its release record.
+14. Append the session's honest reflection to `lessons_learned.md`.
+15. Add the next version only after a qualifying syllabus addition, feature, or website bug fix and its checks exist.
+16. Update `changelog.md` in the same change as the qualifying product work. Group related changes from one coherent push into one version.
+
+### Sanity checklist
+
+- Search the repository for each claimed library import.
+- Search for the component, route, or state store behind each claimed interaction.
+- Compare planned lists with implemented source files.
+- Review browser-test names to avoid overstating coverage.
+- Review content metadata and syllabus status before reporting lesson completion.
+- Review Git history for dates and parallel changes.
+- Verify GitHub Pages base-path configuration.
+- Scan for em dashes and formatting problems.
+- Preserve known limitations even when the release is successful.
+- Confirm that every new learner-facing lesson or curriculum capability is recorded under Content or Added.
+- Confirm that every resolved website defect is recorded under Fixed and names its regression evidence.
+
+### Confirmation checklist before answering the user
+
+Use this checklist for every direct question such as “is it implemented?”, “is it fixed?”, “will this work on the next pages?”, or “does the library handle this?” Do not wait for a formal release review.
+
+1. Quote or restate the exact behavior being confirmed.
+2. Run `git status --short` so the answer reflects tracked and uncommitted work.
+3. Search for the implementation with `rg`, then open the relevant code rather than relying on the search result alone.
+4. Confirm that a rendered route, imported component, npm script, or deployment workflow actually reaches the code.
+5. Find or run the narrowest relevant test.
+6. When behavior is visual or interactive, inspect it in a real browser.
+7. When behavior depends on macOS, Windows, Linux, mobile, theme, browser engine, storage, or GitHub Pages routing, test the differing condition instead of extrapolating from one environment.
+8. State one of: `planned`, `present but inactive`, `implemented but unverified`, `verified`, `released`, or `not yet verified`.
+9. Include the verification boundary in the answer, such as “verified in desktop Chromium at the GitHub Pages base path.”
+10. If evidence is missing or contradictory, say so immediately. Do not preserve an earlier positive answer for consistency.
+
+```text
+Previous response says yes
+          |
+          v
+Current repository proves yes?
+     |                 |
+    yes                no
+     |                 |
+     v                 v
+Verify again      Correct the record
+     |                 |
+     v                 v
+Answer with       Mark the real status
+evidence and      and record the lesson
+boundaries
+```
+
+For platform-aware shortcut labels, require all of the following before confirmation:
+
+- platform detection or another reliable platform-specific signal
+- separate rendered expectations for macOS and non-macOS behavior
+- an automated test covering both branches
+- a browser check showing the correct visible label
+
+The current Command K adaptation does not meet these conditions and remains planned.
+
+## 16. Audit privacy and enforce zero analytics
+
+### Goal
+
+Prove that cloudservs does not collect or transmit learner behavior, while explaining the difference between local browser state and GitHub Pages hosting logs.
+
+### Privacy model
+
+```text
+Learner action
+      |
+      +--> theme, progress, and layout preferences
+      |          |
+      |          v
+      |    learner's browser storage only
+      |
+      +--> search text
+      |          |
+      |          v
+      |    Pagefind search in the browser
+      |
+      +--> page request --------------------> GitHub Pages hosting
+                                                   |
+                                                   v
+                                      GitHub security logging boundary
+
+No cloudservs analytics server, account database, or tracking service exists.
+```
+
+### Workflow
+
+1. Search authored browser code for `fetch`, `XMLHttpRequest`, `sendBeacon`, WebSocket, EventSource, cookie APIs, remote scripts, remote iframes, forms, and known analytics vendor markers.
+2. Inspect direct dependencies and the installed dependency tree for analytics, telemetry, error reporting, session replay, and advertising packages.
+3. Distinguish a transitive build-tool package from code shipped to learners. Disable build-tool telemetry even when it is not visitor tracking.
+4. Inventory every `localStorage` and `sessionStorage` key, its value, purpose, lifetime, and whether any code transmits it.
+5. Confirm that clipboard code writes only the learner-requested text and does not read unrelated clipboard contents.
+6. Build the production site and inspect generated HTML for remote scripts, frames, styles, media, tracking markers, forms, and cookies.
+7. Run representative pages in Playwright and record every request whose origin differs from the local production server.
+8. Verify that Pagefind loads its same-origin static index and does not send search terms to a hosted search service.
+9. Verify every project Astro command runs through `scripts/run-astro-private.ts`, which sets `ASTRO_TELEMETRY_DISABLED=1` for the child process without changing machine-wide settings. Keep the same variable at the CI job level.
+10. Document the hosting boundary accurately. GitHub Pages logs visitor IP addresses for security according to GitHub's documentation, even though cloudservs has no access to an application analytics backend.
+11. Update the four living documents with findings, safeguards, storage inventory, limits, and the next review trigger.
+12. Do not update `changelog.md` for a privacy question or policy clarification unless a public release record actually changes.
+
+### Required commands
+
+```text
+npm run build              Build, then run the privacy validator
+npm run privacy:validate   Scan source dependencies and generated HTML
+npm run test:e2e           Confirm representative pages have no third-party requests
+npm run docs:validate      Confirm the four living privacy records were synchronized
+```
+
+### Failure conditions
+
+Stop the release when any of these appear without an explicit owner-approved policy change:
+
+- learner analytics or telemetry
+- tracking pixels, advertising tags, fingerprinting, heatmaps, or session replay
+- cookies written or read by the application
+- search terms, quiz answers, progress, preferences, or clipboard data sent off-device
+- third-party scripts, remote iframes, or unexplained external requests
+- accounts, profiles, forms, or a backend that receives learner information
+- CLI telemetry that is not explicitly disabled in project and deployment commands
+
+Local preference storage is not analytics collection when it remains in the learner's browser, contains no sensitive information, and is never transmitted. It must still be documented and re-audited whenever storage behavior changes.

@@ -24,6 +24,9 @@ concurrency:
 jobs:
   # The single job validates, builds, and deploys the static learning site.
   deploy:
+    # Disable Astro CLI telemetry for every command in the deployment job.
+    env:
+      ASTRO_TELEMETRY_DISABLED: 1
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
@@ -49,8 +52,6 @@ jobs:
       # Astro validates the site before Playwright checks the production output.
       - name: Build and run UI regression tests
         run: npm run test:e2e
-        env:
-          ASTRO_TELEMETRY_DISABLED: 1
       - name: Setup Pages
         uses: actions/configure-pages@v5
       - name: Upload artifact

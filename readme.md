@@ -1,5 +1,7 @@
 # cloudservs
 
+Last documentation sync: `2026-07-22T14:53:30-04:00`
+
 > Learn cloud concepts once, then understand how AWS, Microsoft Azure, and Google Cloud implement them.
 
 ```text
@@ -26,7 +28,11 @@ The project is built as a static website for deployment through GitHub Pages.
 
 ## Project status
 
-Development is active. The first verified learning chunk is implemented and includes:
+Current public release: `v1`, released July 21, 2026. The next validated learner-facing syllabus addition, feature, or resolved website bug will be recorded in `v2`. Documentation-only work performed after v1 does not increment the version.
+
+The detailed, evidence-based release history is available in [`changelog.md`](./changelog.md).
+
+Development is active. The first implementation chunk is available and includes:
 
 - A custom responsive Astro and Starlight interface
 - Persisted light, dark, and system theme choices
@@ -49,9 +55,11 @@ Development is active. The first verified learning chunk is implemented and incl
 - A validated 93-lesson syllabus ledger with durable checkpoints and next-work reporting
 - Enforced whole-module quality audits at 25%, 50%, 75%, and 100% topic coverage
 - An append-only, timestamped `audit.md` history for completed module checkpoints
-- An append-only `lessons_learned.md` post-mortem for user and Codex discoveries
-- Two detailed, source-backed foundation lessons
+- A detailed, append-only `lessons_learned.md` post-mortem with beginner explanations, diagrams, evidence, limitations, and prevention steps
+- A detailed `changelog.md` that separates released features from planned, deferred, and installed-but-unused capabilities
+- Two detailed, source-backed foundation lesson drafts
 - GitHub Pages base-path configuration and an automated deployment workflow
+- A zero-analytics privacy policy, disabled Astro CLI telemetry, build-time privacy scanning, and a browser test that rejects third-party requests
 
 The first detailed lesson drafts are **What is cloud computing?** and **Shared responsibility**. Their technical claims were checked against current NIST, AWS, Microsoft, and Google primary sources on July 21, 2026. The syllabus ledger separately records the remaining whole-lesson requirements before either draft is quality-gated as complete.
 
@@ -60,8 +68,53 @@ Core repository documents:
 - `AGENTS.md` defines the project's non-negotiable requirements and engineering standards.
 - `SKILLS.md` defines repeatable workflows for content, diagrams, fact-checking, search, accessibility, testing, and deployment.
 - `audit.md` preserves timestamped module-audit outcomes, evidence, corrections, validation results, and next actions.
-- `lessons_learned.md` preserves questions, corrections, successful ideas, and the future practices learned by Aman and Codex.
+- `lessons_learned.md` preserves questions, corrections, successful ideas, limitations, visual causal models, and future practices learned by Aman and Codex. It is updated during every work-session closeout, including a short record when no new reusable lesson emerges.
+- `changelog.md` records public versions, learner-facing syllabus additions, implemented features, verified website fixes, quality evidence, technology status, and known limitations. It must be updated in the same change whenever one of those qualifying product changes is completed. It is not edited for routine questions or documentation-only clarification.
 - `readme.md` describes the product vision, learning experience, architecture, curriculum, and delivery plan.
+
+### Honest v1 boundary
+
+| Area                  | Implemented in v1                                              | Still planned or deferred                                     |
+| --------------------- | -------------------------------------------------------------- | ------------------------------------------------------------- |
+| Curriculum            | 93-lesson ledger, 9 modules, 2 detailed foundation drafts      | Remaining lessons and full quality completion                 |
+| Search                | Static Pagefind full-text index                                | Advanced filters and complete synonym translation             |
+| Progress              | Local lesson-completion toggle                                 | Bookmarks, recently viewed, and continue-learning automation  |
+| Visuals               | ASCII, Mermaid, Markmap, and provider comparisons              | Released Cytoscape graphs and Chart.js visualizations         |
+| Learning interactions | Knowledge checks, hints, explanations, and retry               | Flashcard component and larger quiz system                    |
+| Accessibility checks  | Semantic controls, keyboard behavior, reduced motion, contrast | axe-core integration and multi-browser assistive review       |
+| Browser tests         | 8 desktop Chromium regressions                                 | Dedicated mobile, Firefox, and WebKit projects                |
+| Keyboard search label | Starlight search shortcut behavior                             | Repository implementation of a platform-aware Command K label |
+| Offline use           | Static site delivery                                           | Installable PWA, deferred for Astro 7 compatibility           |
+| Optional libraries    | Packages installed                                             | Chart.js, Cytoscape.js, and Driver.js learner-facing use      |
+
+### Evidence-based status promise
+
+Project status is based on the current repository, not on conversational memory. This rule exists because the platform-aware Command K label was once confirmed in conversation even though no platform-detection implementation existed. The confirmation was incorrect, and the capability remains planned.
+
+```text
+Status claim
+    |
+    +--> implementation located
+    +--> real page or workflow reaches it
+    +--> relevant behavior verified
+    +--> test and environment limits stated
+    |
+    v
+Safe to call verified
+```
+
+The project uses these status terms consistently:
+
+| Status                     | Meaning                                                           |
+| -------------------------- | ----------------------------------------------------------------- |
+| Planned                    | Requested or documented, but no implementation evidence exists    |
+| Present but inactive       | Code or a dependency exists, but the product does not use it      |
+| Implemented but unverified | Reachable code exists, but the behavior has not been demonstrated |
+| Verified                   | Current implementation and relevant behavior have fresh evidence  |
+| Released                   | Verified behavior is part of a named public release               |
+| Not yet verified           | Available evidence is insufficient for a reliable positive answer |
+
+A previous response, installed dependency, requirement document, or unrelated passing test cannot promote a capability to verified. Platform-specific claims require evidence for each differing branch. Therefore Command K on macOS must not be described as implemented until platform detection, macOS and non-macOS expectations, automated branch coverage, and a browser check all exist.
 
 ## Run the website locally
 
@@ -78,12 +131,98 @@ Before publishing a chunk, run:
 npm test
 npm run syllabus:validate
 npm run syllabus:status
+npm run docs:validate
+npm run privacy:validate
 npm run build
 npm run test:e2e
 npm run format:check
 ```
 
-The production build generates static HTML, Pagefind's browser-side search index, a sitemap, and the GitHub Pages artifact in `dist/`.
+The production build validates the syllabus and required documentation synchronization, generates static HTML, Pagefind's browser-side search index, a sitemap, and the GitHub Pages artifact in `dist/`, then scans that artifact for privacy regressions.
+
+## Privacy: no learner analytics or tracking
+
+`cloudservs` does not collect learner data for analytics. The application has no analytics service, telemetry endpoint, advertising tag, account system, form receiver, database, or application server. It does not send lesson activity, searches, progress, theme choices, quiz answers, or layout preferences to the project owner.
+
+This conclusion was checked against the authored source, direct and transitive dependencies, generated production HTML, browser storage calls, network-capable browser APIs, remote resource references, and representative browser requests on July 22, 2026.
+
+### What the audit found
+
+| Area                        | Current behavior                                                  | Privacy meaning                                                                                                                  |
+| --------------------------- | ----------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------- |
+| Visitor analytics           | None                                                              | No Google Analytics, tag manager, Plausible, Matomo, PostHog, Mixpanel, Hotjar, session replay, or equivalent service is present |
+| Accounts and forms          | None                                                              | No learner identity, email address, profile, comment, or submitted answer is accepted                                            |
+| Cookies                     | None written or read by cloudservs                                | The application does not use cookies for tracking or preferences                                                                 |
+| Search                      | Static Pagefind search in the browser                             | Typed search terms are not sent to a cloudservs search server                                                                    |
+| Preferences                 | Local browser storage only                                        | Theme, progress, and contents-pane settings stay on that device and browser                                                      |
+| Clipboard                   | Writes only after a learner clicks Copy                           | The site copies the requested diagram text or section URL and does not read unrelated clipboard contents                         |
+| Fonts and scripts           | Bundled into the static site                                      | No remote font, analytics script, or third-party iframe is loaded                                                                |
+| Astro development telemetry | Package exists transitively, but telemetry is explicitly disabled | npm lifecycle commands and GitHub Actions opt out before Astro development and build commands run                                |
+| Hosting                     | Static files on GitHub Pages                                      | GitHub, not cloudservs, processes the network request needed to serve each page                                                  |
+
+The curriculum includes a future subject called data engineering and analytics. That means teaching cloud data systems. It does not mean analyzing visitors to this website.
+
+### Local storage is not data collection
+
+The site remembers a small amount of non-sensitive state in the learner's browser so useful choices survive navigation or a later visit.
+
+```text
+Learner chooses a theme, completes a lesson, or moves the contents pane
+                              |
+                              v
+                  Saved inside that browser
+                              |
+                +-------------+-------------+
+                |                           |
+                v                           v
+       Used on a later visit       Never sent to cloudservs
+```
+
+| Browser key                    | Storage         | Value and purpose                              | Sent anywhere by cloudservs? |
+| ------------------------------ | --------------- | ---------------------------------------------- | ---------------------------- |
+| `starlight-theme`              | Local storage   | Selected light, dark, or automatic theme       | No                           |
+| `cloudservs:completed-lessons` | Local storage   | Lesson slugs the learner marked complete       | No                           |
+| `cloudservs:toc-width`         | Local storage   | Preferred desktop contents-pane width          | No                           |
+| `cloudservs:toc-side`          | Local storage   | Preferred left or right contents-pane position | No                           |
+| `sl-sidebar-state`             | Session storage | Temporary expanded or collapsed sidebar state  | No                           |
+
+Local storage stays with that browser profile. It does not create an account, does not synchronize between devices, and is not available to the project owner. A learner can remove it through the browser's clear site data control. Clearing it resets the saved theme, lesson completion marks, and layout preferences.
+
+### The GitHub Pages boundary
+
+An honest privacy explanation must separate application behavior from hosting behavior:
+
+```text
+Browser
+   |
+   | HTTPS request, required to load a page
+   v
+GitHub Pages infrastructure
+   |
+   +--> serves cloudservs static files
+   +--> GitHub documents security logging of visitor IP addresses
+   |
+   v
+cloudservs runs locally in the browser
+   |
+   +--> no cloudservs analytics endpoint
+   +--> no learner database
+   +--> no project-owner visitor dashboard
+```
+
+GitHub's official Pages documentation states that a visitor's IP address is logged and stored by GitHub for security purposes. That is infrastructure processing by the hosting provider, not analytics implemented or received by cloudservs. See [GitHub's explanation of Pages data collection](https://docs.github.com/en/pages/getting-started-with-github-pages/what-is-github-pages#data-collection) and the linked GitHub privacy statement. External AWS, Microsoft, Google, NIST, and GitHub links also lead to sites with their own privacy practices after the learner chooses to leave cloudservs.
+
+### Safeguards against future regression
+
+- `scripts/run-astro-private.ts` launches every project Astro command with `ASTRO_TELEMETRY_DISABLED=1` without changing a contributor's machine-wide settings.
+- The development, check, production-build, and preview npm commands all use that launcher.
+- GitHub Actions sets `ASTRO_TELEMETRY_DISABLED=1` for the entire deployment job.
+- `npm run privacy:validate` rejects common network collection APIs, cookie access, analytics packages, known tracking markers, and automatically loaded remote scripts, frames, styles, or media.
+- The production build runs the privacy validator after generating `dist/`.
+- Playwright visits representative learner pages and fails if the browser requests a third-party origin.
+- Every new dependency, browser API, embedded resource, storage key, and hosting change requires manual privacy review because automated keyword scans cannot recognize every possible future tracking mechanism.
+
+Pagefind's official documentation describes it as a fully static browser search with no server component. See the [Pagefind documentation](https://pagefind.app/docs/). Astro documents its telemetry opt-out in the [Astro CLI reference](https://docs.astro.build/en/reference/cli-reference/#astro-telemetry).
 
 ## Durable syllabus progress
 
@@ -137,6 +276,7 @@ Module 1 has already crossed 25%. Its first audit was completed on July 21, 2026
 ```text
 cloudservs/
   audit.md                       Append-only module audit history
+  changelog.md                   Evidence-based public feature history
   lessons_learned.md             User and Codex post-mortem history
   .github/workflows/static.yml   GitHub Pages build and deployment
   scripts/                       Syllabus validation and status commands
@@ -486,33 +626,32 @@ Restore it on later visits
 
 The site will support light mode, dark mode, system-preference detection, persisted learner choice, accessible contrast, theme-aware diagrams, reduced motion, keyboard navigation, and responsive layouts.
 
-## Planned JavaScript and content stack
+## JavaScript and content stack
 
-The site will use a static-first architecture. Interactive libraries will load only where they improve the learning experience.
+The site uses a static-first architecture. The status column prevents an installed or planned library from being mistaken for a released feature.
 
-| Technology             | Planned responsibility                                                                    |
-| ---------------------- | ----------------------------------------------------------------------------------------- |
-| Astro                  | Static site generation and GitHub Pages output                                            |
-| Starlight              | Accessible curriculum layout, navigation, search integration, and documentation structure |
-| Markdown and MDX       | Lessons with reusable interactive components                                              |
-| Preact                 | Quizzes, flashcards, comparison tools, and focused interactions                           |
-| Pagefind               | Static full-text search and filtering                                                     |
-| Mermaid                | Flow, sequence, state, timeline, and architecture diagrams                                |
-| Markmap                | Interactive Markdown mind maps                                                            |
-| Cytoscape.js           | Service relationship and prerequisite graphs                                              |
-| Lucide                 | Consistent generic interface icons                                                        |
-| Nano Stores            | Small shared learning-state stores                                                        |
-| Nano Stores Persistent | Local progress, bookmarks, and preferences                                                |
-| Vite PWA               | Future offline access after an adapter supports the installed Astro version               |
-| Chart.js               | Selective quantitative visuals with table alternatives                                    |
-| Driver.js              | Optional first-visit guidance                                                             |
-| Expressive Code        | Code examples, command blocks, and styled ASCII visuals                                   |
-| TypeScript             | Typed interactive components and content utilities                                        |
-| Vitest                 | Unit and component testing                                                                |
-| Playwright             | Browser, interaction, responsive, and deployment testing                                  |
-| axe-core               | Automated accessibility checks                                                            |
+| Technology             | Intended responsibility                                      | v1 evidence status                                |
+| ---------------------- | ------------------------------------------------------------ | ------------------------------------------------- |
+| Astro                  | Static generation and GitHub Pages output                    | Active                                            |
+| Starlight              | Curriculum layout, navigation, theme, and search integration | Active                                            |
+| Markdown and MDX       | Lessons with reusable interactive components                 | Active                                            |
+| Preact                 | Focused interactive learning components                      | Active for quizzes, progress, and toolkit         |
+| Pagefind               | Static full-text search                                      | Active for production indexing                    |
+| Mermaid                | Flow and architecture diagrams                               | Active                                            |
+| Markmap                | Interactive Markdown mind maps                               | Active                                            |
+| Cytoscape.js           | Service relationship and prerequisite graphs                 | Installed, no released v1 use                     |
+| Lucide                 | Generic interface icons                                      | Active                                            |
+| Nano Stores Persistent | Local learner state                                          | Active for lesson completion                      |
+| Vite PWA               | Future offline installation                                  | Not installed, deferred for Astro 7 compatibility |
+| Chart.js               | Quantitative visuals with table alternatives                 | Installed, no released v1 use                     |
+| Driver.js              | Optional first-visit guidance                                | Installed, no released v1 use                     |
+| Expressive Code        | Code examples, command blocks, and styled text blocks        | Active through Starlight                          |
+| TypeScript             | Typed components, data, and validation                       | Active                                            |
+| Vitest                 | Unit testing                                                 | Active                                            |
+| Playwright             | Production browser regression testing                        | Active for desktop Chromium                       |
+| axe-core               | Automated accessibility checks                               | Installed, not invoked by the v1 browser suite    |
 
-Libraries will be used generously when they add learning value. Overlapping dependencies will be avoided. Heavy libraries will be loaded only on pages that need them so a text lesson does not pay the performance cost of every visualization tool.
+Libraries will be used generously when they add learning value. Overlapping dependencies will be avoided. Heavy libraries will be loaded only on pages that need them so a text lesson does not pay the performance cost of every visualization tool. Installation alone never counts as a released feature.
 
 The deployment workflow installs Chromium and runs the Playwright UI regression suite before uploading the GitHub Pages artifact. A known shared-layout or interaction regression therefore blocks deployment.
 
@@ -803,9 +942,15 @@ A chunk is complete only after:
 - Reduced-motion review
 - Internal and external link checks
 - GitHub Pages base-path testing
+- Privacy validation against source, dependencies, and generated HTML
+- Browser confirmation that representative pages make no third-party requests
+- Astro CLI telemetry opt-out in local npm workflows and GitHub Actions
 - Copyright verification
 - Em dash scan
 - Documentation update
+- Changelog verification against source, tests, content state, and dependency usage
+- Four-document living-guide synchronization validation
+- Release-only changelog review without routine timestamp churn
 
 ## GitHub Pages deployment model
 
@@ -830,7 +975,7 @@ sequenceDiagram
     end
 ```
 
-The deployed site will not require a private server, database, or server-side runtime. Learning progress will initially remain in the learner's browser.
+The deployed site will not require a private server, database, or server-side runtime. Learning progress remains in the learner's browser and is not transmitted by cloudservs. GitHub Pages still handles the page request and applies GitHub's own documented security logging at the hosting boundary.
 
 ## Copyright
 
