@@ -151,6 +151,11 @@ function validateModuleAudit(
         report('contains an incomplete finding record');
       }
     });
+  } else if (audit.status === 'in-progress') {
+    if (!audit.startedAt || !isIsoDate(audit.startedAt)) {
+      report('is in progress without a valid start date');
+    }
+    if (audit.completedAt) report('is in progress but already has a completion date');
   }
 
   return errors;

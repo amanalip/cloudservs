@@ -1,6 +1,6 @@
 # cloudservs Workflow Router
 
-Last documentation sync: `2026-07-22T17:30:22-04:00`
+Last documentation sync: `2026-07-22T17:37:32-04:00`
 
 This file routes project tasks to detailed procedures in [`playbooks/`](./playbooks/README.md). It is not an installable Codex skill package.
 
@@ -51,6 +51,7 @@ After creation, add it to `playbooks/README.md`, add every relevant trigger to t
 | Add diagrams, icons, themes, layout, or interactions                        | `diagrams-and-ui.md`, `testing-and-accessibility.md`, `privacy.md`                                                                                           |
 | Continue the syllabus                                                       | `syllabus-and-audits.md`, `lesson-authoring.md`, `cloud-fact-checking.md`, `diagrams-and-ui.md`, `testing-and-accessibility.md`, `releases-and-changelog.md` |
 | Reach a 25%, 50%, 75%, or 100% module threshold                             | `syllabus-and-audits.md`, `testing-and-accessibility.md`, `cloud-fact-checking.md`, `releases-and-changelog.md`                                              |
+| Explicitly request QA of content, behavior, readiness, or project quality   | `testing-and-accessibility.md`, `releases-and-changelog.md`, plus every playbook governing the QA scope                                                      |
 | Add or change search                                                        | `lesson-authoring.md`, `testing-and-accessibility.md`, `privacy.md`                                                                                          |
 | Add a dependency, browser API, storage key, remote asset, or hosting change | `privacy.md`, `testing-and-accessibility.md`, `repository-safety.md`                                                                                         |
 | Fix a website bug                                                           | `testing-and-accessibility.md`, `releases-and-changelog.md`, plus the domain playbook                                                                        |
@@ -64,51 +65,14 @@ All paths are relative to `playbooks/`.
 
 ## Common workflow bundles
 
-### Continue syllabus
-
-Read:
-
-1. `playbooks/syllabus-and-audits.md`
-2. `playbooks/lesson-authoring.md`
-3. `playbooks/cloud-fact-checking.md`
-4. `playbooks/diagrams-and-ui.md`
-5. `playbooks/testing-and-accessibility.md`
-6. `playbooks/releases-and-changelog.md`
-
-Start with:
+The routing table is authoritative. For syllabus continuation, begin with:
 
 ```text
 npm run syllabus:validate
 npm run syllabus:status
 ```
 
-Resume the reported lesson and `nextStep`. Stop for a due module audit. Update the changelog when validated learner-facing syllabus content is added.
-
-### Resolve a website bug
-
-1. Reproduce the defect.
-2. Read the domain playbook and testing playbook.
-3. Fix the shared cause rather than patching one page.
-4. Add a focused regression or documented reproducible check.
-5. Run the full relevant quality gate.
-6. Record the fix under `Fixed` in the next changelog version.
-
-### Confirm implementation status
-
-1. Inspect `git status --short`.
-2. Locate implementation evidence with `rg` and open the code.
-3. Prove product reachability.
-4. Run or locate relevant behavior evidence.
-5. State a defined status and its coverage boundary.
-6. Use `not yet verified` when evidence is insufficient.
-
-### Add a dependency or browser capability
-
-1. Read privacy, testing, and repository-safety playbooks.
-2. Review purpose, compatibility, license, maintenance, bundle cost, and privacy.
-3. Distinguish installation from active product use.
-4. Add focused tests and run privacy validation.
-5. Do not claim a learner feature until a real page uses it and behavior is verified.
+Resume the reported lesson and `nextStep`, or complete the reported blocking audit. Detailed bug, implementation-status, dependency, privacy, release, and QA procedures remain in their routed playbooks rather than being duplicated here.
 
 ## Command reference
 
@@ -118,6 +82,7 @@ npm run test                Run unit tests
 npm run test:e2e            Build and run browser regressions
 npm run syllabus:validate   Validate curriculum and audits
 npm run syllabus:status     Report progress and next work
+npm run qa:validate         Validate milestone and explicit QA history
 npm run docs:validate       Validate living-document synchronization
 npm run guidance:validate   Validate routing and critical guidance
 npm run privacy:validate    Validate zero-analytics boundaries
@@ -133,6 +98,7 @@ npm run format:check        Check formatting
 - Verify every completion claim against current evidence.
 - Run checks proportionate to risk.
 - Update the syllabus ledger and audits when applicable.
+- Append `QAlogs.md` for a completed module checkpoint or explicit QA request.
 - Update `changelog.md` for syllabus additions, features, and verified website fixes.
 - Update any playbook whose procedure changed.
 - Synchronize the four living documents.

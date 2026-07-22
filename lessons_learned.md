@@ -4,7 +4,7 @@
 
 ## Document status
 
-- Last documentation sync: `2026-07-22T17:30:22-04:00`
+- Last documentation sync: `2026-07-22T17:37:32-04:00`
 - Current format version: 2
 - Update policy: Required at the end of every project work session
 - Historical note: Aman found version 1 too shallow. Version 2 replaces that first draft with a fuller retrospective. Future historical entries must be appended rather than silently removed.
@@ -51,6 +51,7 @@ Entries are listed in file order so the links match the append-only record. The 
 - [2026-07-22 17:18:08 | A growing lessons archive needs a validated navigation index](#2026-07-22-171808-edt--a-growing-lessons-archive-needs-a-validated-navigation-index)
 - [2026-07-22 17:25:14 | The first retrospective needed a connected beginner narrative](#2026-07-22-172514-edt--the-first-retrospective-needed-a-connected-beginner-narrative)
 - [2026-07-22 17:30:22 | Reliability is not the same as a promise of infallibility](#2026-07-22-173022-edt--reliability-is-not-the-same-as-a-promise-of-infallibility)
+- [2026-07-22 17:37:32 | QA history needs a different record from audits and releases](#2026-07-22-173732-edt--qa-history-needs-a-different-record-from-audits-and-releases)
 
 <!-- LESSONS_TOC_END -->
 
@@ -91,6 +92,7 @@ These files have related but different jobs. Keeping their boundaries clear prev
 | ---------------------- | -------------------------------------------------------------- | ---------------------------------------------------------------------- |
 | `src/data/syllabus.ts` | What curriculum work is done, and what comes next?             | Module 1 has 30% topic coverage and records the next lesson action.    |
 | `audit.md`             | What was checked at a formal quality checkpoint?               | The Module 1 25% review checked facts, visuals, tests, and open gaps.  |
+| `QAlogs.md`            | What QA ran, what passed, what changed, and what risk remains? | An explicit continuation QA corrected metadata and audit blocking.     |
 | `changelog.md`         | Which features were actually released, and what was not?       | v1 has diagram zoom, while advanced search filters remain planned.     |
 | `lessons_learned.md`   | What do we understand now, and what will we do differently?    | A CSS declaration is not proof that cards render at equal heights.     |
 | `AGENTS.md`            | What rules must every future contributor follow?               | Every substantial lesson follows the agreed teaching sequence.         |
@@ -3185,3 +3187,113 @@ The project belongs in the second category.
 ### Changelog decision
 
 This readiness audit and communication correction do not add learner-facing content, a website feature, or a verified website bug fix. `changelog.md` remains unchanged.
+
+## 2026-07-22 17:37:32 EDT | QA history needs a different record from audits and releases
+
+### Prompt
+
+Aman asked Codex to correct two syllabus-continuation hardening findings and requested a detailed `QAlogs.md` that updates at every 25%, 50%, 75%, and 100% module checkpoint or whenever he explicitly asks for content QA.
+
+### Lesson learned by Aman
+
+Several project records can all mention quality without serving the same purpose:
+
+```text
+Syllabus ledger
+  Exact curriculum state and next action
+
+Audit log
+  Formal conclusion at a module coverage checkpoint
+
+QA log
+  Detailed execution evidence for checkpoint or explicitly requested QA
+
+Lessons learned
+  Reflection and changed future practice
+
+Changelog
+  Public learner-facing release history
+```
+
+Keeping these responsibilities separate prevents two problems. First, a public changelog does not become crowded with internal test runs. Second, a formal module audit does not have to absorb every explicit QA request that occurs between coverage thresholds.
+
+At a 25%, 50%, 75%, or 100% checkpoint, both `audit.md` and `QAlogs.md` update:
+
+```text
+Coverage checkpoint reached
+          |
+          +--> audit.md: formal module conclusion
+          |
+          +--> QAlogs.md: detailed checks, findings, actions, and results
+```
+
+When Aman asks for QA between checkpoints, only `QAlogs.md` is required unless the review also changes learner-facing release history or reaches a formal module threshold.
+
+### Lesson learned by Codex
+
+The readiness audit correctly identified two non-blocking weaknesses. Once Aman authorized fixes, Codex needed to convert each observation into deterministic protection rather than changing only the current files.
+
+The metadata correction now works as a truthfulness invariant:
+
+```text
+Lesson unfinished
+      |
+      v
+reviewStatus cannot be verified
+
+Lesson complete
+      |
+      v
+all topics + all 25 requirements + source + date
+      |
+      v
+reviewStatus must be verified
+```
+
+The audit-continuation correction now works as a workflow barrier:
+
+```text
+Topic threshold reached
+      |
+      v
+Audit planned or in progress?
+      | yes
+      v
+No next lesson selected
+Status command names audit as next action
+      |
+      v
+Lesson continuation resumes only after audit is complete
+```
+
+The first QA log entry was backfilled from the existing authoritative Module 1 25% audit rather than reconstructed from memory. The second entry records this explicit QA request and the exact source and validation evidence.
+
+### Permanent safeguards
+
+- Unfinished source lessons cannot claim `reviewStatus: verified`.
+- Complete ledger lessons must use `reviewStatus: verified`.
+- Reached planned or in-progress module audits suppress lesson selection.
+- In-progress audits require a valid start date and cannot already have a completion date.
+- Every completed module audit requires matching `audit.md` and `QAlogs.md` markers.
+- Explicit QA requests require a detailed `QAlogs.md` entry.
+- QA-log validation runs independently and as part of the production build.
+- Unit tests cover metadata truthfulness, audit blocking, missing milestone QA entries, and duplicate QA markers.
+- The QA closeout reviews guidance size and removes duplicated router prose before the 75% early-warning point is crossed.
+
+### Changelog decision
+
+These changes harden internal curriculum workflow and quality records. They do not add learner-facing syllabus content, a website feature, or a verified website bug fix. `changelog.md` remains unchanged.
+
+### Validation evidence
+
+- Unit tests passed: 16 tests across 3 files.
+- Syllabus validation passed: 93 ordered lessons across 9 modules.
+- QA-log validation passed with the Module 1 25% and explicit-QA entries.
+- Astro checked 34 files with zero errors, warnings, or hints.
+- The production build generated 7 pages and the Pagefind index.
+- Privacy validation passed.
+- All 9 desktop Chromium browser regressions passed.
+- Formatting, whitespace, em dash, and changelog-exclusion checks passed.
+- Guidance remained within its conservative limits after `SKILLS.md` duplication was reduced from 9,208 to 8,083 bytes.
+- The first browser attempt was blocked from binding a local port by the sandbox; the authorized local-server rerun passed.
+- One read-only search had an unmatched-backtick quoting error. Writes stopped, `git status --short` showed no unexpected file, and the search was safely retried.

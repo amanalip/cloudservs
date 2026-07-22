@@ -112,7 +112,7 @@ After every work session:
 11. If no reusable lesson emerged, record that the review occurred.
 12. Preserve prior entries and add dated amendments rather than rewriting history.
 
-`audit.md` records formal checkpoint results. `src/data/syllabus.ts` records exact curriculum state. `lessons_learned.md` records reflection and changed practice. `changelog.md` records public product history.
+`audit.md` records formal checkpoint conclusions. `QAlogs.md` records detailed milestone and explicitly requested QA execution. `src/data/syllabus.ts` records exact curriculum state. `lessons_learned.md` records reflection and changed practice. `changelog.md` records public product history.
 
 ## Documentation closeout
 
@@ -121,4 +121,5 @@ After every work session:
 - Update `playbooks/README.md` whenever routing or traceability changes.
 - Update `changelog.md` only when its product or historical-evidence triggers apply.
 - Update `audit.md` only for a formal module audit or dated amendment.
+- Update `QAlogs.md` for every completed module checkpoint and every explicit QA request.
 - Run `npm run docs:validate`, `npm run guidance:validate`, formatting, and relevant project checks.

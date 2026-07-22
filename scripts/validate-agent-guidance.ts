@@ -63,6 +63,7 @@ const criticalRuleIds = [
   'CHANGE-03',
   'DOCS-01',
   'DOCS-04',
+  'QA-01',
   'SAFE-02',
 ] as const;
 
@@ -118,6 +119,7 @@ const preservedConcepts = [
   { label: 'syllabus source of truth', needle: 'src/data/syllabus.ts' },
   { label: 'audit thresholds', needle: '25%, 50%, 75%, and 100%' },
   { label: 'audit record', needle: 'audit.md' },
+  { label: 'QA execution record', needle: 'QAlogs.md' },
   {
     label: 'zero analytics',
     needle: 'Never collect, transmit, sell, profile, or analyze learner data',

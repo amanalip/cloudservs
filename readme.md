@@ -1,6 +1,6 @@
 # cloudservs
 
-Last documentation sync: `2026-07-22T17:30:22-04:00`
+Last documentation sync: `2026-07-22T17:37:32-04:00`
 
 > Learn cloud concepts once, then understand how AWS, Microsoft Azure, and Google Cloud implement them.
 
@@ -55,6 +55,7 @@ Development is active. The first implementation chunk is available and includes:
 - A validated 93-lesson syllabus ledger with durable checkpoints and next-work reporting
 - Enforced whole-module quality audits at 25%, 50%, 75%, and 100% topic coverage
 - An append-only, timestamped `audit.md` history for completed module checkpoints
+- A detailed `QAlogs.md` history for every completed module checkpoint and explicitly requested QA review
 - A detailed, append-only `lessons_learned.md` post-mortem with beginner explanations, diagrams, evidence, limitations, and prevention steps
 - A detailed `changelog.md` that separates released features from planned, deferred, and installed-but-unused capabilities
 - Two detailed, source-backed foundation lesson drafts
@@ -69,6 +70,7 @@ Core repository documents:
 - `SKILLS.md` is a compact task router that tells contributors which detailed playbooks must be read.
 - `playbooks/` contains eight focused procedures plus a traceability index mapping every former root-guide section and workflow to its new location.
 - `audit.md` preserves timestamped module-audit outcomes, evidence, corrections, validation results, and next actions.
+- `QAlogs.md` records detailed QA scope, outcomes, findings, actions, evidence, validation, and remaining risks for module checkpoints and explicit QA requests.
 - `lessons_learned.md` preserves questions, corrections, successful ideas, limitations, visual causal models, and future practices learned by Aman and Codex. It is updated during every work-session closeout, including a short record when no new reusable lesson emerges.
 - `changelog.md` records public versions, learner-facing syllabus additions, implemented features, verified website fixes, quality evidence, technology status, and known limitations. It must be updated in the same change whenever one of those qualifying product changes is completed. It is not edited for routine questions or documentation-only clarification.
 - `readme.md` describes the product vision, learning experience, architecture, curriculum, and delivery plan.
@@ -112,7 +114,7 @@ The contract also requires independent technical judgment. A contributor or agen
 | Visuals               | ASCII, Mermaid, Markmap, and provider comparisons              | Released Cytoscape graphs and Chart.js visualizations         |
 | Learning interactions | Knowledge checks, hints, explanations, and retry               | Flashcard component and larger quiz system                    |
 | Accessibility checks  | Semantic controls, keyboard behavior, reduced motion, contrast | axe-core integration and multi-browser assistive review       |
-| Browser tests         | 8 desktop Chromium regressions                                 | Dedicated mobile, Firefox, and WebKit projects                |
+| Browser tests         | 9 desktop Chromium regressions                                 | Dedicated mobile, Firefox, and WebKit projects                |
 | Keyboard search label | Starlight search shortcut behavior                             | Repository implementation of a platform-aware Command K label |
 | Offline use           | Static site delivery                                           | Installable PWA, deferred for Astro 7 compatibility           |
 | Optional libraries    | Packages installed                                             | Chart.js, Cytoscape.js, and Driver.js learner-facing use      |
@@ -161,6 +163,7 @@ Before publishing a chunk, run:
 npm test
 npm run syllabus:validate
 npm run syllabus:status
+npm run qa:validate
 npm run docs:validate
 npm run privacy:validate
 npm run build
@@ -168,7 +171,7 @@ npm run test:e2e
 npm run format:check
 ```
 
-The production build validates the syllabus and required documentation synchronization, generates static HTML, Pagefind's browser-side search index, a sitemap, and the GitHub Pages artifact in `dist/`, then scans that artifact for privacy regressions.
+The production build validates the syllabus, QA history, and required documentation synchronization, generates static HTML, Pagefind's browser-side search index, a sitemap, and the GitHub Pages artifact in `dist/`, then scans that artifact for privacy regressions.
 
 ## Privacy: no learner analytics or tracking
 
@@ -282,9 +285,10 @@ Use these commands at the beginning and end of a curriculum session:
 ```bash
 npm run syllabus:validate
 npm run syllabus:status
+npm run qa:validate
 ```
 
-The report deliberately separates topic coverage from complete lesson quality. It also confirms the audit log and shows the completion date for every finished checkpoint. A published lesson may contain verified claims while still needing glossary, flashcard, architecture, accessibility, or review work. File existence and navigation visibility never count as completion by themselves.
+The report deliberately separates topic coverage from complete lesson quality. It also confirms the audit log and shows the completion date for every finished checkpoint. A draft lesson may contain source-reviewed claims while still needing glossary, flashcard, architecture, accessibility, or review work. File existence and navigation visibility never count as completion by themselves.
 
 ### Module quality checkpoints
 
@@ -297,7 +301,7 @@ Every module carries four audit records:
             Audit 1      Audit 2      Audit 3       Final audit
 ```
 
-Reaching a threshold blocks syllabus validation until the audit is complete. Each audit checks syllabus coverage, factual accuracy, primary-source quality, beginner pedagogy, lesson sequence, provider comparisons, visual quality, accessibility, navigation, search, browser regressions, terminology, and consistency. Completed audits cannot contain open findings. They must also have a matching timestamped entry in `audit.md`, or validation and the production build fail.
+Reaching a threshold pauses lesson continuation until the audit is complete. Each audit checks syllabus coverage, factual accuracy, primary-source quality, beginner pedagogy, lesson sequence, provider comparisons, visual quality, accessibility, navigation, search, browser regressions, terminology, and consistency. Completed audits cannot contain open findings. They must also have matching timestamped entries in `audit.md` and `QAlogs.md`, or validation and the production build fail.
 
 Module 1 has already crossed 25%. Its first audit was completed on July 21, 2026. The review confirmed the current foundation claims against NIST and official AWS, Microsoft, and Google Cloud sources, corrected premature completion wording, installed durable tracking, and converted unfinished lesson sections into explicit next steps.
 
@@ -309,6 +313,7 @@ cloudservs/
   SKILLS.md                      Compact task-to-playbook router
   playbooks/                     Eight detailed workflows and traceability index
   audit.md                       Append-only module audit history
+  QAlogs.md                      Milestone and explicitly requested QA history
   changelog.md                   Evidence-based public feature history
   lessons_learned.md             User and Codex post-mortem history
   .github/workflows/static.yml   GitHub Pages build and deployment
@@ -977,6 +982,7 @@ A chunk is complete only after:
 - GitHub Pages base-path testing
 - Privacy validation against source, dependencies, and generated HTML
 - Guidance validation for root-guide size, routing, critical rules, traceability, and links
+- QA-log validation for every completed module checkpoint and explicitly requested QA record
 - Browser confirmation that representative pages make no third-party requests
 - Astro CLI telemetry opt-out in local npm workflows and GitHub Actions
 - Copyright verification

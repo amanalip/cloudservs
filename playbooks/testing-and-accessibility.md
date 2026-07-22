@@ -49,8 +49,9 @@ The evaluated Vite PWA Astro adapter does not declare Astro 7 compatibility. Do 
 12. Scan authored prose and comments for em dashes.
 13. Verify `© 2026 Aman Ali Pogaku`.
 14. Run syllabus, documentation, guidance, and privacy validators.
-15. Confirm no reached module audit has an open finding or missing `audit.md` entry.
-16. Update the four living documents and the changelog when its product-change triggers apply.
+15. Run QA-log validation and confirm every completed module audit has matching `audit.md` and `QAlogs.md` entries.
+16. Append `QAlogs.md` when the work is a module checkpoint or Aman explicitly requested QA.
+17. Update the four living documents and the changelog when its product-change triggers apply.
 
 ## Current commands
 
@@ -60,6 +61,7 @@ npm run test                Run unit tests
 npm run test:e2e            Build and run browser regressions
 npm run syllabus:validate   Validate the curriculum ledger and audit links
 npm run syllabus:status     Report curriculum progress and next work
+npm run qa:validate         Validate milestone and explicit QA history
 npm run docs:validate       Validate living-document timestamps
 npm run guidance:validate   Validate the guidance router and critical rules
 npm run privacy:validate    Reject collection APIs and remote resources
@@ -86,6 +88,23 @@ The suite preserves:
 - representative learner pages with no third-party requests
 
 Add a focused regression whenever a website defect is resolved. A CSS declaration or implementation intention is not browser evidence.
+
+## QA execution log
+
+Use `QAlogs.md` for detailed quality-execution evidence when a module completes a 25%, 50%, 75%, or 100% checkpoint or when Aman explicitly requests QA.
+
+Each entry records:
+
+- exact timestamp and trigger
+- outcome as `Pass`, `Conditional pass`, or `Fail`
+- scope and exclusions
+- findings with severity and disposition
+- corrective actions
+- evidence inspected
+- exact validation results
+- remaining risks and next action
+
+`audit.md` records the formal curriculum-checkpoint conclusion. `QAlogs.md` records the detailed QA execution. One module checkpoint updates both. An explicit QA request updates `QAlogs.md` without creating a module audit unless a coverage threshold is actually reached.
 
 ## Accessibility standard
 

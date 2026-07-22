@@ -122,9 +122,10 @@ At each checkpoint:
 12. Preserve completed findings and resolutions so later checkpoints can detect recurrence.
 13. Record evidence, findings, resolutions, summary, and completion date in the ledger.
 14. Append a timestamped response-style entry to `audit.md` in the same change.
-15. Keep the stable audit marker directly above each entry so validation can match the log to the ledger. Include scope, outcome, findings, actions, sources, validation results, and next checkpoint.
-16. Preserve older audit entries and add dated amendments instead of silently rewriting history.
-17. Run `npm run syllabus:validate` and confirm the log entry matches the ledger.
+15. Append a detailed matching `QAlogs.md` entry with the stable module-and-threshold QA marker.
+16. Keep stable markers directly above audit and QA entries so validation can match both logs to the ledger.
+17. Preserve older entries and add dated amendments instead of silently rewriting history.
+18. Run `npm run syllabus:validate` and `npm run qa:validate`, then confirm both logs match the ledger.
 
 ## Curriculum scope
 

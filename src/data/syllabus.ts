@@ -980,16 +980,47 @@ export function summarizeModule(module: SyllabusModule): SyllabusModuleSummary {
   };
 }
 
-/** Choose the first unfinished lesson in curriculum order whose prerequisites are complete. */
-export function getNextSyllabusLesson(): SyllabusLesson | undefined {
+/** A reached audit blocks lesson expansion until its complete record closes the checkpoint. */
+export interface BlockingModuleAudit {
+  module: SyllabusModule;
+  audit: ModuleAudit;
+  topicCoveragePercent: number;
+}
+
+/** Find the earliest reached checkpoint that is still planned or in progress. */
+export function getBlockingModuleAudit(
+  modules: SyllabusModule[] = syllabusModules,
+): BlockingModuleAudit | undefined {
+  for (const module of modules) {
+    const topicCoveragePercent = summarizeModule(module).topicCoveragePercent;
+    const audit = module.audits.find(
+      (candidate) => topicCoveragePercent >= candidate.threshold && candidate.status !== 'complete',
+    );
+    if (audit) return { module, audit, topicCoveragePercent };
+  }
+  return undefined;
+}
+
+/** Select the next lesson only when no reached module checkpoint remains open. */
+export function selectNextSyllabusLesson(
+  lessons: SyllabusLesson[],
+  modules: SyllabusModule[],
+): SyllabusLesson | undefined {
+  if (getBlockingModuleAudit(modules)) return undefined;
+
   const completeIds = new Set(
-    syllabusLessons.filter((lesson) => lesson.status === 'complete').map((lesson) => lesson.id),
+    lessons.filter((lesson) => lesson.status === 'complete').map((lesson) => lesson.id),
   );
 
-  return syllabusLessons.find(
+  return lessons.find(
     (lesson) =>
       lesson.status !== 'complete' &&
       lesson.status !== 'blocked' &&
       lesson.prerequisites.every((prerequisite) => completeIds.has(prerequisite)),
   );
+}
+
+/** Choose from the authoritative ledger after applying prerequisites and audit blockers. */
+export function getNextSyllabusLesson(): SyllabusLesson | undefined {
+  return selectNextSyllabusLesson(syllabusLessons, syllabusModules);
 }

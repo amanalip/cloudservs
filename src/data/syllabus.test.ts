@@ -3,9 +3,12 @@ import { readFileSync } from 'node:fs';
 import { describe, expect, it } from 'vitest';
 import { validateAuditLog } from './audit-validation';
 import {
+  getBlockingModuleAudit,
   getNextSyllabusLesson,
   lessonRequirements,
+  selectNextSyllabusLesson,
   summarizeModule,
+  syllabusLessons,
   syllabusModules,
 } from './syllabus';
 import { validateSyllabus } from './syllabus-validation';
@@ -52,6 +55,26 @@ describe('syllabus ledger', () => {
 
   it('resumes the earliest unfinished and unblocked lesson', () => {
     expect(getNextSyllabusLesson()?.id).toBe('m1-01-what-is-cloud-computing');
+  });
+
+  it('pauses lesson continuation while a reached module audit is in progress', () => {
+    const moduleUnderAudit = structuredClone(syllabusModules[0]);
+    moduleUnderAudit.audits[0].status = 'in-progress';
+    delete moduleUnderAudit.audits[0].completedAt;
+
+    expect(getBlockingModuleAudit([moduleUnderAudit])?.audit.threshold).toBe(25);
+    expect(selectNextSyllabusLesson(moduleUnderAudit.lessons, [moduleUnderAudit])).toBeUndefined();
+  });
+
+  it('keeps unfinished lesson frontmatter from claiming verified status', () => {
+    const unfinishedSources = syllabusLessons.filter(
+      (lesson) => lesson.status !== 'complete' && lesson.sourcePath,
+    );
+
+    unfinishedSources.forEach((lesson) => {
+      const source = readFileSync(lesson.sourcePath!, 'utf8');
+      expect(source).not.toMatch(/^reviewStatus:\s*verified\s*$/m);
+    });
   });
 
   it('keeps the completion checklist broad enough for the teaching model', () => {
