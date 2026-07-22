@@ -4,7 +4,7 @@
 
 ## Document status
 
-- Last documentation sync: `2026-07-22T14:53:30-04:00`
+- Last documentation sync: `2026-07-22T15:07:30-04:00`
 - Current format version: 2
 - Update policy: Required at the end of every project work session
 - Historical note: Aman found version 1 too shallow. Version 2 replaces that first draft with a fuller retrospective. Future historical entries must be appended rather than silently removed.
@@ -1211,3 +1211,88 @@ Having a `Fixed` heading in an existing release does not prove that future bug f
 - Updated `changelog.md` governance because the existing rule was incomplete.
 - Updated `AGENTS.md`, `SKILLS.md`, and `readme.md` with the same three qualifying triggers.
 - Kept the public release history at v1 because this session changes policy and documentation, not learner-facing syllabus content, website behavior, or a resolved website bug.
+
+---
+
+## 2026-07-22 15:07:30 EDT | Accidental shell-created file and safe recovery
+
+- Recorded at: `2026-07-22T15:07:30-04:00`
+- Prompt: Aman noticed an unusual file named `]+`, asked whether it was accidental, then authorized its deletion with the reminder that learning matters more than blame.
+- Evidence: The file was a zero-byte regular file created at `2026-07-22 14:50:23 EDT`. Git history showed that it entered commit `ddf4587` at `2026-07-22 14:57:55 EDT`. Its creation time matched a failed shell inspection command whose regular-expression quoting was malformed.
+
+### What happened
+
+The failed command tried to search generated HTML with a complicated expression containing shell-sensitive characters. Part of the expression was not protected correctly. The shell interpreted a `>` character as output redirection and created a file from the characters that followed it.
+
+```text
+What was intended
+-----------------
+Search HTML for remote embedded resources
+
+What the shell interpreted
+--------------------------
+Run part of the search command
+          +
+Redirect output into a file named ]+
+
+Result
+------
+An empty, unrelated file appeared in the repository root
+```
+
+The file contained no code or data and was not referenced by the application. It became tracked only because a later broad commit included the working tree contents.
+
+### Lesson learned by Aman
+
+An unfamiliar filename is worth investigating before deleting. It may be generated output, a tool artifact, a legitimate special-purpose file, or an accidental shell side effect. Asking first protected the repository history and produced enough evidence to delete it confidently.
+
+Aman's response also reinforced the project's non-blame approach. The goal of a post-mortem is not to make ordinary mistakes feel dangerous. It is to make the next occurrence easier to detect, explain, and prevent.
+
+### Lesson learned by Codex
+
+Codex must treat a shell syntax, quoting, or redirection error as a possible filesystem mutation. A command can fail at its intended task and still create a file before it exits. Continuing without checking `git status` allowed the accidental file to remain and later enter a commit.
+
+The deeper error was therefore two-part:
+
+1. The search expression used fragile quoting.
+2. The working tree was not inspected immediately after the shell reported an error.
+
+### Prevention model
+
+```text
+Shell command reports an error
+             |
+             v
+Could parsing or redirection have changed files?
+             |
+          assume yes
+             |
+             v
+Run git status and inspect unusual paths
+             |
+       +-----+-----+
+       |           |
+     clean      unexpected file
+       |           |
+       v           v
+   continue     inspect and explain
+                   |
+                   v
+             remove only with authority
+```
+
+### Preventive actions adopted
+
+- Removed the exact tracked `]+` path after explicit authorization.
+- Added shell quoting and immediate post-error Git inspection rules to `AGENTS.md`.
+- Added a repeatable accidental-file recovery workflow to `SKILLS.md`.
+- Added a beginner-friendly recovery flow to `readme.md`.
+- Required inspection of file size, timestamps, type, Git tracking state, and history before deletion.
+- Required exact-path deletion without wildcards or broad recursive commands.
+- Required future command errors involving quoting or redirection to trigger an immediate working-tree inspection.
+
+### Validation and changelog boundary
+
+The deletion must be visible as one exact tracked-file removal in Git status. Documentation synchronization, formatting, whitespace, privacy, and relevant repository checks must pass afterward.
+
+This was repository hygiene cleanup. It did not add learner-facing syllabus content, add a feature, or resolve a website bug. Therefore it does not create v2 and does not require a changelog change.

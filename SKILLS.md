@@ -1,6 +1,6 @@
 # cloudservs Project Skills and Workflows
 
-Last documentation sync: `2026-07-22T14:53:30-04:00`
+Last documentation sync: `2026-07-22T15:07:30-04:00`
 
 This file defines reusable project workflows for building and maintaining `cloudservs`. It is a project guide, not an installable Codex skill package.
 
@@ -649,3 +649,47 @@ Stop the release when any of these appear without an explicit owner-approved pol
 - CLI telemetry that is not explicitly disabled in project and deployment commands
 
 Local preference storage is not analytics collection when it remains in the learner's browser, contains no sensitive information, and is never transmitted. It must still be documented and re-audited whenever storage behavior changes.
+
+## 17. Recover from an accidental shell-created file
+
+### Goal
+
+Identify, explain, and safely correct an unexpected repository file without deleting legitimate user work or hiding the cause.
+
+### Why this can happen
+
+Shell characters have meanings beyond ordinary text. An unquoted `>` can redirect output into a file. A malformed command can therefore create an empty file whose name comes from the remaining characters in the command.
+
+```text
+Intended search expression
+          |
+          v
+Shell sees an unquoted redirection character
+          |
+          v
+Output is redirected into an unintended filename
+          |
+          v
+Unexpected empty file appears
+```
+
+### Workflow
+
+1. Stop after the command error instead of running more write operations.
+2. Run `git status --short` to identify unexpected tracked, modified, or untracked paths.
+3. Use `stat`, `file`, `git ls-files`, and `git log -- <path>` to determine the file's type, size, timestamps, tracking state, and history.
+4. Compare its creation time with the failed command and inspect the command's quoting before attributing a cause.
+5. Tell the owner what happened, including whether the file is empty, used by the application, tracked, or already committed.
+6. Do not delete it until deletion is clearly authorized.
+7. Delete only the exact confirmed path. Do not use a wildcard, unresolved variable, or recursive command.
+8. Run `git status --short` and repository validation after deletion.
+9. Add the reusable cause and prevention practice to `lessons_learned.md`.
+10. Update the changelog only if the cleanup qualifies under its syllabus, feature, or resolved website-bug triggers. Repository-only cleanup does not create a release.
+
+### Prevention checklist
+
+- Keep shell searches short and readable.
+- Put regular expressions inside a single, correctly quoted argument.
+- Avoid mixing several quote styles when a simpler command can answer the question.
+- Treat a shell parse or redirection error as a signal to inspect the working tree immediately.
+- Use `apply_patch` for repository file deletion so the exact path is visible in the change.

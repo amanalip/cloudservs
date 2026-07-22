@@ -1,6 +1,6 @@
 # cloudservs Agent Guide
 
-Last documentation sync: `2026-07-22T14:53:30-04:00`
+Last documentation sync: `2026-07-22T15:07:30-04:00`
 
 ## Purpose
 
@@ -489,3 +489,8 @@ Before calling a change complete:
 - Keep assets optimized and source attribution recorded where required.
 - Never place secrets or private credentials in client code, lesson content, examples, or repository history.
 - Remember that all GitHub Pages code and data delivered to the browser are public.
+- Quote shell regular expressions and special characters so `<`, `>`, `|`, brackets, wildcards, and redirection operators reach the intended command rather than the shell parser.
+- Prefer simple, separately testable search commands over dense expressions with fragile nested quoting.
+- After any shell command reports a quoting, redirection, path, or parse error, immediately run `git status --short` and inspect newly created files before continuing.
+- Treat an unexpected empty file or unusual filename as possible command side effect. Inspect its size, timestamps, Git state, and originating command before deciding whether to remove it.
+- Never hide an accidental repository change. Explain its cause, remove it safely when authorized, and record a reusable prevention rule.

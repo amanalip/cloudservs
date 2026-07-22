@@ -1,6 +1,6 @@
 # cloudservs
 
-Last documentation sync: `2026-07-22T14:53:30-04:00`
+Last documentation sync: `2026-07-22T15:07:30-04:00`
 
 > Learn cloud concepts once, then understand how AWS, Microsoft Azure, and Google Cloud implement them.
 
@@ -976,6 +976,35 @@ sequenceDiagram
 ```
 
 The deployed site will not require a private server, database, or server-side runtime. Learning progress remains in the learner's browser and is not transmitted by cloudservs. GitHub Pages still handles the page request and applies GitHub's own documented security logging at the hosting boundary.
+
+## Repository safety and accidental-file recovery
+
+Project commands must preserve user work and make accidental side effects visible. Shell searches use careful quoting because characters such as `>`, `<`, `|`, brackets, and wildcards can be interpreted by the shell instead of passed to the search program.
+
+If a command reports a quoting, parsing, redirection, or path error:
+
+```text
+Command error
+     |
+     v
+Inspect Git status immediately
+     |
+     v
+Inspect unexpected path, size, timestamp, and history
+     |
+     v
+Explain the cause and ask before deletion
+     |
+     v
+Remove only the confirmed path
+     |
+     v
+Validate and record the reusable lesson
+```
+
+An accidental empty file named `]+` was created on July 22, 2026 when a malformed inspection command allowed the shell to interpret part of a regular expression as output redirection. It was not used by the website. After its origin and Git history were verified, it was removed with the owner's authorization. The incident is preserved in `lessons_learned.md` so future contributors understand both the cause and the safer recovery process.
+
+This repository-only cleanup does not create a changelog release. The changelog is reserved for validated learner-facing syllabus additions, features, and resolved website bugs.
 
 ## Copyright
 
