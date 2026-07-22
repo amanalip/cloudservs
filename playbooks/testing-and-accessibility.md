@@ -89,6 +89,29 @@ The suite preserves:
 
 Add a focused regression whenever a website defect is resolved. A CSS declaration or implementation intention is not browser evidence.
 
+## Website defect workflow
+
+Use this sequence for every reported website defect:
+
+1. Reproduce the defect on the affected page, viewport, theme, and browser branch before editing when the environment permits it.
+2. Trace the defect to its shared component, style, utility, or data path instead of assuming the visible page is the cause.
+3. Fix the shared cause when several pages use the affected behavior. Do not add a one-page exception unless the page is intentionally different and the reason is documented.
+4. Add a focused automated regression, or record a repeatable manual check when automation cannot represent the behavior reliably.
+5. Run the full quality gate relevant to the changed behavior, including representative pages that share the corrected code.
+6. Record the verified learner-facing fix under `Fixed` in the next changelog version.
+
+This workflow protects later curriculum pages because a correction to a reusable learning component is verified at the component boundary and on representative rendered pages.
+
+## Dependency and browser-capability workflow
+
+Before adding a package or browser capability:
+
+1. Read `privacy.md` and `repository-safety.md` together with this playbook.
+2. Review its purpose, compatibility, maintenance health, license, bundle impact, privacy behavior, and security exposure.
+3. Distinguish package installation from active product use by tracing an import or browser API to a real page.
+4. Add focused tests for the reachable behavior and run privacy validation plus the relevant release checks.
+5. Do not claim a learner-facing feature until a real page uses it and current behavior evidence passes.
+
 ## QA execution log
 
 Use `QAlogs.md` for detailed quality-execution evidence when a module completes a 25%, 50%, 75%, or 100% checkpoint or when Aman explicitly requests QA.

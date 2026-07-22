@@ -193,3 +193,59 @@ Both identified inconsistencies were corrected in source and protected with auto
 ### Remaining risks and next action
 
 The continuation safeguards are ready. The existing JavaScript chunk-size warning remains a separate performance risk and should be reviewed before adding another large client-side library. Dedicated mobile, Firefox, and WebKit browser projects also remain planned.
+
+<!-- qa:explicit-2026-07-22-174822-edt -->
+
+## 2026-07-22 17:48:22 EDT | Explicit QA | SKILLS compression preservation
+
+- Recorded at: `2026-07-22T17:48:22-04:00`
+- Trigger: Aman explicitly requested a sanity check that the `SKILLS.md` reduction preserved every route and procedure
+- Outcome: Pass
+
+### Scope
+
+The review compared the pre-compression and current `SKILLS.md`, checked every removed workflow step against its routed playbooks, verified router destinations and commands, and reran the documentation guidance checks. It did not retest learner-facing browser behavior because the correction affects only internal workflow documentation.
+
+### Result
+
+All task routes were preserved. Most removed procedures were already present in authoritative playbooks, but the first semantic comparison found two missing bug-resolution requirements. Those requirements were restored in `playbooks/testing-and-accessibility.md`, and the dependency workflow was consolidated there for clearer future traceability. The compact `SKILLS.md` did not need its duplicated workflow block restored.
+
+### Findings
+
+| Severity | Finding                                                                                                      | Disposition |
+| -------- | ------------------------------------------------------------------------------------------------------------ | ----------- |
+| Medium   | Reproduce-before-edit was absent after compression                                                           | Corrected   |
+| Medium   | Fix-the-shared-cause was absent after compression                                                            | Corrected   |
+| Low      | Dependency checks existed across two playbooks but lacked one concise authoritative sequence                 | Corrected   |
+| None     | All router triggers, playbook destinations, syllabus commands, status categories, and changelog rules remain | Verified    |
+
+### Actions
+
+- Added an authoritative six-step website defect workflow to the testing playbook.
+- Added a concise dependency and browser-capability workflow to the same playbook.
+- Added guidance-validator invariants for defect reproduction, shared-cause correction, and active dependency use.
+- Kept `SKILLS.md` compact and route-focused instead of restoring duplicate procedures.
+- Recorded the earlier preservation statement as too broad and adopted semantic mapping as a required review method.
+
+### Evidence
+
+- `git diff HEAD^ HEAD -- SKILLS.md`
+- `SKILLS.md`
+- `playbooks/syllabus-and-audits.md`
+- `playbooks/testing-and-accessibility.md`
+- `playbooks/releases-and-changelog.md`
+- `playbooks/repository-safety.md`
+- `scripts/validate-agent-guidance.ts`
+- `AGENTS.md`
+
+### Validation results
+
+- Route-by-route comparison: Passed after correction
+- Removed-step semantic mapping: Passed after correction
+- Automated critical-procedure preservation: Passed after adding three targeted invariants
+- `SKILLS.md` size: 8,083 bytes before timestamp synchronization, below its 12,288-byte hard limit and 9,216-byte early-review point
+- Learner-facing behavior retest: Not applicable because no website source changed
+
+### Remaining risks and next action
+
+Automated guidance validation cannot fully judge whether two differently worded instructions have the same meaning. Future refactors must retain the manual semantic mapping step and add validator rules only for concise, objectively testable invariants.

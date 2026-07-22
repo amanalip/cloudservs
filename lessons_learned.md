@@ -4,7 +4,7 @@
 
 ## Document status
 
-- Last documentation sync: `2026-07-22T17:37:32-04:00`
+- Last documentation sync: `2026-07-22T17:48:22-04:00`
 - Current format version: 2
 - Update policy: Required at the end of every project work session
 - Historical note: Aman found version 1 too shallow. Version 2 replaces that first draft with a fuller retrospective. Future historical entries must be appended rather than silently removed.
@@ -52,6 +52,7 @@ Entries are listed in file order so the links match the append-only record. The 
 - [2026-07-22 17:25:14 | The first retrospective needed a connected beginner narrative](#2026-07-22-172514-edt--the-first-retrospective-needed-a-connected-beginner-narrative)
 - [2026-07-22 17:30:22 | Reliability is not the same as a promise of infallibility](#2026-07-22-173022-edt--reliability-is-not-the-same-as-a-promise-of-infallibility)
 - [2026-07-22 17:37:32 | QA history needs a different record from audits and releases](#2026-07-22-173732-edt--qa-history-needs-a-different-record-from-audits-and-releases)
+- [2026-07-22 17:48:22 | Compression needs a semantic preservation check](#2026-07-22-174822-edt--compression-needs-a-semantic-preservation-check)
 
 <!-- LESSONS_TOC_END -->
 
@@ -3297,3 +3298,40 @@ These changes harden internal curriculum workflow and quality records. They do n
 - Guidance remained within its conservative limits after `SKILLS.md` duplication was reduced from 9,208 to 8,083 bytes.
 - The first browser attempt was blocked from binding a local port by the sandbox; the authorized local-server rerun passed.
 - One read-only search had an unmatched-backtick quoting error. Writes stopped, `git status --short` showed no unexpected file, and the search was safely retried.
+
+## 2026-07-22 17:48:22 EDT | Compression needs a semantic preservation check
+
+### What prompted this lesson
+
+Aman asked for evidence that reducing `SKILLS.md` from 9,208 to 8,083 bytes had not removed any route or procedure. This was a more precise question than asking whether the smaller file still looked reasonable or passed its size validator.
+
+### Lesson learned by Aman
+
+A shorter instruction file is useful only when the removed detail still has an authoritative home. File size, valid links, and a passing router validator can show that the navigation structure is healthy, but they do not prove that every operational step survived.
+
+```text
+Safe compression
+      |
+      +--> trigger still routes correctly
+      +--> destination file still exists
+      +--> every action and stopping rule still exists
+      +--> validator still passes
+      +--> a human can trace old meaning to its new home
+```
+
+The useful review question is therefore not only "Did the file become smaller?" It is also "Can every removed instruction be mapped to an equal or clearer instruction elsewhere?"
+
+### Lesson learned by Codex
+
+The earlier claim that every procedure was preserved was too strong. A line-by-line comparison found that all router destinations remained, and most status, syllabus, dependency, release, and QA procedures had authoritative homes. However, two bug-resolution instructions had disappeared as explicit requirements: reproduce the defect before editing, and correct the shared cause instead of patching a single page.
+
+Codex corrected the testing playbook rather than restoring duplicated detail to `SKILLS.md`. It also consolidated the dependency and browser-capability procedure there so future preservation checks have one clear destination. Three targeted validator invariants now protect defect reproduction, shared-cause correction, and the distinction between installation and active product use.
+
+### Future practice
+
+Every guidance compression must now use two different checks:
+
+1. Structural validation confirms sizes, routes, indexed playbooks, required rule identifiers, and synchronized documents.
+2. Semantic validation maps each removed trigger, action, evidence requirement, stopping rule, and exception to its authoritative destination.
+
+A passing automated validator is necessary but not sufficient. When semantic comparison finds a gap, the correction belongs in the owning playbook, while the router remains compact. This preserves both reliability and readability without pretending that byte counts prove meaning.
