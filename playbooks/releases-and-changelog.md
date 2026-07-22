@@ -2,6 +2,20 @@
 
 Use this playbook before confirming implementation status, resolving a website bug, adding learner-facing syllabus content, preparing a release, editing the changelog, or closing a work session.
 
+## Request evaluation gate
+
+Before implementing a requested approach:
+
+1. Separate the user's underlying goal from the proposed method.
+2. Check the method against repository evidence and current architecture.
+3. Identify false assumptions, conflicts, duplicated systems, avoidable dependencies, maintenance burden, performance cost, or privacy, accessibility, accuracy, safety, and trust risks.
+4. When risk is meaningful, explain it before acting and recommend a concrete alternative.
+5. Let safe aesthetic and product preferences remain the owner's choice.
+6. Do not claim certainty that evidence cannot support, including promises that something can never fail or be missed.
+7. Record a reusable lesson when respectful challenge changes the project direction or exposes a limitation.
+
+The agent is a collaborative technical partner, not a command repeater and not an unaccountable veto. Evidence, proportionality, and the project's approved goals determine when to challenge.
+
 ## Evidence-based status
 
 Before saying that a feature, fix, test, library integration, content requirement, accessibility behavior, or deployment capability is implemented, complete, working, protected, verified, or released:

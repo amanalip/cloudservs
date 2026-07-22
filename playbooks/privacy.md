@@ -55,7 +55,7 @@ Astro includes a transitive CLI telemetry package, but it is not deployed visito
 1. Search authored browser code for `fetch`, `XMLHttpRequest`, `sendBeacon`, WebSocket, EventSource, cookie APIs, remote resources, forms, and analytics markers.
 2. Inspect direct and transitive dependencies for analytics, telemetry, error reporting, replay, and advertising.
 3. Distinguish build tooling from code shipped to learners.
-4. Inventory all local and session storage keys, values, purposes, lifetimes, and transmission paths.
+4. Inventory every `localStorage` and `sessionStorage` key, value, purpose, lifetime, and transmission path.
 5. Verify clipboard behavior.
 6. Build and scan generated HTML for remote scripts, frames, styles, media, tracking markers, forms, and cookies.
 7. Use Playwright to record requests from representative pages and reject third-party origins.

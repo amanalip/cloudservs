@@ -1,6 +1,6 @@
 # cloudservs Workflow Router
 
-Last documentation sync: `2026-07-22T15:20:14-04:00`
+Last documentation sync: `2026-07-22T15:30:16-04:00`
 
 This file routes project tasks to detailed procedures in [`playbooks/`](./playbooks/README.md). It is not an installable Codex skill package.
 
@@ -9,11 +9,26 @@ This file routes project tasks to detailed procedures in [`playbooks/`](./playbo
 For every task:
 
 1. Read `AGENTS.md`.
-2. Find every matching row below.
-3. Read all required playbooks before acting.
-4. Announce which playbooks are being used and why.
-5. Apply every matching workflow, not only the first row.
-6. Run `npm run guidance:validate` before closeout.
+2. Evaluate the requested approach instead of assuming it is correct because it was requested.
+3. Raise evidence-based concerns and recommend a safer or simpler alternative before execution when meaningful risk exists.
+4. Find every matching row below.
+5. Read all required playbooks before acting.
+6. Announce which playbooks are being used and why.
+7. Apply every matching workflow, not only the first row.
+8. Run `npm run guidance:validate` before closeout.
+
+## Critical evaluation before execution
+
+Ask:
+
+- Does the request match the project's approved purpose and current architecture?
+- Is its factual assumption supported by the repository or primary sources?
+- Does it conflict with privacy, accessibility, accuracy, safety, or the single-curriculum rule?
+- Will it create unnecessary dependencies, duplicated content, maintenance work, performance cost, or documentation growth?
+- Is the proposed method proportionate to the learner benefit?
+- Is there a simpler approach that preserves the user's real goal?
+
+If a meaningful concern exists, state it plainly, show evidence, recommend an alternative, and wait only when the choice materially changes scope or risk. Do not challenge harmless preferences merely to appear independent.
 
 ## Task router
 

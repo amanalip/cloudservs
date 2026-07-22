@@ -4,7 +4,7 @@
 
 ## Document status
 
-- Last documentation sync: `2026-07-22T15:20:14-04:00`
+- Last documentation sync: `2026-07-22T15:30:16-04:00`
 - Current format version: 2
 - Update policy: Required at the end of every project work session
 - Historical note: Aman found version 1 too shallow. Version 2 replaces that first draft with a fuller retrospective. Future historical entries must be appended rather than silently removed.
@@ -1472,3 +1472,168 @@ Final evidence:
 - Changelog diff: none
 
 The production build still reports the previously known JavaScript chunk-size warning. The guidance refactor did not introduce or resolve that performance risk.
+
+### 2026-07-22 15:27:39 EDT amendment: independent preservation audit
+
+A second audit compared pre-refactor commit `09235c5` with current commit `3d8222f` independently of the migration table.
+
+It verified:
+
+- every former `AGENTS.md` heading has a current destination
+- all 17 former `SKILLS.md` workflows have a current destination
+- every original npm command remains represented
+- every approved JavaScript and testing library remains represented
+- high-risk UI requirements remain searchable, including the three-by-two grid, provider-card geometry, maximum zoom, clipboard fallback, copied absolute URLs, contents pane, Markmap labels, centered SVG controls, local fonts, forced colors, and browser zoom
+- the changelog remains unchanged because no learner-facing product change occurred
+
+The inline-code comparison found that the behavior of browser storage remained documented, but the exact API names `localStorage` and `sessionStorage` had been generalized to “local and session storage.” Those exact terms were restored in `privacy.md` and added to guidance validation. This was a terminology preservation correction, not a missing privacy safeguard.
+
+---
+
+## 2026-07-22 15:30:16 EDT | Keep guidance compact and challenge requested methods respectfully
+
+- Recorded at: `2026-07-22T15:30:16-04:00`
+- Prompt: Aman asked for two permanent lessons. First, he should watch the size of agent and skill guidance because large instruction files can make rules easier for an LLM to overlook. Second, Codex should not execute a proposed method merely because Aman requested it. Codex should correct assumptions and raise concerns when evidence supports doing so.
+
+### Lesson learned by Aman
+
+Agent guidance has two competing needs:
+
+```text
+Too little guidance                      Too much root guidance
+-------------------                      ----------------------
+Important decisions are forgotten        Important rules compete for attention
+Workflows become inconsistent             Repeated wording creates conflicts
+Future sessions rely on chat memory       Task-specific details bury core rules
+```
+
+The goal is not the shortest possible file. The goal is a small, high-salience contract connected to complete task-specific playbooks.
+
+An LLM does not necessarily skip a long instruction file in a simple, predictable way. However, longer context creates more competition among instructions. Repeated rules, distant dependencies, conflicting wording, and task-irrelevant procedures can reduce the practical visibility of the exact rule needed now. Therefore agent and workflow files should have explicit size budgets, routing, stable critical-rule identifiers, and automated validation.
+
+Future owner checklist:
+
+1. Ask whether a new rule is always applicable or task-specific.
+2. Put always-applicable rules in `AGENTS.md`.
+3. Put task triggers and routes in `SKILLS.md`.
+4. Put complete procedures in the relevant playbook.
+5. Avoid copying the full procedure into all three places.
+6. Run guidance validation and review the root word counts.
+7. Refactor before the root files become difficult to scan, not after a rule is missed.
+
+### Lesson learned by Codex
+
+Codex should have raised the documentation-growth risk earlier. Repeated requests to update several large Markdown files after every discussion were accepted and implemented without clearly explaining that duplication could reduce maintainability and instruction salience. The user's request was understandable, but the proposed method was not the only way to preserve project memory.
+
+Other requests also deserved earlier, clearer technical challenge:
+
+- “Use as many libraries as possible” should have been reframed immediately as “use as many justified libraries as materially improve learning,” because unused libraries increase bundle size and maintenance cost.
+- “Document every line” needed the explicit boundary now used by the project: document meaningful lines or logical blocks, because comments that repeat syntax can make code harder for beginners to read.
+- “Zero hallucinations” expresses the correct quality goal, but Codex should clarify that primary sources, dated verification, and audits reduce risk rather than promise impossible perfection.
+- “Never miss this again” should lead to strong safeguards and honest limitations, not a guarantee that no future error can occur.
+- Updating every document on every turn should have been challenged in favor of updating the four living records at closeout and updating specialized records only when their trigger applies.
+
+The failure mode is:
+
+```text
+User proposes a method
+        |
+        v
+Codex treats instruction as proof the method is best
+        |
+        v
+Implementation proceeds without tradeoff review
+        |
+        v
+Complexity or risk appears later
+        |
+        v
+User must discover and question the design
+```
+
+The corrected model is:
+
+```text
+User states a goal and proposed method
+        |
+        v
+Codex separates goal from method
+        |
+        v
+Check evidence, architecture, privacy, accuracy,
+accessibility, maintainability, performance, safety, and scope
+        |
+    +---+---+
+    |       |
+ no concern meaningful concern
+    |       |
+    v       v
+ proceed   explain evidence and recommend alternative
+                |
+                v
+       owner makes an informed decision
+                |
+                v
+       implement faithfully within safe authority
+```
+
+### What respectful challenge means
+
+Codex must:
+
+- identify a false assumption rather than silently building on it
+- warn when a request conflicts with the approved product or another non-negotiable rule
+- identify disproportionate complexity, duplication, maintenance burden, performance cost, or privacy and accessibility risk
+- explain the concern before implementation when the choice materially matters
+- recommend a concrete alternative instead of only objecting
+- preserve the user's underlying goal whenever possible
+- distinguish a correctness issue from an aesthetic preference
+- respect the owner's informed choice when it remains safe and authorized
+
+Codex must not:
+
+- challenge every harmless preference to appear intelligent
+- use disagreement to stall reversible work
+- expand scope without authorization
+- replace evidence with personal taste
+- treat the user as incapable of deciding after receiving the tradeoff
+- claim a veto outside safety, authorization, or project non-negotiables
+
+### Permanent safeguards added
+
+- Added `JUDGE-01` through `JUDGE-06` to the always-read `AGENTS.md` contract.
+- Added a mandatory critical-evaluation step before task routing in `SKILLS.md`.
+- Added a request-evaluation gate to `releases-and-changelog.md`.
+- Added independent judgment and alternative-recommendation phrases to guidance validation.
+- Added the collaboration principle to `readme.md`.
+- Preserved root guidance size limits so the new rules remain visible.
+
+### Future practice
+
+Before implementing any non-trivial proposed method, Codex will ask internally:
+
+1. What is Aman actually trying to achieve?
+2. Is the proposed method supported by current evidence?
+3. Does it conflict with the project's goals or safeguards?
+4. Is there a simpler, safer, more maintainable approach?
+5. Is the concern meaningful enough to raise before acting?
+
+If yes, Codex will lead with evidence, explain the tradeoff, and recommend the better path. Agreement remains collaborative, but automatic compliance is no longer treated as good partnership.
+
+### Changelog decision
+
+This change improves project governance and post-mortem guidance. It does not add syllabus content, a learner-facing feature, or a verified website bug fix. It therefore does not create v2 and does not change `changelog.md`.
+
+### Validation evidence
+
+- Guidance validation passed with all eight playbooks routed.
+- `AGENTS.md` contains 1,373 words, below its 2,500-word limit.
+- `SKILLS.md` contains 776 words, below its 1,600-word limit.
+- Documentation synchronization passed for all four living project records.
+- The syllabus ledger remains valid with 93 ordered lessons across nine modules.
+- All 11 unit tests passed.
+- Astro checked 31 files with zero errors, warnings, or hints.
+- The static production build and Pagefind search-index build passed.
+- Privacy validation found no collection API, analytics dependency, or remote embedded resource.
+- Formatting and whitespace validation passed.
+- `changelog.md` remained unchanged.

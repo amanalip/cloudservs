@@ -1,6 +1,6 @@
 # cloudservs
 
-Last documentation sync: `2026-07-22T15:20:14-04:00`
+Last documentation sync: `2026-07-22T15:30:16-04:00`
 
 > Learn cloud concepts once, then understand how AWS, Microsoft Azure, and Google Cloud implement them.
 
@@ -95,6 +95,8 @@ Validation
 ```
 
 `npm run guidance:validate` protects this structure. It keeps the two root guides below agreed size limits, requires all eight playbooks, checks that every playbook is routed and indexed, preserves the migration table for all former sections and 17 workflows, verifies internal links, requires critical rule IDs, and rejects em dashes in guidance.
+
+The contract also requires independent technical judgment. A contributor or agent must evaluate a requested method against evidence, project goals, privacy, accessibility, accuracy, maintainability, performance, scope, safety, and long-term cost. Meaningful concerns must be explained before implementation with a concrete alternative. Safe product and aesthetic preferences remain the owner's decision.
 
 ### Honest v1 boundary
 
