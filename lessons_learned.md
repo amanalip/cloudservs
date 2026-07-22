@@ -4,7 +4,7 @@
 
 ## Document status
 
-- Last documentation sync: `2026-07-22T17:03:42-04:00`
+- Last documentation sync: `2026-07-22T17:08:09-04:00`
 - Current format version: 2
 - Update policy: Required at the end of every project work session
 - Historical note: Aman found version 1 too shallow. Version 2 replaces that first draft with a fuller retrospective. Future historical entries must be appended rather than silently removed.
@@ -1986,3 +1986,315 @@ This is internal workflow validation and documentation maintenance. It does not 
 - Documentation synchronization passed for all four living project records.
 - The ledger remains valid with 93 ordered lessons and a matching audit log.
 - All 11 unit tests passed.
+
+## 2026-07-22 17:08:09 EDT | Beginner extension: guidance is a navigation system, not a storage box
+
+### Why this amendment exists
+
+Aman observed that both participants learned from the official OpenAI fact-check and asked for a much more detailed beginner explanation. The earlier entry contains the technical correction, but a beginner also needs analogies, worked calculations, decision examples, and a way to diagnose failures.
+
+This amendment extends that lesson without copying the same procedure into `AGENTS.md` or `SKILLS.md`. The detailed teaching belongs here because `lessons_learned.md` is the reflective archive, while the always-read files must remain compact.
+
+### First mental model: a travel bag
+
+Imagine preparing for a trip:
+
+```text
+Suitcase capacity
+    = the hard loading limit
+
+Packing list
+    = AGENTS.md
+
+Small labeled organizers
+    = task-specific playbooks
+
+Choosing the correct organizer
+    = SKILLS.md routing
+
+Actually remembering to use an item
+    = instruction application
+```
+
+If the suitcase is physically full, another item cannot be packed. That resembles instruction truncation at a byte ceiling.
+
+However, a suitcase that closes successfully can still be badly organized. If every item is loose, duplicated, or mislabeled, finding the correct charger remains difficult. This resembles a loaded instruction that is hard to apply because the surrounding guidance is noisy or conflicting.
+
+The lesson is:
+
+> Capacity tells us whether guidance can fit. Organization helps us find it. Tests help us prove that we used it.
+
+### Second mental model: a library
+
+```text
+Library entrance sign       AGENTS.md
+  Essential rules that apply to everyone
+
+Library directory           SKILLS.md
+  Tells a visitor which section to use
+
+Subject books               playbooks/*.md
+  Complete procedures for one kind of work
+
+Catalog integrity check     guidance:validate
+  Confirms books are indexed and reachable
+
+Practical exam              tests and browser checks
+  Confirms the procedure produced the expected result
+```
+
+Writing every book on the entrance sign would make the sign unusable. Creating a separate book for every sentence would make the library difficult to navigate. Good guidance needs both compression and sensible grouping.
+
+### Beginner glossary
+
+| Term                     | Plain-language meaning                                                                                                 |
+| ------------------------ | ---------------------------------------------------------------------------------------------------------------------- |
+| Byte                     | A unit used to measure stored text and files. Codex documents its project guidance loading ceiling in bytes.           |
+| KiB                      | 1,024 bytes. Therefore 32 KiB equals 32,768 bytes.                                                                     |
+| Context                  | The instructions, conversation, file excerpts, and tool results available to the model during a task.                  |
+| Instruction chain        | The applicable `AGENTS.md` guidance combined from repository directories in precedence order.                          |
+| Truncation               | Content is cut off because a documented size boundary was reached.                                                     |
+| Routing                  | Selecting the correct detailed procedure for the current task.                                                         |
+| Salience                 | How visible and practically prominent an instruction is among all other available context.                             |
+| Progressive disclosure   | Initially showing compact metadata, then loading full instructions only when the task needs them.                      |
+| Guardrail                | A local safety boundary chosen to reduce risk. It is not necessarily an official product maximum.                      |
+| Deterministic validation | A code check that produces the same pass or failure from the same files, rather than depending only on model judgment. |
+| Negative test            | A test that deliberately creates an invalid condition and confirms that the safeguard rejects it.                      |
+| Recall guarantee         | A promise that a model will always apply every instruction. The official sources do not provide such a size guarantee. |
+
+### Worked size calculation
+
+OpenAI documents a default combined project instruction ceiling of 32 KiB:
+
+```text
+32 KiB x 1,024 bytes per KiB = 32,768 bytes
+```
+
+The local cloudservs root ceiling reserves half:
+
+```text
+32,768 bytes / 2 = 16,384 bytes for AGENTS.md
+```
+
+The current root measurement at the time of the correction was:
+
+```text
+10,627 / 16,384 x 100 = about 64.9%
+```
+
+The custom router ceiling is 12 KiB:
+
+```text
+12 KiB x 1,024 = 12,288 bytes
+8,819 / 12,288 x 100 = about 71.8%
+```
+
+The early review point is 75%:
+
+```text
+AGENTS.md review point
+16,384 x 0.75 = 12,288 bytes
+
+SKILLS.md review point
+12,288 x 0.75 = 9,216 bytes
+```
+
+At the measured size, `SKILLS.md` was only 397 bytes below its early review point. That does not mean it was failing. It means the next meaningful addition should first ask whether existing router prose can be simplified.
+
+### Why words were the wrong enforcement unit
+
+Compare these two instructions:
+
+```text
+Run tests.
+
+Before describing the task as complete, execute every applicable automated
+validation command and inspect its output for errors, warnings, skipped checks,
+and environment-specific limitations.
+```
+
+Both communicate a testing expectation, but they contain very different numbers of words and bytes. Formatting, links, code, punctuation, and different languages also change the relationship between words and stored size.
+
+Word count can still describe readability. It cannot directly model a loader whose documented configuration is measured in bytes. That is why the validator now uses UTF-8 bytes for the hard repository ceilings.
+
+### Where should a new instruction go?
+
+Use this decision exercise:
+
+```text
+New instruction
+      |
+      v
+Must it apply to almost every task?
+      | yes
+      v
+AGENTS.md as one compact invariant
+
+      | no
+      v
+Does an existing playbook own the subject?
+      | yes
+      v
+Add the complete procedure there
+
+      | no
+      v
+Is it recurring, distinct, or safety-critical?
+      | yes                         | no
+      v                             v
+Create and route one playbook       Keep it in the current task
+```
+
+Examples:
+
+| Instruction                                                                           | Best location                         | Why                                                                |
+| ------------------------------------------------------------------------------------- | ------------------------------------- | ------------------------------------------------------------------ |
+| Never add analytics                                                                   | `AGENTS.md` plus privacy validation   | It applies to nearly every product change and is non-negotiable.   |
+| How to review a new browser storage key                                               | `playbooks/privacy.md`                | It is a detailed procedure for one domain.                         |
+| Run a temporary experiment with a local color value                                   | Current task or branch notes          | It is not a durable repository rule.                               |
+| Continue from the ledger and stop for 25%, 50%, 75%, and 100% audits                  | Compact root invariant plus playbook  | The invariant is global, while the full workflow is task-specific. |
+| Every button must use exactly one fixed color, based on a single temporary preference | Usually nowhere as a permanent policy | One preference should not become a universal rule without review.  |
+
+### Good and weak rules
+
+A weak rule:
+
+```text
+Make everything good and never miss anything.
+```
+
+Problems:
+
+- “good” is undefined
+- “everything” has no scope
+- “never” promises certainty that cannot be tested
+- there is no action or verification method
+
+A stronger rule:
+
+```text
+Before marking a lesson complete, confirm all 25 ledger requirements,
+open the current lesson evidence, run syllabus validation, and stop for
+any due module audit.
+```
+
+This version defines the timing, object, evidence, commands, and blocking condition.
+
+### How to investigate an apparent skipped instruction
+
+Do not immediately add another paragraph to `AGENTS.md`. Diagnose the failure first:
+
+```text
+Was the file discovered and below the byte ceiling?
+  | no  -> Fix discovery, nesting, or size
+  | yes
+  v
+Did the router select the applicable playbook?
+  | no  -> Fix the trigger or route
+  | yes
+  v
+Was the rule clear and non-conflicting?
+  | no  -> Rewrite or resolve the conflict
+  | yes
+  v
+Could code enforce the rule deterministically?
+  | yes -> Add a validator or regression test
+  | no
+  v
+Record the limitation and strengthen review evidence
+```
+
+This prevents a harmful cycle:
+
+```text
+Rule appears missed
+      |
+      v
+Add more prose without diagnosis
+      |
+      v
+Root file becomes noisier
+      |
+      v
+Important rules become less prominent
+      |
+      +------------> repeat
+```
+
+### What “reliably updated” should mean
+
+It should not mean that every conversation automatically adds text to every document. That policy would recreate the bloat problem.
+
+It should mean:
+
+1. A reusable change is assigned to one authoritative owner.
+2. The root contains only the invariant and route needed on every task.
+3. The detailed procedure is updated in the owning playbook.
+4. Validation confirms that the owner is indexed, routed, and below its ceiling.
+5. A dated lesson records why the practice changed.
+6. Historical wording remains visible, with later corrections clearly identified.
+7. Product changelog entries remain reserved for learner-facing content, features, and verified bug fixes.
+
+### Lesson learned by Aman
+
+Asking “what is the evidence behind that number?” is a powerful technical habit. Precise-looking values can be:
+
+- documented product limits
+- industry conventions
+- experimental observations
+- project-specific safety margins
+- guesses that accidentally look authoritative
+
+The number alone does not reveal which category it belongs to. A reliable explanation should name the source, unit, guarantee, derivation, and remaining uncertainty.
+
+A beginner-friendly verification checklist is:
+
+```text
+What exactly is being measured?
+What unit is used?
+Who defined the boundary?
+Is it a hard maximum or a recommendation?
+What does staying below it guarantee?
+What does it not guarantee?
+How was the local safety margin chosen?
+How will failure be detected?
+```
+
+### Lesson learned by Codex
+
+Codex learned not to transform qualitative advice into an exact quantitative claim without a source. The original intuition that shorter instructions are easier to use was reasonable. Declaring 2,500 and 1,600 words as if they were reliability thresholds was not sufficiently supported.
+
+Codex also found a documentation-ordering mistake while preparing this amendment. The `17:03:42` size-limit correction was inserted above the earlier `16:57:57` entry because the patch matched an earlier repeated validation line instead of the file end. The content remained present, but the physical order is not chronological.
+
+The safe future practice is:
+
+- use a unique final heading or verified end-of-file context when appending
+- inspect the heading order after every append-only edit
+- treat timestamp ordering as a documentation validation concern
+- add a dated clarification instead of hiding a discovered historical inconsistency
+
+The documentation synchronization validator now requires the final lesson entry to match the current shared closeout timestamp and rejects duplicate entry timestamps. It does not rewrite the already recorded inversion. It prevents the same insertion mistake from recurring silently.
+
+The `17:03:42` entry is the later correction to the word-limit statements in the `16:57:57` entry, even though it appears physically above that entry. Future readers should treat the byte-based policy as authoritative.
+
+### Fact, inference, and project policy
+
+| Statement                                                          | Classification                     |
+| ------------------------------------------------------------------ | ---------------------------------- |
+| Codex defaults to a 32 KiB combined project instruction ceiling    | Official documented fact           |
+| OpenAI recommends short and practical `AGENTS.md` guidance         | Official documented recommendation |
+| Native skills use progressive disclosure                           | Official documented behavior       |
+| A specific word count guarantees that no instruction is overlooked | Not established                    |
+| Reserve half the default ceiling for the cloudservs root           | Conservative project policy        |
+| Keep the custom router below 12 KiB                                | Conservative project policy        |
+| Review either file at 75% of its local ceiling                     | Early-warning project policy       |
+| Tests and validators improve repeatability                         | Engineering judgment plus evidence |
+
+### Sources
+
+- [Custom instructions with AGENTS.md](https://learn.chatgpt.com/docs/agent-configuration/agents-md)
+- [Build skills](https://learn.chatgpt.com/docs/build-skills)
+
+### Changelog decision
+
+This amendment improves internal learning documentation. It does not add learner-facing syllabus content, a website feature, or a verified website bug fix. `changelog.md` remains unchanged.

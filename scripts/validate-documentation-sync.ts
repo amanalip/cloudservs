@@ -40,6 +40,33 @@ timestamps.forEach(({ fileName, timestamp }) => {
   }
 });
 
+/**
+ * A closeout reflection must be appended at the end of the lessons log.
+ * Matching the last entry's local date and time to the shared sync timestamp prevents a patch
+ * from silently inserting the newest entry above older repeated text, while preserving history.
+ */
+const lessonsSource = readFileSync(resolve('lessons_learned.md'), 'utf8');
+const lessonEntryPattern = /^## (\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}) [A-Z]{2,5} \|/gm;
+const lessonEntryTimes = [...lessonsSource.matchAll(lessonEntryPattern)].map((match) => match[1]);
+const duplicateEntryTimes = lessonEntryTimes.filter(
+  (entryTime, index) => lessonEntryTimes.indexOf(entryTime) !== index,
+);
+if (new Set(duplicateEntryTimes).size > 0) {
+  errors.push(
+    `lessons_learned.md contains duplicate entry timestamps: ${[...new Set(duplicateEntryTimes)].join(', ')}`,
+  );
+}
+
+const expectedLocalTime = expectedTimestamp?.slice(0, 19).replace('T', ' ');
+const finalLessonEntryTime = lessonEntryTimes.at(-1);
+if (!finalLessonEntryTime) {
+  errors.push('lessons_learned.md contains no timestamped lesson entry');
+} else if (expectedLocalTime && finalLessonEntryTime !== expectedLocalTime) {
+  errors.push(
+    `lessons_learned.md must end with the current closeout entry ${expectedLocalTime}; found ${finalLessonEntryTime}`,
+  );
+}
+
 if (errors.length > 0) {
   console.error(`Documentation synchronization failed with ${errors.length} error(s):`);
   errors.forEach((error) => console.error(`- ${error}`));

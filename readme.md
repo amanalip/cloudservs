@@ -1,6 +1,6 @@
 # cloudservs
 
-Last documentation sync: `2026-07-22T17:03:42-04:00`
+Last documentation sync: `2026-07-22T17:08:09-04:00`
 
 > Learn cloud concepts once, then understand how AWS, Microsoft Azure, and Google Cloud implement them.
 
@@ -97,6 +97,8 @@ Validation
 `npm run guidance:validate` protects this structure. It keeps `AGENTS.md` below the repository's 16 KiB ceiling and `SKILLS.md` below its 12 KiB ceiling, discovers new Markdown playbooks, checks that every playbook is routed and indexed, preserves the migration table for all former sections and 17 workflows, verifies internal links, requires critical rule IDs, and rejects em dashes in guidance.
 
 The byte ceilings are conservative project policies, not guarantees of model recall. OpenAI documents a default 32 KiB combined project-instruction loading ceiling and recommends concise, practical `AGENTS.md` guidance with task-specific detail in referenced files. `SKILLS.md` is cloudservs' custom router, not a native Codex `SKILL.md`, so its smaller limit exists to keep routing fast to scan. The reasoning and official references are recorded in [`playbooks/README.md`](./playbooks/README.md#guidance-size-budgets).
+
+Documentation synchronization also verifies that `lessons_learned.md` ends with the current timestamped closeout entry. This prevents a new reflection from being accidentally inserted above older repeated text.
 
 The contract also requires independent technical judgment. A contributor or agent must evaluate a requested method against evidence, project goals, privacy, accessibility, accuracy, maintainability, performance, scope, safety, and long-term cost. Meaningful concerns must be explained before implementation with a concrete alternative. Safe product and aesthetic preferences remain the owner's decision.
 
