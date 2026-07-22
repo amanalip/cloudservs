@@ -38,6 +38,35 @@ The ledger keeps stable lesson IDs, module order, topics, covered topics, prereq
 14. Report topic coverage and quality-gated completion separately.
 15. Update `changelog.md` in the same change when validated learner-facing syllabus content is added.
 
+## Requirement evidence pass
+
+The ledger checklist prevents accidental omission only when completion credit is based on inspected evidence. A requirement name by itself is not proof.
+
+Before adding an entry to `completedRequirements`:
+
+1. Open the current lesson source rather than relying on conversation memory or an earlier report.
+2. Locate the exact section, component, source list, metadata field, or test that satisfies the requirement.
+3. Check the evidence against the full definition in `lesson-authoring.md`, `cloud-fact-checking.md`, `diagrams-and-ui.md`, and `testing-and-accessibility.md`.
+4. Record only requirements supported by the current working tree.
+5. Put every missing requirement into `nextStep` or a concrete blocker.
+6. Run `npm run syllabus:validate` and review the status report after the ledger edit.
+
+Use two passes for every substantial lesson:
+
+```text
+Pass 1: create and explain
+Concept + vocabulary + analogy + mechanism + providers + visuals + practice
+                              |
+                              v
+Pass 2: verify independently
+Requirement evidence + primary sources + accessibility + browser checks
+                              |
+                              v
+Ledger credit, status update, changelog entry, and next action
+```
+
+Automated validation proves structural consistency. It does not prove that prose is factually correct, pedagogically clear, or complete. Those claims require direct content review, primary-source comparison, browser evidence where relevant, and the 25%, 50%, 75%, and 100% module audits.
+
 ## Status model
 
 ```text

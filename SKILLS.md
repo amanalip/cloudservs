@@ -1,6 +1,6 @@
 # cloudservs Workflow Router
 
-Last documentation sync: `2026-07-22T15:30:16-04:00`
+Last documentation sync: `2026-07-22T17:03:42-04:00`
 
 This file routes project tasks to detailed procedures in [`playbooks/`](./playbooks/README.md). It is not an installable Codex skill package.
 
@@ -29,6 +29,18 @@ Ask:
 - Is there a simpler approach that preserves the user's real goal?
 
 If a meaningful concern exists, state it plainly, show evidence, recommend an alternative, and wait only when the choice materially changes scope or risk. Do not challenge harmless preferences merely to appear independent.
+
+## When no existing playbook fits
+
+Do not automatically create a playbook for every new request. First ask whether the procedure is distinct, likely to recur, and too detailed for the always-read contract. Prefer extending the closest existing playbook when it already owns the subject.
+
+Create a new playbook only when all three conditions are true:
+
+1. No current playbook has a clear responsibility for the workflow.
+2. The workflow is expected to recur or contains enough safety and quality steps to justify a durable procedure.
+3. Adding it to an existing playbook would mix unrelated responsibilities.
+
+After creation, add it to `playbooks/README.md`, add every relevant trigger to this router, update traceability when old guidance moved, and run `npm run guidance:validate`. The validator discovers Markdown playbooks, so an unindexed or unrouted file must fail validation.
 
 ## Task router
 

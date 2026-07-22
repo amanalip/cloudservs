@@ -2,17 +2,20 @@
  * This validator protects the compact guidance architecture from silent information loss.
  * It checks file presence, size limits, routing, critical rules, traceability, links, and prose style.
  */
-import { existsSync, readFileSync } from 'node:fs';
+import { existsSync, readFileSync, readdirSync } from 'node:fs';
 import { dirname, resolve } from 'node:path';
 
-/** Root guides stay short enough to scan, while detailed procedures live in routed playbooks. */
+/**
+ * Root guides use byte ceilings because Codex documents project-instruction loading in bytes.
+ * The limits are conservative repository policies, not guarantees of model recall.
+ */
 const rootGuides = [
-  { path: 'AGENTS.md', maximumWords: 2500 },
-  { path: 'SKILLS.md', maximumWords: 1600 },
+  { path: 'AGENTS.md', maximumBytes: 16 * 1024 },
+  { path: 'SKILLS.md', maximumBytes: 12 * 1024 },
 ] as const;
 
 /** Every routed playbook is mandatory because each owns requirements moved from the root guides. */
-const playbookPaths = [
+const corePlaybookPaths = [
   'playbooks/README.md',
   'playbooks/lesson-authoring.md',
   'playbooks/cloud-fact-checking.md',
@@ -23,6 +26,21 @@ const playbookPaths = [
   'playbooks/releases-and-changelog.md',
   'playbooks/repository-safety.md',
 ] as const;
+
+/** Discovery prevents a newly created Markdown playbook from bypassing indexing and routing. */
+const discoveredPlaybookPaths = existsSync(resolve('playbooks'))
+  ? readdirSync(resolve('playbooks'))
+      .filter((fileName) => fileName.endsWith('.md') && fileName !== 'README.md')
+      .map((fileName) => `playbooks/${fileName}`)
+      .sort()
+  : [];
+
+/** Core files cannot disappear, while newly discovered files automatically join every check. */
+const corePlaybookPathSet = new Set<string>(corePlaybookPaths);
+const playbookPaths = [
+  ...corePlaybookPaths,
+  ...discoveredPlaybookPaths.filter((path) => !corePlaybookPathSet.has(path)),
+];
 
 /** Stable identifiers ensure that shortening prose cannot erase the most important policies. */
 const criticalRuleIds = [
@@ -44,6 +62,7 @@ const criticalRuleIds = [
   'CHANGE-01',
   'CHANGE-03',
   'DOCS-01',
+  'DOCS-04',
   'SAFE-02',
 ] as const;
 
@@ -115,6 +134,10 @@ const preservedConcepts = [
   { label: 'evidence fallback', needle: 'not yet verified' },
   { label: 'independent judgment', needle: 'Treat every request as input to evaluate' },
   { label: 'recommended alternative', needle: 'concrete recommended alternative' },
+  { label: 'playbook creation test', needle: 'Create a new playbook only when all three' },
+  { label: 'syllabus evidence pass', needle: 'Requirement evidence pass' },
+  { label: 'documented instruction ceiling', needle: 'project_doc_max_bytes' },
+  { label: 'size-limit uncertainty', needle: 'not fact-checked recall thresholds' },
   { label: 'shell recovery', needle: 'git status --short' },
 ] as const;
 
@@ -126,9 +149,9 @@ function readGuidance(path: string): string {
   return readFileSync(resolve(path), 'utf8');
 }
 
-/** Count natural-language tokens conservatively for the root-guide size guard. */
-function countWords(source: string): number {
-  return source.trim().split(/\s+/u).filter(Boolean).length;
+/** UTF-8 bytes match the unit used by Codex's documented project instruction ceiling. */
+function countBytes(source: string): number {
+  return Buffer.byteLength(source, 'utf8');
 }
 
 const errors: string[] = [];
@@ -148,9 +171,11 @@ if (errors.length === 0) {
     .join('\n');
 
   /** Keep the two always-read files compact enough that individual rules remain prominent. */
-  for (const { path, maximumWords } of rootGuides) {
-    const words = countWords(readGuidance(path));
-    if (words > maximumWords) errors.push(`${path} has ${words} words; maximum is ${maximumWords}`);
+  for (const { path, maximumBytes } of rootGuides) {
+    const bytes = countBytes(readGuidance(path));
+    if (bytes > maximumBytes) {
+      errors.push(`${path} has ${bytes} bytes; repository maximum is ${maximumBytes}`);
+    }
   }
 
   /** Require every critical rule identifier exactly where the agent automatically sees it. */
@@ -206,9 +231,9 @@ if (errors.length > 0) {
   errors.forEach((error) => console.error(`- ${error}`));
   process.exitCode = 1;
 } else {
-  const agentWords = countWords(readGuidance('AGENTS.md'));
-  const skillWords = countWords(readGuidance('SKILLS.md'));
+  const agentBytes = countBytes(readGuidance('AGENTS.md'));
+  const skillBytes = countBytes(readGuidance('SKILLS.md'));
   console.log(
-    `Guidance valid: ${playbookPaths.length - 1} playbooks routed; AGENTS.md ${agentWords} words; SKILLS.md ${skillWords} words.`,
+    `Guidance valid: ${playbookPaths.length - 1} playbooks routed; AGENTS.md ${agentBytes}/16384 bytes; SKILLS.md ${skillBytes}/12288 bytes.`,
   );
 }

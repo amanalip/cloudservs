@@ -77,3 +77,58 @@ Before changing the project:
 ## Preservation rule
 
 Do not remove a former requirement merely to shorten a document. Move it to the correct playbook, update this traceability table, and run `npm run guidance:validate`. If two rules conflict, preserve both during the refactor and resolve the conflict explicitly in `lessons_learned.md`.
+
+## Playbook lifecycle and anti-bloat rule
+
+Playbooks are created deliberately, not automatically for every request.
+
+```text
+New procedure appears
+        |
+        v
+Does an existing playbook own the subject?
+   | yes                         | no
+   v                             v
+Update that playbook       Is it recurring or safety-critical?
+                                 | no              | yes
+                                 v                 v
+                         Keep it task-local   Would merging mix unrelated duties?
+                                                   | no          | yes
+                                                   v             v
+                                          Extend closest     Create playbook
+                                            playbook              |
+                                                                  v
+                                                  Index + route + validate
+```
+
+When creating a playbook:
+
+1. Give it one clear responsibility and a descriptive lowercase filename.
+2. Move the complete task-specific procedure into it instead of duplicating that procedure in `AGENTS.md` or `SKILLS.md`.
+3. Keep only the always-applicable invariant in `AGENTS.md`.
+4. Keep only triggers, routes, and a compact workflow summary in `SKILLS.md`.
+5. Add the playbook to the index table and every applicable router row.
+6. Update migration traceability when existing guidance moved.
+7. Run `npm run guidance:validate`, which discovers every Markdown playbook and rejects unindexed or unrouted additions.
+
+## Guidance size budgets
+
+OpenAI documents a default `project_doc_max_bytes` ceiling of 32 KiB for the combined project instruction chain. That is a loading limit, not a promise that every instruction below the limit will receive equal attention. OpenAI recommends keeping `AGENTS.md` short, accurate, and practical, and moving task-specific detail to referenced files.
+
+The repository therefore uses conservative local budgets:
+
+| File        | Project ceiling | Reasoning                                                                                                            |
+| ----------- | --------------- | -------------------------------------------------------------------------------------------------------------------- |
+| `AGENTS.md` | 16 KiB          | Half of the documented 32 KiB default leaves room for possible nested project guidance and keeps the root practical. |
+| `SKILLS.md` | 12 KiB          | This is a custom scan-first router, not a native Codex skill, so it should remain smaller than the root contract.    |
+
+These ceilings are engineering guardrails, not fact-checked recall thresholds. There is no documented word count that guarantees Codex will never overlook an instruction. Byte size is used because Codex documents its project-instruction loading limit in bytes, while word length varies by formatting and language.
+
+At 75% of either project ceiling, review the file before adding more material. Remove duplication, move procedures to the owning playbook, and replace prose-only rules with tests or validators where possible. Do not raise a ceiling merely to make validation pass.
+
+Native Codex skills use progressive disclosure: their names and descriptions are initially visible, while the full selected `SKILL.md` is loaded only when used. This repository's uppercase `SKILLS.md` is not that native format. It remains reliable because `AGENTS.md` explicitly requires reading it, and guidance validation checks all of its playbook routes.
+
+Official references:
+
+- [Custom instructions with AGENTS.md](https://learn.chatgpt.com/docs/agent-configuration/agents-md)
+- [Build skills](https://learn.chatgpt.com/docs/build-skills)

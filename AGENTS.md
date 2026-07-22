@@ -1,6 +1,6 @@
 # cloudservs Agent Contract
 
-Last documentation sync: `2026-07-22T15:30:16-04:00`
+Last documentation sync: `2026-07-22T17:03:42-04:00`
 
 ## Purpose and learner
 
@@ -102,6 +102,7 @@ If evidence is incomplete, say `not yet verified`. If current evidence contradic
 - `DOCS-01`: Synchronize `AGENTS.md`, `SKILLS.md`, `readme.md`, and `lessons_learned.md` at session closeout.
 - `DOCS-02`: Update `audit.md` only for formal module checkpoints or dated amendments.
 - `DOCS-03`: Preserve `lessons_learned.md` as append-only decision memory with separate lessons for Aman and Codex.
+- `DOCS-04`: Keep `AGENTS.md` at or below the repository's 16 KiB ceiling and `SKILLS.md` at or below its 12 KiB ceiling. These are conservative project budgets, not model-recall guarantees. Put task-specific procedures in an existing playbook. Create a new playbook only for a distinct, recurring workflow with no suitable owner, then index, route, and validate it.
 
 ## Quality gate
 

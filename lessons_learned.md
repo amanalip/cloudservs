@@ -4,7 +4,7 @@
 
 ## Document status
 
-- Last documentation sync: `2026-07-22T15:30:16-04:00`
+- Last documentation sync: `2026-07-22T17:03:42-04:00`
 - Current format version: 2
 - Update policy: Required at the end of every project work session
 - Historical note: Aman found version 1 too shallow. Version 2 replaces that first draft with a fuller retrospective. Future historical entries must be appended rather than silently removed.
@@ -1632,8 +1632,357 @@ This change improves project governance and post-mortem guidance. It does not ad
 - Documentation synchronization passed for all four living project records.
 - The syllabus ledger remains valid with 93 ordered lessons across nine modules.
 - All 11 unit tests passed.
+
+## 2026-07-22 17:03:42 EDT | Size limits need documented units, headroom, and honest uncertainty
+
+### Prompt
+
+Aman challenged the declared limits of 2,500 words for `AGENTS.md` and 1,600 words for `SKILLS.md`. He asked for a fact-check and a reasoned answer about how much detail can be retained reliably without Codex skipping instructions.
+
+This was the correct challenge. The earlier numbers were local heuristics. They were not official OpenAI thresholds, were measured in the wrong unit for Codex's documented loader, and were presented with more confidence than the evidence supported.
+
+### Lesson learned by Aman
+
+Three different failure modes can look like “the model skipped a rule,” but they need different fixes:
+
+```text
+1. Loading failure
+   File exceeds or falls outside discovery rules
+                     |
+                     v
+   Instruction never enters project context
+
+2. Routing failure
+   Root guide does not point to the required procedure
+                     |
+                     v
+   Relevant detail exists but is not opened
+
+3. Application failure
+   Instruction is loaded but competes with duplicated,
+   vague, conflicting, distant, or noisy context
+                     |
+                     v
+   Rule may not be applied consistently
+```
+
+A file-size ceiling directly protects only the first failure. Routing tables and trigger tests protect the second. Concise rules, stable identifiers, conflict removal, tests, and closeout validation reduce the third. No single word count solves all three.
+
+Official OpenAI guidance establishes:
+
+- Codex builds an applicable project instruction chain from `AGENTS.md` files.
+- Codex stops adding project instruction files when their combined size reaches `project_doc_max_bytes`, which defaults to 32 KiB.
+- OpenAI recommends keeping `AGENTS.md` short, accurate, and practical.
+- Task-specific detail should move to referenced Markdown files when the root grows.
+- Rules should be added from repeated mistakes and recurring feedback, not from every isolated preference.
+- Native Codex skills use progressive disclosure. Codex initially sees skill names, descriptions, and paths, then loads the full selected `SKILL.md`.
+- The initial native skills list uses at most 2% of the model context window, or 8,000 characters when the context window is unknown.
+
+Official documentation does not establish:
+
+- a safe number of words that guarantees every rule will be followed
+- a point below 32 KiB where instruction application becomes perfect
+- that `SKILLS.md` is a native Codex skill filename
+- that a larger context window removes instruction competition
+
+The uppercase root `SKILLS.md` in cloudservs is a project-specific router. It is read because `AGENTS.md` explicitly requires it. It should not be described as receiving the native skill-discovery behavior documented for `.agents/skills/<skill>/SKILL.md`.
+
+### Measured repository state
+
+Before revising the policy:
+
+| Document    | UTF-8 bytes | Words | Relationship to documented loader                                                               |
+| ----------- | ----------: | ----: | ----------------------------------------------------------------------------------------------- |
+| `AGENTS.md` |      10,531 | 1,416 | Automatically loaded project guidance and therefore directly relevant to the 32 KiB default cap |
+| `SKILLS.md` |       8,819 |   911 | Custom router loaded by explicit `AGENTS.md` procedure, not by native skill discovery           |
+
+The root `AGENTS.md` used about 32% of the documented 32 KiB default before this correction. It was not near truncation. That measurement does not prove that every instruction would always be applied, because byte loading and behavioral salience are different properties.
+
+### How the revised limits were reasoned
+
+The revised policy uses bytes because the official loader limit uses bytes.
+
+```text
+Documented combined project ceiling: 32 KiB
+                         |
+                         +-- Reserve half for possible nested guidance
+                         |   and future repository-specific growth
+                         |
+                         v
+cloudservs AGENTS.md ceiling: 16 KiB
+
+AGENTS.md ceiling: 16 KiB
+         |
+         +-- Router should be smaller than the contract
+         +-- Router contains triggers, not complete procedures
+         v
+cloudservs SKILLS.md ceiling: 12 KiB
+```
+
+The 16 KiB and 12 KiB values remain engineering choices. They are now reasoned, correctly measured, and explicitly labeled as conservative repository guardrails. They are not presented as OpenAI-certified recall thresholds.
+
+At 75% of either local ceiling, the file must be reviewed before more prose is added. The correct response is to remove duplication, improve routing, move procedures to the owning playbook, or create deterministic validation. Raising the limit simply to silence the check is prohibited.
+
+### Lesson learned by Codex
+
+Codex should not convert a useful intuition into a precise-looking number without identifying its basis. “Shorter guidance is generally easier to use” did not justify the exact word counts previously chosen.
+
+The correct reasoning sequence is:
+
+```text
+Find the product's documented hard boundary
+                    |
+                    v
+Identify what the boundary actually guarantees
+                    |
+                    v
+Separate official fact from local engineering judgment
+                    |
+                    v
+Measure the current repository in the documented unit
+                    |
+                    v
+Choose conservative headroom based on project structure
+                    |
+                    v
+Test routing, preservation, and failure behavior
+                    |
+                    v
+State remaining uncertainty
+```
+
+Codex must also avoid the vague word “skip” when a more precise diagnosis is possible. The first question should be whether the instruction was truncated, not routed, conflicting, or loaded but inconsistently applied.
+
+### Permanent corrections
+
+- Replaced word-count enforcement with UTF-8 byte enforcement.
+- Set the local `AGENTS.md` ceiling to 16 KiB, half of the documented default combined project ceiling.
+- Set the custom `SKILLS.md` router ceiling to 12 KiB because it should remain smaller than the root contract.
+- Added a mandatory review when either file reaches 75% of its local ceiling.
+- Clarified that the local limits are guardrails rather than recall guarantees.
+- Clarified that cloudservs' `SKILLS.md` is not a native Codex skill.
+- Added the official AGENTS and skills references to the playbook index.
+- Updated guidance validation to count UTF-8 bytes instead of words.
+
+### Future reliability model
+
+```text
+Reliable guidance
+   |
+   +-- Loaded: byte ceiling and discovery checks
+   +-- Routed: task triggers and indexed playbooks
+   +-- Salient: concise, non-duplicated, non-conflicting rules
+   +-- Enforced: tests, validators, schemas, and quality gates
+   +-- Reviewed: retrospectives after repeated mistakes
+```
+
+The project should evaluate reliability with observed behavior and negative tests, not size alone. A future repeated omission should trigger a root-cause classification and the smallest appropriate correction. It should not automatically add more prose.
+
+### Sources
+
+- [Custom instructions with AGENTS.md](https://learn.chatgpt.com/docs/agent-configuration/agents-md)
+- [Build skills](https://learn.chatgpt.com/docs/build-skills)
+
+### Changelog decision
+
+This correction affects internal guidance governance and validation. It does not add learner-facing syllabus content, a website feature, or a verified website bug fix. `changelog.md` remains unchanged.
+
+### Validation evidence
+
+- The current Codex manual was refreshed through the official OpenAI documentation workflow.
+- `AGENTS.md` measures 10,627 of its 16,384-byte repository ceiling.
+- `SKILLS.md` measures 8,819 of its 12,288-byte repository ceiling.
+- Guidance, documentation synchronization, and syllabus validation passed.
+- All 11 unit tests passed.
+
 - Astro checked 31 files with zero errors, warnings, or hints.
 - The static production build and Pagefind search-index build passed.
 - Privacy validation found no collection API, analytics dependency, or remote embedded resource.
 - Formatting and whitespace validation passed.
 - `changelog.md` remained unchanged.
+
+## 2026-07-22 16:57:57 EDT | Questions are a shared quality-control loop
+
+### Prompt and interpretation
+
+Aman asked how new “workbooks” would be created, whether anti-bloat rules protect `AGENTS.md` and `SKILLS.md`, and whether Codex can still create new syllabus content accurately and reliably without omissions.
+
+Because the surrounding discussion concerned the new `playbooks/` folder, Codex interpreted “workbooks” as “playbooks” and stated that interpretation instead of silently changing the word. If Aman meant spreadsheet workbooks, that would be a different workflow and this entry would need a dated clarification.
+
+### Lesson learned by Aman
+
+Asking how a safeguard works is different from merely asking whether it exists. The question exposed two separate kinds of reliability:
+
+```text
+Process reliability                         Content reliability
+-----------------------------------         -----------------------------------
+Can the next task be found?                 Is the explanation factually correct?
+Can omissions block completion?             Is it clear to a beginner?
+Are checkpoints preserved?                  Are provider differences represented?
+Can a new playbook bypass routing?           Does each visual genuinely teach?
+
+Mostly enforceable with code                Requires code plus informed review
+```
+
+The project already had hard word limits for the two always-read guides:
+
+- `AGENTS.md` may contain no more than 2,500 words.
+- `SKILLS.md` may contain no more than 1,600 words.
+- Detailed procedures belong in task-specific playbooks.
+- Guidance validation checks required files, routes, critical rule identifiers, preserved concepts, links, and prohibited em dashes.
+
+However, the earlier system did not explicitly explain when a new playbook should be created. It also used a fixed validator list, so a newly added Markdown file could exist without automatically joining validation. A good question turned a general intention into a testable rule.
+
+The corrected playbook decision is:
+
+```text
+New instruction
+      |
+      v
+Always applicable invariant? ---- yes ---> Compact rule in AGENTS.md
+      |
+      no
+      v
+Existing playbook owns it? ------- yes ---> Update that playbook
+      |
+      no
+      v
+Recurring or safety-critical, and distinct? -- no --> Keep task-local
+      |
+      yes
+      v
+Create one focused playbook
+      |
+      v
+Index + route + trace + validate
+```
+
+The important lesson is not “create more files whenever a guide grows.” Too many tiny playbooks would introduce another navigation problem. A new playbook is justified only when no existing owner fits, the workflow is recurring or safety-critical, and merging it elsewhere would mix unrelated responsibilities.
+
+### Lesson learned by Codex
+
+Codex initially described the modular guidance system as protected, but Aman’s question required a deeper audit. The correct response was not to repeat that the validator passed. It was to ask what the validator could fail to detect.
+
+That audit found and corrected a real gap:
+
+- Before: the guidance validator checked a hard-coded list of eight playbooks.
+- Risk: a ninth Markdown playbook could be created but omitted from the hard-coded list, router, and index.
+- After: the validator discovers Markdown playbooks in the folder and applies indexing and routing checks to newly discovered files.
+
+The syllabus question exposed a second limitation. The curriculum ledger is strong evidence of workflow state, but it is not an automatic truth engine.
+
+The ledger currently protects:
+
+- 93 stable lesson records across nine ordered modules
+- unique IDs and slugs
+- valid prerequisite order
+- append-only status progression
+- concrete next steps and blockers
+- topic coverage separate from completion progress
+- 25 lesson requirements
+- source paths and last-verified dates for completed lessons
+- module audits at 25%, 50%, 75%, and 100%
+- a readable `audit.md` record for completed checkpoints
+
+It cannot independently prove:
+
+- that a technical explanation is correct
+- that an official source still describes current service behavior
+- that a section is genuinely understandable to a beginner
+- that two provider services are truly comparable
+- that a diagram teaches the intended mental model
+- that manually marking a requirement was justified
+
+Therefore Codex must not promise “nothing can ever be missed.” That would confuse structural validation with factual and pedagogical proof.
+
+### Corrected syllabus continuation model
+
+When Aman says “continue the syllabus,” Codex must use this sequence:
+
+```text
+Validate ledger and audit log
+              |
+              v
+Read generated status and exact nextStep
+              |
+              v
+Open the lesson, ledger record, and required playbooks
+              |
+              v
+Pass 1: research and create one coherent checkpoint
+              |
+              v
+Pass 2: independently inspect every claimed requirement
+              |
+              v
+Fact-check against current primary sources
+              |
+              v
+Test visuals, accessibility, search, and browser behavior as applicable
+              |
+              v
+Update ledger, nextStep, changelog, and lessons learned together
+              |
+              v
+Stop for any due module audit
+```
+
+The new requirement-evidence pass says that a checklist label is not evidence. Before recording a completed requirement, Codex must open the current lesson and locate the exact section, component, metadata field, source list, or test that supports it. Missing work must remain in `nextStep` or a blocker.
+
+### Why questions improve both participants
+
+The collaboration loop is:
+
+```text
+Aman asks how or why
+        |
+        v
+Codex must expose assumptions and evidence
+        |
+        v
+Hidden gap, limitation, or sound safeguard becomes visible
+        |
+        +--------------------+
+        |                    |
+        v                    v
+Aman gains a reusable       Codex gains a stronger
+technical mental model      project rule or validation
+        |                    |
+        +---------+----------+
+                  v
+          Better next decision
+```
+
+Questions are therefore not interruptions to development. They are lightweight design reviews. Codex should answer them with repository evidence and should update durable guidance only when the question produces a reusable change. It should not bloat documentation by copying every conversational detail into every file.
+
+### Permanent changes
+
+- Added `DOCS-04` as the always-read root-size and playbook-creation invariant.
+- Added a three-condition playbook creation test to `SKILLS.md`.
+- Added a lifecycle decision tree and anti-bloat procedure to `playbooks/README.md`.
+- Changed guidance validation to discover new Markdown playbooks automatically.
+- Added a requirement-evidence pass and two-pass lesson workflow to `syllabus-and-audits.md`.
+- Preserved the distinction between machine-checked structure and human-reviewed accuracy.
+
+### Remaining risk and honest confidence
+
+The system can resume curriculum work reliably from durable repository state even when conversational memory is unavailable. It materially reduces omission risk. It cannot guarantee perfect accuracy or zero omissions. Primary-source research, direct lesson inspection, browser review, and milestone audits remain necessary.
+
+The appropriate confidence statement is:
+
+> Codex can continue the syllabus in a repeatable, evidence-gated way. Completion claims are blocked by structural validators and review checkpoints, but accuracy and teaching quality still require careful source comparison and human judgment.
+
+### Changelog decision
+
+This is internal workflow validation and documentation maintenance. It does not add learner-facing syllabus content, a website feature, or a verified website bug fix. `changelog.md` remains unchanged.
+
+### Validation evidence
+
+- Guidance validation passed with all eight current playbooks indexed and routed.
+- A temporary ninth playbook correctly failed validation because it was absent from both the router and index.
+- The temporary validation probe was removed, and guidance validation passed again.
+- `AGENTS.md` contains 1,416 words, below its 2,500-word limit.
+- `SKILLS.md` contains 911 words, below its 1,600-word limit.
+- Documentation synchronization passed for all four living project records.
+- The ledger remains valid with 93 ordered lessons and a matching audit log.
+- All 11 unit tests passed.
