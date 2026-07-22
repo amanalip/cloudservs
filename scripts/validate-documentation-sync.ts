@@ -46,6 +46,49 @@ timestamps.forEach(({ fileName, timestamp }) => {
  * from silently inserting the newest entry above older repeated text, while preserving history.
  */
 const lessonsSource = readFileSync(resolve('lessons_learned.md'), 'utf8');
+
+/** Convert the archive's ASCII headings into the same predictable anchors used by Markdown. */
+function headingAnchor(heading: string): string {
+  return heading
+    .trim()
+    .toLowerCase()
+    .replace(/[^\p{L}\p{N}\s-]/gu, '')
+    .replace(/\s/g, '-');
+}
+
+/**
+ * The navigation index must cover every second-level section except itself.
+ * Markers keep extraction independent from the explanatory text around the index.
+ */
+const tocStartMarker = '<!-- LESSONS_TOC_START -->';
+const tocEndMarker = '<!-- LESSONS_TOC_END -->';
+const tocStart = lessonsSource.indexOf(tocStartMarker);
+const tocEnd = lessonsSource.indexOf(tocEndMarker);
+if (tocStart < 0 || tocEnd < 0 || tocEnd <= tocStart) {
+  errors.push('lessons_learned.md has no valid table-of-contents marker block');
+} else {
+  const tocSource = lessonsSource.slice(tocStart, tocEnd + tocEndMarker.length);
+  const actualTocAnchors = [...tocSource.matchAll(/\]\((#[^)]+)\)/g)].map((match) => match[1]);
+  const expectedTocAnchors = [...lessonsSource.matchAll(/^## (.+)$/gm)]
+    .map((match) => match[1])
+    .filter((heading) => heading !== 'Table of contents')
+    .map((heading) => `#${headingAnchor(heading)}`);
+
+  expectedTocAnchors.forEach((anchor) => {
+    if (!actualTocAnchors.includes(anchor)) {
+      errors.push(`lessons_learned.md table of contents is missing ${anchor}`);
+    }
+  });
+  actualTocAnchors.forEach((anchor) => {
+    if (!expectedTocAnchors.includes(anchor)) {
+      errors.push(`lessons_learned.md table of contents links to unknown section ${anchor}`);
+    }
+  });
+  if (new Set(actualTocAnchors).size !== actualTocAnchors.length) {
+    errors.push('lessons_learned.md table of contents contains a duplicate section link');
+  }
+}
+
 const lessonEntryPattern = /^## (\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}) [A-Z]{2,5} \|/gm;
 const lessonEntryTimes = [...lessonsSource.matchAll(lessonEntryPattern)].map((match) => match[1]);
 const duplicateEntryTimes = lessonEntryTimes.filter(

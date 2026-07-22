@@ -4,10 +4,53 @@
 
 ## Document status
 
-- Last documentation sync: `2026-07-22T17:08:09-04:00`
+- Last documentation sync: `2026-07-22T17:18:08-04:00`
 - Current format version: 2
 - Update policy: Required at the end of every project work session
 - Historical note: Aman found version 1 too shallow. Version 2 replaces that first draft with a fuller retrospective. Future historical entries must be appended rather than silently removed.
+
+<!-- LESSONS_TOC_START -->
+
+## Table of contents
+
+### Document guide
+
+- [Document status](#document-status)
+- [Why this document exists](#why-this-document-exists)
+- [What belongs in each project record](#what-belongs-in-each-project-record)
+- [The non-blame model](#the-non-blame-model)
+- [Mandatory end-of-session update](#mandatory-end-of-session-update)
+- [How future entries must be written](#how-future-entries-must-be-written)
+
+### Full first-development retrospective
+
+- [Full first-development retrospective](#2026-07-21-192432-edt--full-first-development-retrospective)
+  - [Lessons learned by the user, Aman](#lessons-learned-by-the-user-aman)
+  - [Lessons learned by Codex](#lessons-learned-by-codex)
+  - [Ideas from Aman that became durable project improvements](#ideas-from-aman-that-became-durable-project-improvements)
+  - [What worked well and should be repeated](#what-worked-well-and-should-be-repeated)
+  - [Open risks and unfinished learning](#open-risks-and-unfinished-learning)
+  - [Prevention and verification map](#prevention-and-verification-map)
+  - [Practices adopted after this retrospective](#practices-adopted-after-this-retrospective)
+
+### Dated amendments and later lessons
+
+Entries are listed in file order so the links match the append-only record. The documented `17:03:42` insertion appears before `16:57:57`; the later byte-based correction remains authoritative.
+
+- [2026-07-22 14:23:33 | Post-mortem depth correction](#2026-07-22-142333-edt--post-mortem-depth-correction)
+- [2026-07-22 14:30:43 | v1 changelog and feature-evidence review](#2026-07-22-143043-edt--v1-changelog-and-feature-evidence-review)
+- [2026-07-22 14:44:43 | Zero-analytics privacy audit](#2026-07-22-144443-edt--zero-analytics-privacy-audit)
+- [2026-07-22 14:51:22 | Trust correction for unsupported implementation confirmations](#2026-07-22-145122-edt--trust-correction-for-unsupported-implementation-confirmations)
+- [2026-07-22 14:53:30 | Changelog triggers expanded beyond features](#2026-07-22-145330-edt--changelog-triggers-expanded-beyond-features)
+- [2026-07-22 15:07:30 | Accidental shell-created file and safe recovery](#2026-07-22-150730-edt--accidental-shell-created-file-and-safe-recovery)
+- [2026-07-22 15:20:14 | Agent guidance refactored into routed playbooks](#2026-07-22-152014-edt--agent-guidance-refactored-into-routed-playbooks)
+- [2026-07-22 15:30:16 | Keep guidance compact and challenge requested methods respectfully](#2026-07-22-153016-edt--keep-guidance-compact-and-challenge-requested-methods-respectfully)
+- [2026-07-22 17:03:42 | Size limits need documented units, headroom, and honest uncertainty](#2026-07-22-170342-edt--size-limits-need-documented-units-headroom-and-honest-uncertainty)
+- [2026-07-22 16:57:57 | Questions are a shared quality-control loop](#2026-07-22-165757-edt--questions-are-a-shared-quality-control-loop)
+- [2026-07-22 17:08:09 | Beginner extension: guidance is a navigation system, not a storage box](#2026-07-22-170809-edt--beginner-extension-guidance-is-a-navigation-system-not-a-storage-box)
+- [2026-07-22 17:18:08 | A growing lessons archive needs a validated navigation index](#2026-07-22-171808-edt--a-growing-lessons-archive-needs-a-validated-navigation-index)
+
+<!-- LESSONS_TOC_END -->
 
 ## Why this document exists
 
@@ -2298,3 +2341,74 @@ The `17:03:42` entry is the later correction to the word-limit statements in the
 ### Changelog decision
 
 This amendment improves internal learning documentation. It does not add learner-facing syllabus content, a website feature, or a verified website bug fix. `changelog.md` remains unchanged.
+
+## 2026-07-22 17:18:08 EDT | A growing lessons archive needs a validated navigation index
+
+### Prompt
+
+Aman noticed that `lessons_learned.md` was becoming large and asked for a table of contents so readers could navigate it quickly.
+
+### Lesson learned by Aman
+
+Preserving detailed history and making history usable are separate responsibilities. An append-only archive can protect decisions while still becoming difficult to scan.
+
+```text
+Detailed history grows
+          |
+          v
+Knowledge is preserved
+          |
+          +-- without navigation --> readers struggle to find it
+          |
+          +-- with navigation ----> readers can revisit decisions quickly
+```
+
+A table of contents is not merely decoration in a long learning document. It acts as an index over the project memory. Grouping introductory guidance, the first full retrospective, and later dated amendments helps a beginner understand the document before selecting a specific lesson.
+
+### Lesson learned by Codex
+
+Adding a table of contents manually without validation would solve today's navigation problem while creating tomorrow's maintenance problem. Every appended lesson could make the index stale.
+
+The durable implementation therefore needs two parts:
+
+1. A readable table of contents near the top of the file.
+2. A deterministic validator that compares the index with the actual second-level headings.
+
+The table of contents uses normal Markdown anchor links, so it works on GitHub without JavaScript. It lists entries in physical file order because the file is an append-only historical record. The known timestamp-order amendment is explained beside the links rather than hidden.
+
+### Future practice
+
+Whenever a dated lesson is appended:
+
+```text
+Append the new lesson at the end
+             |
+             v
+Add its link to the table of contents
+             |
+             v
+Synchronize documentation timestamps
+             |
+             v
+Run npm run docs:validate
+             |
+        +----+----+
+        |         |
+      pass       fail
+        |         |
+        v         v
+    close out   repair stale or missing navigation
+```
+
+The navigation index should remain compact. It points to lessons rather than duplicating their summaries. If the number of entries becomes very large, future maintenance may group links by month or year while preserving every destination.
+
+### Changelog decision
+
+This change improves repository documentation navigation and validation. It does not alter the learner-facing website, add syllabus content, or resolve a website bug. `changelog.md` remains unchanged.
+
+### Validation evidence
+
+- Documentation synchronization passed with every second-level lesson section indexed.
+- Removing the newest table-of-contents link caused the expected missing-anchor failure.
+- The removed link was restored before closeout.
+- Duplicate table-of-contents links and links to unknown sections are also rejected.
