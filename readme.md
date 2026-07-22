@@ -1,6 +1,6 @@
 # cloudservs
 
-Last documentation sync: `2026-07-22T15:07:30-04:00`
+Last documentation sync: `2026-07-22T15:20:14-04:00`
 
 > Learn cloud concepts once, then understand how AWS, Microsoft Azure, and Google Cloud implement them.
 
@@ -65,12 +65,36 @@ The first detailed lesson drafts are **What is cloud computing?** and **Shared r
 
 Core repository documents:
 
-- `AGENTS.md` defines the project's non-negotiable requirements and engineering standards.
-- `SKILLS.md` defines repeatable workflows for content, diagrams, fact-checking, search, accessibility, testing, and deployment.
+- `AGENTS.md` is the compact, automatically loaded project contract containing always-applicable rules and stable policy identifiers.
+- `SKILLS.md` is a compact task router that tells contributors which detailed playbooks must be read.
+- `playbooks/` contains eight focused procedures plus a traceability index mapping every former root-guide section and workflow to its new location.
 - `audit.md` preserves timestamped module-audit outcomes, evidence, corrections, validation results, and next actions.
 - `lessons_learned.md` preserves questions, corrections, successful ideas, limitations, visual causal models, and future practices learned by Aman and Codex. It is updated during every work-session closeout, including a short record when no new reusable lesson emerges.
 - `changelog.md` records public versions, learner-facing syllabus additions, implemented features, verified website fixes, quality evidence, technology status, and known limitations. It must be updated in the same change whenever one of those qualifying product changes is completed. It is not edited for routine questions or documentation-only clarification.
 - `readme.md` describes the product vision, learning experience, architecture, curriculum, and delivery plan.
+
+### Guidance architecture
+
+The project separates always-applicable rules from task-specific procedures so important instructions remain visible without losing detail.
+
+```text
+AGENTS.md
+  Always-applicable contract and critical rule IDs
+       |
+       v
+SKILLS.md
+  Match the task to required playbooks
+       |
+       v
+playbooks/
+  Read the complete procedures before acting
+       |
+       v
+Validation
+  Check size, routes, files, links, rule IDs, and traceability
+```
+
+`npm run guidance:validate` protects this structure. It keeps the two root guides below agreed size limits, requires all eight playbooks, checks that every playbook is routed and indexed, preserves the migration table for all former sections and 17 workflows, verifies internal links, requires critical rule IDs, and rejects em dashes in guidance.
 
 ### Honest v1 boundary
 
@@ -275,11 +299,14 @@ Module 1 has already crossed 25%. Its first audit was completed on July 21, 2026
 
 ```text
 cloudservs/
+  AGENTS.md                      Compact always-applicable agent contract
+  SKILLS.md                      Compact task-to-playbook router
+  playbooks/                     Eight detailed workflows and traceability index
   audit.md                       Append-only module audit history
   changelog.md                   Evidence-based public feature history
   lessons_learned.md             User and Codex post-mortem history
   .github/workflows/static.yml   GitHub Pages build and deployment
-  scripts/                       Syllabus validation and status commands
+  scripts/                       Syllabus, documentation, guidance, privacy, and status commands
   public/                        Static favicon and public assets
   src/assets/                    Brand artwork
   src/components/                Learning and diagram components
@@ -943,6 +970,7 @@ A chunk is complete only after:
 - Internal and external link checks
 - GitHub Pages base-path testing
 - Privacy validation against source, dependencies, and generated HTML
+- Guidance validation for root-guide size, routing, critical rules, traceability, and links
 - Browser confirmation that representative pages make no third-party requests
 - Astro CLI telemetry opt-out in local npm workflows and GitHub Actions
 - Copyright verification

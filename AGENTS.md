@@ -1,496 +1,119 @@
-# cloudservs Agent Guide
-
-Last documentation sync: `2026-07-22T15:07:30-04:00`
-
-## Purpose
-
-`cloudservs` is a visual, beginner-friendly cloud learning website that teaches a concept once and then explains how AWS, Microsoft Azure, and Google Cloud implement it.
-
-The primary learner is a student, recent graduate, career changer, or new employee preparing for an entry-level cloud role. Never assume that the learner already understands cloud terminology, networking, security, operating systems, or distributed systems.
-
-## Current project status
-
-Public release `v1` was developed on July 21, 2026. It includes the Astro and Starlight foundation, a custom responsive interface, locally bundled reading fonts, persisted light and dark themes, static full-text search, curriculum metadata, local lesson progress, interactive quizzes, reusable diagram components with zoom and full-screen viewing, and the first two fact-checked foundation lesson drafts.
-
-Build the remaining curriculum in coherent, verified chunks. A chunk is complete only when its lessons, visuals, interactions, source review, browser checks, and documentation are complete.
-
-### Current v1 implementation boundary
-
-- The repository contains 93 planned lessons across 9 ordered modules.
-- Module 1 has 30% topic coverage, 18% requirement progress, and zero quality-gated complete lessons.
-- `What is cloud computing?` and `Shared responsibility` are detailed, source-backed drafts, not complete lessons.
-- Full-text Pagefind search exists, but advanced provider, module, topic, and difficulty filters remain planned.
-- Local lesson-completion storage exists, but bookmarks, recently viewed lessons, and continue-learning automation remain planned.
-- ASCII, Mermaid, and Markmap are active. Chart.js, Cytoscape.js, and Driver.js are installed but have no released v1 use.
-- The platform-aware Command K label was discussed but is not implemented in the repository.
-- axe-core is installed, but the current Playwright suite does not invoke it.
-- Browser regression coverage currently targets desktop Chromium. Dedicated mobile, Firefox, and WebKit projects remain future work.
-- PWA and offline installation are deferred because the evaluated adapter does not support Astro 7.
-- The next learner-facing feature release will be `v2`. Documentation maintenance alone does not create a new release.
-
-## Release and changelog governance
-
-`changelog.md` is the evidence-based public feature history.
-
-- Use simple release labels `v1`, `v2`, `v3`, and later whole-number versions.
-- Add the next release whenever validated learner-facing syllabus content is added, a feature is added, or a website bug is resolved.
-- Keep the current changelog at `v1` until a post-v1 feature is actually implemented.
-- Distinguish released, improved, fixed, verified, planned, deferred, and installed-but-unused capabilities.
-- Verify every release claim against source files, imports, tests, generated behavior, or version history.
-- Never list a conversational confirmation, dependency installation, requirement, or plan as an implemented feature without repository evidence.
-- Include release date, scope, content state, quality evidence, known limits, dependency status, and compatibility notes when applicable.
-- Review `changelog.md` during closeout, but edit it only when a release or its historical evidence materially changes. Questions, policy clarifications, audits, and documentation-only maintenance do not alter the changelog by themselves.
-- Update `changelog.md` in the same change as every qualifying syllabus addition, feature, or resolved website bug. Group related work from one coherent push into one version entry.
-- Do not treat syllabus ledger bookkeeping as learner-facing syllabus delivery. Require the actual lesson, diagram, exercise, curriculum capability, or other content plus its relevant quality checks.
-- Do not call a website bug resolved or record it as fixed until a focused regression test or documented reproducible check verifies the correction.
-
-## Implementation-claim verification protocol
-
-The user depends on Codex for reliable status information. A false positive, such as confirming the platform-aware Command K label without implementation evidence, is a serious process failure even when the feature is small.
-
-Before saying that any feature, fix, test, library integration, content requirement, accessibility behavior, or deployment capability is implemented, complete, working, protected, or released:
-
-1. Re-read the exact user request or acceptance criterion.
-2. Inspect the current working tree instead of relying on conversation memory or an earlier response.
-3. Locate the implementation file, import, component, configuration, or content that performs the claimed behavior.
-4. Trace how a real page or workflow reaches that implementation. An unused component or installed package does not count.
-5. Locate a relevant automated test, or run a focused browser or command-line verification when automation is not practical.
-6. Check the result in the correct environment, viewport, theme, operating-system condition, base path, and browser when the claim depends on them.
-7. Record important limitations. A Chromium desktop check does not prove mobile, Firefox, WebKit, macOS, or assistive-technology behavior.
-8. Use the evidence-supported status word defined below.
-
-```text
-Requirement discussed
-        |
-        v
-Implementation exists in current repository?
-        |
-    +---+---+
-    |       |
-   no      yes
-    |       |
-    v       v
- planned   Reachable by the real product?
-            |
-        +---+---+
-        |       |
-       no      yes
-        |       |
-        v       v
-  present but  Relevant behavior verified?
-    inactive        |
-               +----+----+
-               |         |
-              no        yes
-               |         |
-               v         v
-          implemented   verified
-          but unverified   |
-                         v
-                 released only when included
-                 in a named validated release
-```
-
-Required language:
-
-- `planned`: requested or documented, but implementation evidence is absent.
-- `present but inactive`: code or a dependency exists, but no real page or workflow uses it.
-- `implemented but unverified`: reachable implementation exists, but relevant behavior has not been demonstrated.
-- `verified`: current implementation and relevant behavior have fresh evidence.
-- `released`: verified behavior is included in a named public release.
-- `not yet verified`: use this whenever the evidence check cannot be completed. Never convert uncertainty into a positive confirmation.
-
-Conversation memory, a previous Codex statement, a requirement in Markdown, a package installation, a filename, a passing unrelated test, or intended CSS is never sufficient evidence by itself. When answering a direct “is this done?” question, include the strongest concise evidence and any meaningful coverage boundary. If later inspection contradicts an earlier response, correct it immediately and append the discrepancy, cause, and prevention change to `lessons_learned.md`.
-
-Platform-dependent behavior has an additional gate. The implementation must detect or derive the relevant platform condition, render the expected result for each supported platform, and have a test that covers at least the differing branches. Until those three facts exist, the platform-aware Command K label remains `planned`.
-
-## Non-negotiable requirements
-
-- The site name is `cloudservs`.
-- The site must be deployable as a static website on GitHub Pages.
-- The site must include a polished light theme and dark theme.
-- The initial theme must respect the operating system preference.
-- A learner's selected theme must persist between visits.
-- The interface must be responsive, accessible, visually calm, and encouraging.
-- Explanations must be beginner-friendly without becoming shallow or incomplete.
-- The curriculum must be broad enough to support serious learning and job preparation.
-- Lessons must contain many useful visuals, not a single decorative diagram.
-- Avoid em dashes in all interface copy, lessons, documentation, comments, and examples.
-- The footer must display `© 2026 Aman Ali Pogaku`.
-- Update `AGENTS.md`, `SKILLS.md`, `readme.md`, and `lessons_learned.md` at the end of every project work session. Update `changelog.md` only for release evidence, and update `audit.md` whenever a formal module audit occurs.
-
-## Privacy and zero-analytics policy
-
-`cloudservs` must not collect, transmit, sell, profile, or analyze learner data. This prohibition applies to both obvious analytics and indirect tracking.
-
-- Do not add visitor analytics, telemetry, advertising pixels, heatmaps, session replay, fingerprinting, cross-site tracking, unique visitor identifiers, marketing tags, or error-reporting services that transmit browser data.
-- Do not create accounts, user profiles, authentication, comments, contact forms, mailing-list forms, or server-submitted quizzes unless the owner explicitly changes this policy after a separate privacy review. The current policy is that these capabilities must not be added.
-- Do not write application cookies or read browser cookies.
-- Do not transmit search terms, lesson progress, bookmarks, theme choices, contents-pane preferences, quiz answers, clipboard contents, or accessibility preferences to cloudservs, GitHub, a cloud provider, or another third party.
-- Keep Pagefind search in the browser. Search index files may load from the same static site, but the typed query must not be sent to a search service.
-- Keep fonts, icons, scripts, styles, and learning assets inside the deployed static site. Do not add remote scripts or iframes.
-- Allow local browser storage only when it directly benefits the learner, is documented, contains no sensitive information, and never syncs to a server.
-- Current persistent local values are the Starlight theme, completed lesson slugs, contents-pane width, and contents-pane side. Starlight also keeps transient sidebar state in session storage. These values remain in that browser and can be removed by clearing site data.
-- Clipboard controls may write text only after the learner activates them. They must never read unrelated clipboard contents or transmit clipboard data.
-- External source and repository links are ordinary navigation. After a learner follows one, the destination site's privacy rules apply.
-- Astro CLI telemetry must be disabled by the repository-owned Astro launcher and the GitHub Actions job. Do not depend on a machine-wide setting. A transitive telemetry package in Astro is not proof of deployed visitor analytics, but leaving the CLI opt-out implicit is not acceptable.
-- GitHub Pages is the hosting boundary. GitHub states that it logs visitor IP addresses for security when a Pages site is visited. That infrastructure processing is controlled by GitHub, not by cloudservs, and cloudservs has no application backend that receives those logs.
-- Review every new dependency, browser API, network request, embedded resource, and deployment change against this policy before merging.
-- Treat any unexplained third-party browser request or collection-capable API as a release blocker.
-
-Run `npm run privacy:validate` after a production build. The build must reject common collection APIs, analytics dependencies, and automatically loaded remote scripts, frames, styles, or media. The Playwright suite must also confirm that representative learner pages make no third-party requests. Automated scans support, but do not replace, manual code and browser-network review.
-
-## Teaching model
-
-Every substantial lesson should follow this sequence unless the subject requires a justified variation:
-
-1. State what the learner will understand.
-2. Explain the concept in plain language.
-3. Explain why the concept exists.
-4. Introduce required vocabulary before using it heavily.
-5. Provide a simple day-to-day analogy.
-6. State where the analogy stops being technically accurate.
-7. Provide a visual mental model.
-8. Explain the technical mechanism in sufficient depth.
-9. Show the AWS implementation.
-10. Show the Azure implementation.
-11. Show the Google Cloud implementation.
-12. Compare the providers side by side.
-13. Label mappings as direct, approximate, or absent.
-14. Show the concept inside a realistic architecture.
-15. Cover common mistakes and troubleshooting clues.
-16. Connect the topic to workplace tasks and interviews.
-17. Provide a recap, glossary, flashcards, and quiz.
-18. Cite primary sources and show a last-verified date.
-
-Do not shorten an explanation merely to make a page look clean. Use progressive disclosure, good headings, visual grouping, expandable details, summaries, and navigation to manage depth.
-
-## Diagram standard
-
-Lessons should use the diagram types that best fit the idea:
-
-- Markdown-formatted ASCII diagrams
-- Mind maps
-- Concept maps
-- Flow diagrams
-- Sequence diagrams
-- Decision trees
-- Request and data-flow diagrams
-- Responsibility boundaries
-- Network paths
-- Service relationship maps
-- Lifecycle diagrams
-- Failure and recovery flows
-- Before-and-after comparisons
-- Side-by-side provider mappings
-- Architecture diagrams
-- Interview mental models
-
-Every visual must teach something specific. Decorative visuals do not count toward the diagram requirement.
-
-For every complex or interactive visual:
-
-- Provide a descriptive title and caption.
-- Provide a text explanation or equivalent structured list.
-- Do not communicate meaning by color alone.
-- Support keyboard navigation where interaction exists.
-- Ensure readable contrast in light and dark themes.
-- Respect `prefers-reduced-motion`.
-- Make the visual usable on narrow mobile screens.
-- Offer zoom, pan, expansion, or a larger view when density requires it.
-- Dense Mermaid and Markmap visuals must provide visible zoom out, zoom in, reset, and full-screen controls.
-- Diagram zoom must scale labels, nodes, arrows, and spacing as one unit. Text must never escape or clip inside its node at any supported zoom level.
-- Never leave an empty diagram frame after a rendering failure. Show an accessible fallback that points to the equivalent text explanation.
-
-ASCII diagrams must remain readable as text, use a suitable monospace font, support horizontal scrolling when necessary, and include a copy control where helpful.
-
-Center an ASCII drawing as a complete block while preserving left alignment inside the drawing. Clipboard actions must work on initial load and after client-side navigation, report success or failure, and include a restricted-browser fallback.
-
-## Accuracy and fact-checking
-
-Technical correctness is a release requirement.
-
-- Use official AWS documentation, Microsoft Learn and Azure documentation, and Google Cloud documentation as primary sources.
-- Use standards bodies or original project documentation for vendor-neutral technologies.
-- Do not use search-result summaries as evidence.
-- Verify service names, scope, behavior, limits, availability, terminology, and prerequisites.
-- Treat pricing, quotas, regional availability, product names, and certification details as time-sensitive.
-- Prefer stable conceptual comparisons over temporary marketing language.
-- Never describe two services as exact equivalents solely because they occupy similar categories.
-- Classify provider mappings as `direct`, `approximate`, or `no direct equivalent`.
-- Explain the important differences behind every approximate mapping.
-- Attach source links and a `lastVerified` date to each technical lesson.
-- Clearly label simplifications and analogy boundaries.
-- Do not publish an unsupported claim as fact.
-- If reliable sources disagree or remain ambiguous, state the uncertainty.
-- Recheck links and time-sensitive facts during scheduled content maintenance.
-
-Automated checks can support fact-checking but cannot replace manual comparison against primary sources.
-
-## Proposed technical foundation
-
-Use a static-first architecture based on:
-
-- Astro for static generation
-- Starlight for accessible learning and documentation structure
-- Markdown and MDX for lesson content
-- Preact for focused interactive learning components
-- Pagefind for static full-text search and filtering
-- Mermaid for flow, sequence, state, architecture, timeline, and related diagrams
-- Markmap for interactive Markdown mind maps
-- Cytoscape.js for interactive service and prerequisite graphs
-- Lucide for consistent generic interface icons
-- Nano Stores and Nano Stores Persistent for local progress, bookmarks, and preferences
-- Vite PWA integration for offline learning and update prompts when an adapter supports the project's Astro version
-- Chart.js for selective data visualizations with accessible table alternatives
-- Driver.js for an optional first-visit tour when it adds real value
-- Expressive Code for code examples and styled ASCII blocks
-- TypeScript for interactive code
-- Vitest for unit and component tests
-- Playwright for browser and responsive-flow tests
-- axe-core with Playwright for automated accessibility checks
-
-Use libraries generously when they materially improve learning, clarity, accessibility, or maintainability. Do not add overlapping libraries merely to increase the dependency count. Load expensive visualization libraries only on pages that need them. Pin exact dependency versions in the lockfile and review them during upgrades.
-
-- Distinguish installed dependencies from active learner features in documentation and release notes.
-- Do not claim Chart.js, Cytoscape.js, Driver.js, or axe-core behavior until source usage and relevant tests exist.
-
-The current Vite PWA Astro adapter does not declare compatibility with Astro 7. Do not force an incompatible peer dependency. Reevaluate PWA support during dependency upgrades and add it only after compatibility and GitHub Pages behavior are verified.
-
-## Search requirements
-
-Search is a core feature, not a later enhancement.
-
-- Index lesson titles, headings, body text, glossary terms, analogies, and provider service names.
-- Return matches for sections within long lessons.
-- Support filters for provider, curriculum module, topic, and difficulty.
-- Support abbreviations, common synonyms, and cross-provider terminology.
-- Examples include `VM`, `virtual machine`, `EC2`, `Azure Virtual Machines`, and `Compute Engine`.
-- Provide helpful empty states and suggested alternative terms.
-- Ensure the search dialog works with a keyboard and screen reader.
-- Keep search entirely static and compatible with GitHub Pages.
-- Generate the search index automatically during deployment.
-
-## Learner experience
-
-The site should encourage continued learning through clarity and achievable progress.
-
-- Clicking a generated heading chain icon must navigate to the section and copy its complete absolute URL.
-- Section-link copying must provide visible and screen-reader confirmation plus a restricted-browser clipboard fallback.
-
-- Show prerequisites before a lesson begins.
-- Show estimated depth or difficulty without pressuring the learner.
-- Break long lessons into visible stages while preserving full detail.
-- Celebrate completed lessons subtly.
-- Save progress locally without requiring an account.
-- Provide bookmarks, recently viewed lessons, and a continue-learning action.
-- Explain incorrect quiz answers without shaming the learner.
-- Provide hints before revealing answers where appropriate.
-- Use encouraging, direct, human language.
-- Avoid excessive animation, gamification pressure, streak anxiety, and visual noise.
-- Make the next useful action obvious.
-
-## Curriculum-first structure
-
-`cloudservs` has one ordered curriculum. Do not build separate role-based learning paths, role dashboards, duplicated lesson sequences, or independent progress systems.
-
-- Give every lesson one clear position in the main curriculum.
-- Use prerequisites and previous and next lesson links to guide progression.
-- Track progress against the single curriculum.
-- Allow learners to search or filter the curriculum without creating alternate course structures.
-
-## Durable syllabus tracking
-
-`src/data/syllabus.ts` is the source of truth for lesson-level curriculum progress. Conversation memory, file existence, navigation visibility, and module availability are not completion evidence.
-
-- Run `npm run syllabus:status` before continuing curriculum work.
-- Run `npm run syllabus:validate` after every ledger change.
-- When the user says “continue making syllabus,” resume the reported next lesson and its recorded `nextStep`.
-- Keep stable lesson IDs, module order, topics, covered topics, prerequisites, source paths, status history, completed requirements, verification dates, blockers, and next steps current.
-- Distinguish topic coverage from quality-gated completion in every progress report.
-- Mark a lesson `complete` only after every requirement in `lessonRequirements` is recorded, every assigned topic is covered, the source file exists, and a last-verified date is present.
-- Append status history instead of rewriting earlier events.
-- Record a concrete blocker whenever status is `blocked`.
-- Update the ledger in the same change that adds, reviews, blocks, resumes, or completes lesson content.
-- Complete whole-module quality audits when topic coverage first reaches 25%, 50%, 75%, and 100%.
-- Treat a reached audit threshold as a release blocker until every module-audit requirement is checked and every finding is corrected, explicitly tracked, or accepted with a reason.
-- Recheck syllabus coverage, factual accuracy, primary sources, pedagogy, sequence, provider comparisons, visuals, accessibility, navigation, search, browser regressions, terminology, and consistency during every module audit.
-- Preserve completed audit findings and resolutions so later checkpoints can detect recurring problems.
-- Treat `audit.md` as the append-only, human-readable history of completed module checkpoints.
-- Append a timestamped `audit.md` entry in the same change that marks a module audit complete.
-- Include the checkpoint scope, outcome, findings, actions, sources, validation results, and next action in every audit entry.
-- Preserve prior audit entries. Record later corrections as dated amendments instead of silently rewriting history.
-- Keep the stable audit marker directly above each entry so `npm run syllabus:validate` can match the log to the ledger.
-- Treat `lessons_learned.md` as the append-only post-mortem and decision-memory log.
-- Append a timestamped `lessons_learned.md` entry at the end of every work session, even when the conclusion is that no new reusable lesson emerged.
-- Separate lessons learned by the user from lessons learned by Codex. Include the prompt, beginner explanation, impact, evidence, exposed limitations, future practice, validation, and open risks where applicable.
-- Use ASCII charts, mind maps, tables, or flows when they materially clarify causes, relationships, or prevention steps.
-- Record shortcomings fairly and specifically. This is a non-blaming improvement record, not a defense of Codex or a criticism of the user.
-- Store verified audit results in `audit.md`. Store reflective learning and changed future practice in `lessons_learned.md`.
-- Store evidence-based release history and honest implementation boundaries in `changelog.md`.
-- Update the documentation-sync timestamp in `AGENTS.md`, `SKILLS.md`, `readme.md`, and `lessons_learned.md` during every session closeout. Keep `changelog.md` release-only.
-- Workplace relevance may be shown as lightweight lesson context, but it must not become a separate navigation or progress system.
-- Reuse the same lesson wherever another page references it. Never duplicate lesson content for a job role.
-- Treat any future curated role view as an optional index over the existing curriculum, not as a separate curriculum.
-
-## Interface and visual design
-
-- Create a distinctive custom visual system for `cloudservs` rather than shipping an unmodified documentation theme.
-- Use spacious layouts, strong hierarchy, readable typography, calm surfaces, and consistent diagram cards.
-- Bundle project fonts locally so typography remains consistent without third-party requests.
-- Use Atkinson Hyperlegible for lesson text, Manrope for headings, and JetBrains Mono for code and ASCII.
-- Cards in the same visual collection must have consistent dimensions and internal spacing.
-- Toolkit cards in separate rows must use the same explicit rendered height.
-- Provider comparison cards must reset inherited Markdown sibling margins and share identical top and bottom alignment.
-- Diagram plus and minus icons must use centered SVG strokes instead of font-dependent glyph alignment.
-- Desktop readers must be able to move the page contents pane left or right and resize it with a pointer or keyboard.
-- Persist contents-pane position and width locally, while keeping the mobile contents experience compact.
-- Style Markmap HTML labels through Markmap theme variables and verify their contrast in both themes.
-- Keep line lengths comfortable for learning.
-- Use provider colors carefully and never as the only identifier.
-- Maintain clear focus states and large touch targets.
-- Avoid layout shifts and unnecessary client-side JavaScript.
-- Test common phone, tablet, laptop, and wide-screen layouts.
-- Respect system theme initially and persist explicit theme choices.
-- Respect reduced motion, forced colors, zoom, and keyboard-only use.
-- Maintain a minimum WCAG 2.2 AA target, with manual review in addition to automated checks.
-
-## Logo and icon rules
-
-- Create an original, vendor-neutral SVG logo for `cloudservs`.
-- The brand concept should combine connected cloud providers with learning or an open-book idea.
-- The logo must work at favicon, navigation, social-card, light-theme, and dark-theme sizes.
-- Use official AWS, Azure, and Google Cloud architecture icons only where their published guidelines allow.
-- Do not redraw, recolor, distort, or invent trademarked provider service logos.
-- Create a consistent custom icon family for vendor-neutral concepts such as compute, networking, storage, identity, databases, security, and observability.
-- Always pair unfamiliar service icons with text labels.
-
-## Code documentation standard
-
-All human-authored code must be unusually well documented for a beginner audience.
-
-- Document every meaningful line when doing so remains syntactically valid and readable.
-- When line-by-line comments are not practical, document every logical block immediately before it.
-- Explain intent, data flow, inputs, outputs, assumptions, and important browser behavior.
-- Explain why a library or pattern is used, not only what the syntax does.
-- Add beginner-oriented file headers that describe the file's role.
-- Document component properties, state, events, accessibility behavior, and persistence behavior.
-- Comment non-obvious CSS calculations, theme tokens, responsive rules, and motion behavior.
-- Keep examples correct and runnable.
-- Do not add comments that merely repeat the code without improving understanding.
-- Do not place comments where the file format forbids them, such as JSON. Document those files in a nearby Markdown file or through adjacent source configuration.
-- Generated files, lockfiles, build output, third-party code, and vendored official assets are exempt from line-by-line comments.
-
-The documentation requirement must not be used to justify convoluted code. Prefer small components, descriptive names, simple control flow, and typed interfaces.
-
-## Content structure and metadata
-
-Each lesson should include structured metadata for at least:
-
-- Title
-- Summary
-- Domain
-- Difficulty
-- Prerequisites
-- Learning objectives
-- Providers covered
-- Workplace relevance
-- Estimated reading or study time
-- Mapping confidence where comparisons exist
-- Primary sources
-- Last verified date
-- Review status
-
-Build-time validation must reject missing required metadata, invalid dates, broken internal references, and malformed lesson structures.
-
-## Curriculum scope
-
-The curriculum should grow in reviewed chunks and include:
-
-- Cloud and computing foundations
-- Identity and access management
-- Global infrastructure
-- Compute and virtualization
-- Containers and Kubernetes
-- Serverless computing
-- Storage
-- Relational and non-relational databases
-- Networking fundamentals and cloud networking
-- Application delivery
-- Messaging and integration
-- Security
-- Observability and operations
-- Reliability and disaster recovery
-- DevOps and delivery
-- Infrastructure as code
-- Cost management and FinOps
-- Governance and organizations
-- Data engineering and analytics
-- AI and machine learning foundations
-- Migration and modernization
-- Architecture patterns
-- Hands-on job skills
-- Troubleshooting
-- Interview and career preparation
-
-Do not create shallow placeholder lessons to make the curriculum appear complete.
-
-## Incremental delivery
-
-Build in quality-controlled chunks:
-
-1. Foundation, design system, content schema, search, deployment, and reusable learning components.
-2. Pilot curriculum covering cloud fundamentals, global infrastructure, shared responsibility, compute, storage, networking, and identity.
-3. Core technical curriculum.
-4. Remaining curriculum modules and cross-topic architecture practice.
-5. Job preparation, quizzes, scenarios, and revision tools.
-6. Advanced curriculum and maintenance automation.
-
-Complete content, visual, factual, accessibility, and responsive review for a chunk before expanding it.
-
-## Quality gates
-
-Before calling a change complete:
-
-- Run formatting, linting, type checking, unit tests, and a production build.
-- Run browser tests at representative desktop and mobile sizes.
-- Test light mode, dark mode, system theme, and saved theme behavior.
-- Test keyboard navigation and visible focus.
-- Run automated accessibility checks and perform manual accessibility review.
-- Check internal and external links.
-- Verify GitHub Pages base-path behavior.
-- Check search indexing and common synonym searches.
-- Inspect diagrams on mobile and in both themes.
-- Check that reduced-motion preferences are respected.
-- Verify that new claims have primary sources and review dates.
-- Scan authored text for em dashes and replace them.
-- Confirm that copyright text is correct.
-- Run the Playwright UI regression suite against the production build.
-- Run the privacy validator and confirm representative pages make no third-party browser requests.
-- Inspect new dependencies and browser APIs for analytics, telemetry, tracking, cookies, outbound data submission, remote scripts, and remote iframes.
-- Confirm Astro CLI telemetry is disabled in npm workflows and deployment automation.
-- Run syllabus validation and confirm the next-lesson report remains accurate.
-- Confirm every reached module-audit threshold is complete and contains no open finding.
-- Confirm every completed module audit has a matching timestamped entry in `audit.md`.
-- Do not deploy when shared card geometry, diagram controls, diagram containment, ASCII copying, contents-pane behavior, or dark-mode diagram contrast regress.
-- Regression-test heading chain links for hash navigation, absolute URL copying, and accessible confirmation.
-- Update project documentation when architecture, commands, conventions, or workflows change.
-- Complete the mandatory four-document synchronization pass and append the session reflection to `lessons_learned.md`.
-- Check whether the work qualifies for a new changelog version. Do not increment the version for documentation-only maintenance.
-- Re-verify every completion or implementation statement against current repository evidence. Treat unverified conversational memory as planned or not yet verified.
-- For each newly claimed feature, identify its implementation, product reachability, relevant verification, and coverage limits.
-- Run `npm run docs:validate` and do not close the session when the four living-document timestamps differ.
-
-## Repository hygiene
-
-- Preserve user changes and avoid unrelated rewrites.
-- Do not commit generated build output unless the deployment design explicitly requires it.
-- Keep dependencies justified and documented.
-- Keep assets optimized and source attribution recorded where required.
-- Never place secrets or private credentials in client code, lesson content, examples, or repository history.
-- Remember that all GitHub Pages code and data delivered to the browser are public.
-- Quote shell regular expressions and special characters so `<`, `>`, `|`, brackets, wildcards, and redirection operators reach the intended command rather than the shell parser.
-- Prefer simple, separately testable search commands over dense expressions with fragile nested quoting.
-- After any shell command reports a quoting, redirection, path, or parse error, immediately run `git status --short` and inspect newly created files before continuing.
-- Treat an unexpected empty file or unusual filename as possible command side effect. Inspect its size, timestamps, Git state, and originating command before deciding whether to remove it.
-- Never hide an accidental repository change. Explain its cause, remove it safely when authorized, and record a reusable prevention rule.
+# cloudservs Agent Contract
+
+Last documentation sync: `2026-07-22T15:20:14-04:00`
+
+## Purpose and learner
+
+`cloudservs` is a visual, beginner-friendly cloud learning website that teaches a vendor-neutral concept once, then explains how AWS, Microsoft Azure, and Google Cloud implement it.
+
+The primary learner is a student, recent graduate, career changer, or new employee preparing for an entry-level cloud role. Never assume prior knowledge of cloud terminology, networking, security, operating systems, or distributed systems. Beginner-friendly must never mean shallow or incomplete.
+
+## How to use this contract
+
+This file contains only the always-applicable rules. Detailed procedures live in [`playbooks/`](./playbooks/README.md).
+
+Before acting:
+
+1. Read this file completely.
+2. Use the task router in [`SKILLS.md`](./SKILLS.md).
+3. Read every playbook required for the task.
+4. Announce the selected playbooks before they cause an action or pause.
+5. Follow the strictest applicable rule when playbooks overlap.
+
+Do not treat `SKILLS.md` as an automatically activated Codex skill package. It is a project workflow router, so reading the routed playbooks is an explicit required step.
+
+## Current verified boundary
+
+- Public release: `v1`, developed July 21, 2026.
+- Curriculum ledger: 93 planned lessons across 9 ordered modules.
+- Module 1: 30% topic coverage, 18% requirement progress, zero quality-gated complete lessons.
+- Detailed drafts: `What is cloud computing?` and `Shared responsibility`.
+- Active visuals: ASCII, Mermaid, Markmap, and provider comparisons.
+- Installed but not released as learner features: Chart.js, Cytoscape.js, and Driver.js.
+- axe-core is installed but not invoked by the current browser suite.
+- Browser regressions target desktop Chromium. Dedicated mobile, Firefox, and WebKit projects remain planned.
+- Advanced search filters, bookmarks, recently viewed lessons, continue-learning automation, and platform-aware Command K remain planned.
+- PWA support is deferred because the evaluated adapter does not support Astro 7.
+
+Never copy this status into a new claim without rechecking the repository.
+
+## Non-negotiable rules
+
+- `CORE-01`: The site name is `cloudservs` and the footer displays `© 2026 Aman Ali Pogaku`.
+- `CORE-02`: The site remains statically deployable to GitHub Pages at the `/cloudservs/` base path.
+- `CORE-03`: Maintain polished, accessible, persisted light and dark themes that initially respect the operating-system preference.
+- `CORE-04`: Use one ordered curriculum. Do not create independent role paths, duplicated courses, or competing progress systems.
+- `CORE-05`: Preserve technical depth, many purposeful visuals, and job-relevant explanations.
+- `CORE-06`: Avoid em dashes in interface copy, lessons, documentation, comments, and examples.
+- `CORE-07`: Human-authored code is documented unusually well for beginners. Generated output, lockfiles, and third-party code are exempt.
+- `CORE-08`: Preserve user changes and avoid unrelated or destructive work.
+
+## Zero analytics and privacy
+
+- `PRIV-01`: Never collect, transmit, sell, profile, or analyze learner data.
+- `PRIV-02`: Do not add visitor analytics, telemetry, advertising, tracking pixels, fingerprinting, heatmaps, session replay, application cookies, accounts, profiles, or data-submission forms.
+- `PRIV-03`: Search terms, quiz answers, progress, preferences, clipboard contents, and accessibility choices never leave the learner's browser through cloudservs.
+- `PRIV-04`: Local storage is allowed only for documented, non-sensitive learner benefit and must never sync to a server.
+- `PRIV-05`: Bundle fonts, scripts, styles, icons, and learning assets locally. Treat unexplained third-party requests as release blockers.
+- `PRIV-06`: Run Astro through `scripts/run-astro-private.ts` and keep `ASTRO_TELEMETRY_DISABLED=1` in CI.
+- `PRIV-07`: Explain the hosting boundary honestly. GitHub Pages logs visitor IP addresses for security, but cloudservs has no analytics backend, learner database, or access to those logs.
+
+Read [`playbooks/privacy.md`](./playbooks/privacy.md) for every dependency, browser API, storage, search, embedded-resource, hosting, or privacy change.
+
+## Accuracy and curriculum
+
+- `FACT-01`: Use official AWS, Microsoft, and Google Cloud documentation for provider claims and original standards or project documentation for neutral technologies.
+- `FACT-02`: Never use search-result summaries as evidence or publish an unsupported claim as fact.
+- `FACT-03`: Classify provider mappings as `direct`, `approximate`, or `no direct equivalent`, and explain meaningful differences.
+- `FACT-04`: Attach primary sources and a `lastVerified` date to every technical lesson. Treat prices, quotas, availability, names, and certifications as time-sensitive.
+- `CURR-01`: `src/data/syllabus.ts` is the source of truth for progress. Conversation memory, file existence, and navigation visibility are not completion evidence.
+- `CURR-02`: Run `npm run syllabus:validate` and `npm run syllabus:status` before continuing curriculum work.
+- `CURR-03`: Mark a lesson complete only after all assigned topics and requirements, source metadata, verification, visuals, interactions, accessibility, and relevant tests pass.
+- `CURR-04`: Stop expansion for whole-module audits at 25%, 50%, 75%, and 100% topic coverage.
+
+## Implementation claims and trust
+
+- `STAT-01`: Before confirming anything as implemented, fixed, working, protected, verified, or released, inspect the current working tree.
+- `STAT-02`: Locate the implementation, prove a real page or workflow reaches it, and run the narrowest relevant test or browser check.
+- `STAT-03`: State environment limits such as operating system, browser, viewport, theme, storage, and base path.
+- `STAT-04`: Use only `planned`, `present but inactive`, `implemented but unverified`, `verified`, `released`, or `not yet verified`.
+- `STAT-05`: Conversation memory, previous responses, requirements, installed packages, filenames, unrelated tests, and intended CSS are not implementation evidence.
+- `STAT-06`: Platform-aware behavior requires a reliable platform signal, expectations for every branch, automated branch coverage, and rendered browser evidence.
+
+If evidence is incomplete, say `not yet verified`. If current evidence contradicts an earlier response, correct it immediately and record the lesson without defensiveness.
+
+## Changelog and records
+
+- `CHANGE-01`: Update `changelog.md` in the same change as every validated learner-facing syllabus addition, new feature, or verified website bug fix.
+- `CHANGE-02`: Syllabus bookkeeping alone does not qualify. Require actual learner-facing content or capability.
+- `CHANGE-03`: Do not call a website bug resolved without a focused regression test or documented reproducible check.
+- `CHANGE-04`: Group related work from one coherent push into one version. Documentation-only maintenance, planning, audit-only work, and repository hygiene do not create a release.
+- `DOCS-01`: Synchronize `AGENTS.md`, `SKILLS.md`, `readme.md`, and `lessons_learned.md` at session closeout.
+- `DOCS-02`: Update `audit.md` only for formal module checkpoints or dated amendments.
+- `DOCS-03`: Preserve `lessons_learned.md` as append-only decision memory with separate lessons for Aman and Codex.
+
+## Quality gate
+
+Before calling a relevant change complete:
+
+- run formatting, type checking, unit tests, and a production build
+- run syllabus, documentation, guidance, and privacy validators
+- run focused and full browser regressions in proportion to risk
+- review keyboard access, focus, themes, reduced motion, forced colors, zoom, mobile layout, and text alternatives
+- verify Pagefind, internal and external links, GitHub Pages base-path behavior, copyright, and em dash absence
+- recheck new technical claims against primary sources
+- confirm every reached module audit is complete and logged
+- update the changelog when its syllabus, feature, or verified website-fix trigger applies
+- append the session reflection and preserve honest limitations
+
+The complete gate is in [`playbooks/testing-and-accessibility.md`](./playbooks/testing-and-accessibility.md).
+
+## Repository safety
+
+- `SAFE-01`: Quote shell expressions and special characters carefully.
+- `SAFE-02`: After any quoting, parsing, redirection, or path error, stop writes and inspect `git status --short` immediately.
+- `SAFE-03`: Resolve exact targets before deletion and never use broad destructive paths.
+- `SAFE-04`: Do not hide accidental changes. Explain, obtain authority where needed, correct safely, validate, and record the lesson.
+- `SAFE-05`: Never place secrets in browser code, lessons, examples, or repository history.
+
+Use [`playbooks/repository-safety.md`](./playbooks/repository-safety.md) for Git, filesystem, shell, deletion, dependency, or recovery work.

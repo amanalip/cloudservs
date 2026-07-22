@@ -4,7 +4,7 @@
 
 ## Document status
 
-- Last documentation sync: `2026-07-22T15:07:30-04:00`
+- Last documentation sync: `2026-07-22T15:20:14-04:00`
 - Current format version: 2
 - Update policy: Required at the end of every project work session
 - Historical note: Aman found version 1 too shallow. Version 2 replaces that first draft with a fuller retrospective. Future historical entries must be appended rather than silently removed.
@@ -1296,3 +1296,179 @@ Run git status and inspect unusual paths
 The deletion must be visible as one exact tracked-file removal in Git status. Documentation synchronization, formatting, whitespace, privacy, and relevant repository checks must pass afterward.
 
 This was repository hygiene cleanup. It did not add learner-facing syllabus content, add a feature, or resolve a website bug. Therefore it does not create v2 and does not require a changelog change.
+
+---
+
+## 2026-07-22 15:20:14 EDT | Agent guidance refactored into routed playbooks
+
+- Recorded at: `2026-07-22T15:20:14-04:00`
+- Prompt: Aman asked whether the increasingly long `AGENTS.md` and `SKILLS.md` could cause instructions to be skipped, then approved a refactor into a new `playbooks/` folder with a thorough nothing-lost sanity check.
+- Starting evidence: `AGENTS.md` contained 4,737 words across 496 lines. `SKILLS.md` contained 4,461 words across 695 lines. Together, the two files required scanning 9,198 words before task-specific work.
+
+### Problem model
+
+```text
+More lessons, fixes, and post-mortems
+                |
+                v
+More rules appended to two root files
+                |
+                v
+Important rules compete for attention
+                |
+       +--------+--------+
+       |                 |
+       v                 v
+Repeated prose      Buried task procedure
+       |                 |
+       +--------+--------+
+                |
+                v
+Greater risk of overlooking a relevant instruction
+```
+
+The issue was not that the rules lacked value. The issue was that always-applicable policies, task-specific workflows, project history, command references, and recovery procedures occupied the same reading path.
+
+### Lesson learned by Aman
+
+Detailed documentation can become less usable when every detail appears in the same place. Preserving knowledge does not require preserving one large file. A small contract plus explicit routing can make the same knowledge easier to find and harder to overlook.
+
+The key design is:
+
+```text
+What must always be remembered?  --> AGENTS.md
+Which procedure applies now?     --> SKILLS.md
+How is the procedure performed?  --> playbooks/
+Why did the rule change?         --> lessons_learned.md
+What passed a formal audit?      --> audit.md
+What changed for learners?       --> changelog.md
+```
+
+### Lesson learned by Codex
+
+Codex should not treat automatic file loading as proof that every sentence has equal practical visibility. Long instruction files increase retrieval competition, especially when repeated rules use slightly different wording. `SKILLS.md` also was not an installable `SKILL.md` package, so its workflows needed an explicit routing requirement rather than an assumption that they would activate automatically.
+
+The safer design combines four controls:
+
+1. A short root contract that is always read.
+2. A short task router that requires relevant playbooks.
+3. Detailed playbooks that remain complete.
+4. Automated validation that prevents missing files, routes, critical policies, traceability rows, or broken links.
+
+### Refactored architecture
+
+```text
+AGENTS.md, 1,184 words after final preservation review
+   |
+   +--> purpose and verified boundary
+   +--> critical rules with stable IDs
+   +--> privacy, accuracy, curriculum, trust, changelog, quality, safety
+   |
+   v
+SKILLS.md, 631 words after initial formatting
+   |
+   +--> task triggers
+   +--> required playbooks
+   +--> common workflow bundles
+   +--> command and closeout reference
+   |
+   v
+playbooks/
+   +--> lesson authoring
+   +--> cloud fact-checking
+   +--> diagrams and UI
+   +--> syllabus and audits
+   +--> testing and accessibility
+   +--> privacy
+   +--> releases and changelog
+   +--> repository safety
+```
+
+### Nothing-lost migration map
+
+Every former top-level `AGENTS.md` area was assigned a destination:
+
+| Former area                                       | Preserved in                                              |
+| ------------------------------------------------- | --------------------------------------------------------- |
+| Purpose, status, non-negotiables                  | Compact `AGENTS.md`                                       |
+| Release governance and implementation claims      | `releases-and-changelog.md`                               |
+| Privacy                                           | `AGENTS.md` prohibition plus `privacy.md`                 |
+| Teaching and learner experience                   | `lesson-authoring.md`                                     |
+| Diagrams, interface, logo, and icons              | `diagrams-and-ui.md`                                      |
+| Accuracy and provider comparison                  | `cloud-fact-checking.md`                                  |
+| Technical foundation and quality gates            | `testing-and-accessibility.md`                            |
+| Search                                            | `lesson-authoring.md` plus `testing-and-accessibility.md` |
+| Curriculum structure, scope, delivery, and audits | `syllabus-and-audits.md`                                  |
+| Code documentation and lesson metadata            | `lesson-authoring.md`                                     |
+| Repository hygiene                                | `repository-safety.md`                                    |
+
+The new `playbooks/README.md` contains the complete traceability table for all former `AGENTS.md` headings and all 17 former `SKILLS.md` workflows. This makes preservation reviewable instead of relying on memory.
+
+### Automated safeguard
+
+The new `npm run guidance:validate` command checks:
+
+- both root guides stay within their agreed word limits
+- all eight playbooks and the playbook index exist
+- critical privacy, accuracy, curriculum, evidence, changelog, documentation, and safety rule IDs remain in `AGENTS.md`
+- `SKILLS.md` routes to every playbook
+- the index names every playbook
+- every former top-level agent section has a migration destination
+- all 17 former workflow numbers have destinations
+- relative Markdown links resolve
+- guidance contains no em dashes
+
+The production build now runs this validator before Astro checking and generation.
+
+### Limitations and future practice
+
+No structural validator can prove that every sentence has identical meaning after a rewrite. The traceability table, original-to-new topic comparison, manual review, and project tests reduce that risk, but future maintainers must still review semantics when moving requirements.
+
+Future rules:
+
+- Keep `AGENTS.md` below 2,500 words and `SKILLS.md` below 1,600 words.
+- Put detailed task procedures in the correct playbook.
+- Add a route before adding a new playbook.
+- Update traceability when a responsibility moves.
+- Do not duplicate full procedures back into the root files.
+- Preserve critical policies in `AGENTS.md` with stable IDs.
+- Run guidance validation during every production build.
+
+### Changelog decision
+
+This refactor improves maintainer guidance and validation. It does not add learner-facing syllabus content, add a website feature, or resolve a learner-facing website bug. Therefore it does not create v2 and does not modify the release changelog.
+
+### Sanity-check results
+
+Manual preservation review compared the refactored guidance with the committed pre-refactor `AGENTS.md` and `SKILLS.md`. It found that general principles alone did not fully preserve the explicit learner-experience review checklist. The checklist and several exact ledger invariants were restored before validation:
+
+- phone, tablet, laptop, desktop, and wide-screen review
+- equal card geometry questions
+- local font verification
+- contents-pane movement and persistence checks
+- Markmap default-zoom contrast
+- centered SVG zoom-control strokes
+- same-change syllabus ledger updates
+- concrete blockers for blocked lessons
+- stable audit-marker placement
+- explicitly non-blaming post-mortem language
+
+Final evidence:
+
+- Guidance validator: 8 playbooks routed and indexed
+- Root size: `AGENTS.md` 1,184 words, reduced from 4,737
+- Router size: `SKILLS.md` 631 words, reduced from 4,461
+- Traceability: all former top-level agent sections and all 17 former workflows mapped
+- Preserved-concept checks: privacy, sources, mappings, diagrams, clipboard, chain links, contents pane, fonts, themes, accessibility, search, syllabus, audits, telemetry, PWA, code comments, changelog, status evidence, and shell recovery present
+- Documentation synchronization: passed at `2026-07-22T15:20:14-04:00`
+- Syllabus validation: 93 ordered lessons across 9 modules passed
+- Unit tests: 11 passed
+- Astro diagnostics: 31 files with 0 errors, 0 warnings, and 0 hints
+- Production build: 7 static pages and Pagefind index generated
+- Privacy validation: passed
+- Browser regression suite: 9 desktop Chromium tests passed
+- Third-party request regression: passed
+- Formatting and whitespace validation: passed after replacing the validator's own literal em dash with a Unicode escape
+- Changelog diff: none
+
+The production build still reports the previously known JavaScript chunk-size warning. The guidance refactor did not introduce or resolve that performance risk.

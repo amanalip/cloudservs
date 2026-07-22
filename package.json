@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "node scripts/run-astro-private.ts dev",
-    "build": "npm run syllabus:validate && npm run docs:validate && npm run check && node scripts/run-astro-private.ts build && npm run privacy:validate",
+    "build": "npm run syllabus:validate && npm run docs:validate && npm run guidance:validate && npm run check && node scripts/run-astro-private.ts build && npm run privacy:validate",
     "preview": "node scripts/run-astro-private.ts preview",
     "check": "node scripts/run-astro-private.ts check",
     "test": "vitest run",
@@ -15,6 +15,7 @@
     "syllabus:status": "node scripts/syllabus-status.ts",
     "syllabus:validate": "node scripts/validate-syllabus.ts",
     "docs:validate": "node scripts/validate-documentation-sync.ts",
+    "guidance:validate": "node scripts/validate-agent-guidance.ts",
     "privacy:validate": "node scripts/validate-privacy.ts",
     "format:check": "prettier --check .",
     "format": "prettier --write ."
