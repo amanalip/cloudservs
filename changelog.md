@@ -1,6 +1,6 @@
 # cloudservs Changelog
 
-Last documentation sync: `2026-08-09T11:43:43-04:00`
+Last documentation sync: `2026-08-09T12:01:10-04:00`
 
 This changelog records verified repository release candidates and confirmed public releases of `cloudservs` in beginner-friendly language. It explains what learners receive, what maintainers add, what was verified, what is deployed, and what remains outside each version.
 
@@ -77,6 +77,15 @@ Release entry
 - Updated the continuation unit test so it now protects Shared responsibility as the next ledger-selected lesson.
 - Passed syllabus, QA-log, documentation, guidance, Astro, production-build, privacy, formatting, and browser checks.
 - Generated 7 static pages and a Pagefind search index under the GitHub Pages base path.
+
+### Fixed
+
+- Corrected the flashcard browser regression after GitHub Actions exposed an ambiguous Playwright
+  locator. The page correctly opened the answer, but MDX-generated empty paragraphs caused the
+  test to address three elements instead of the one visible answer.
+- Tightened the assertion to identify exactly one answer by its expected text, then verify that it
+  is visible. The focused regression and the complete 11-test CI-equivalent suite pass with two
+  workers.
 
 ### Known limits
 

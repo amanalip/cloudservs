@@ -185,7 +185,14 @@ test.describe('shared visual regressions', () => {
     await firstPrompt.focus();
     await firstPrompt.press('Enter');
     await expect(firstCard).toHaveJSProperty('open', true);
-    await expect(firstCard.locator('p')).toContainText('On-demand self-service');
+    /**
+     * MDX can preserve surrounding whitespace as empty paragraphs in the generated HTML. Filter by
+     * the expected answer text so Playwright checks the one learner-visible answer instead of
+     * requiring every paragraph descendant to be a single strict-mode match.
+     */
+    const firstAnswer = firstCard.locator('p').filter({ hasText: 'On-demand self-service' });
+    await expect(firstAnswer).toHaveCount(1);
+    await expect(firstAnswer).toBeVisible();
   });
 
   test('ASCII diagrams stay centered and copy reliably', async ({ context, page }) => {

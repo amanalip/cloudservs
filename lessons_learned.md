@@ -4,7 +4,7 @@
 
 ## Document status
 
-- Last documentation sync: `2026-08-09T11:43:43-04:00`
+- Last documentation sync: `2026-08-09T12:01:10-04:00`
 - Current format version: 2
 - Update policy: Required at the end of every project work session
 - Historical note: Aman found version 1 too shallow. Version 2 replaces that first draft with a fuller retrospective. Future historical entries must be appended rather than silently removed.
@@ -55,6 +55,7 @@ Entries are listed in file order so the links match the append-only record. The 
 - [2026-07-22 17:48:22 | Compression needs a semantic preservation check](#2026-07-22-174822-edt--compression-needs-a-semantic-preservation-check)
 - [2026-07-22 18:41:24 | Process must eventually make room for the product](#2026-07-22-184124-edt--process-must-eventually-make-room-for-the-product)
 - [2026-08-09 11:43:43 | Completion is an evidence chain, not a word count](#2026-08-09-114343-edt--completion-is-an-evidence-chain-not-a-word-count)
+- [2026-08-09 12:01:10 | A failing pipeline can reveal a test defect rather than a product defect](#2026-08-09-120110-edt--a-failing-pipeline-can-reveal-a-test-defect-rather-than-a-product-defect)
 
 <!-- LESSONS_TOC_END -->
 
@@ -3448,3 +3449,88 @@ This session proves that repository-based continuation can reliably recover the 
 ### Record decision
 
 The completed learner-facing syllabus addition creates the `v2` repository release candidate and belongs in `changelog.md`. No new module threshold was reached, and Aman did not request a separate QA execution, so `audit.md` and `QAlogs.md` remain unchanged.
+
+## 2026-08-09 12:01:10 EDT | A failing pipeline can reveal a test defect rather than a product defect
+
+### What happened
+
+The GitHub Actions browser job stopped after 10 of 11 regressions passed. The failing flashcard
+check had already proved that the first card opened from the keyboard. It then used
+`firstCard.locator('p')` to find the answer. The rendered MDX contained three paragraph elements
+inside that card: two empty paragraphs created around preserved whitespace and one paragraph with
+the real answer. Playwright strict mode correctly refused to treat three elements as one.
+
+```text
+GitHub Actions reports one failed check
+                   |
+                   v
+Read the complete error and exact locator count
+                   |
+          +--------+--------+
+          |                 |
+          v                 v
+ Product behavior       Test behavior
+ card opens correctly   selector finds 3 paragraphs
+          |                 |
+          +--------+--------+
+                   |
+                   v
+Fix the assertion, then rerun focused and full CI checks
+```
+
+### Lesson learned by Aman
+
+A red build means the release gate found something that needs investigation. It does not by itself
+prove that the learner-facing website is broken. The useful next question is: which layer failed?
+
+| Layer            | Example evidence                             | Meaning in this incident                                 |
+| ---------------- | -------------------------------------------- | -------------------------------------------------------- |
+| Build            | Astro generated the static pages             | Site generation succeeded                                |
+| Product behavior | The card acquired the open state after Enter | Keyboard interaction succeeded                           |
+| Test selector    | One locator resolved to three paragraphs     | The assertion was ambiguous                              |
+| Pipeline         | Playwright returned exit code 1              | Deployment correctly stopped until evidence was repaired |
+
+This distinction prevents two opposite mistakes. One mistake is dismissing every failure as a
+testing problem. The other is changing working product code merely to satisfy a faulty assertion.
+The log, DOM structure, and focused reproduction decide which explanation is supported.
+
+### Lesson learned by Codex
+
+The earlier local report that the browser suite passed was not supported by complete captured output.
+The command exited successfully in that environment, but the displayed tool output did not list all
+11 individual results. Codex should have treated the missing result lines as an evidence gap and run
+the complete CI-equivalent command before describing the whole suite as passed.
+
+The original assertion also violated a useful Playwright rule: a locator used in a strict assertion
+should deliberately identify one meaningful element. A broad descendant selector such as every
+`p` inside a component may become ambiguous when MDX, Markdown, or a component wrapper changes the
+generated structure.
+
+The correction filters paragraph descendants by the expected answer text, asserts that exactly one
+match exists, and asserts that the answer is visible after keyboard activation. This checks the
+learner outcome while remaining tolerant of harmless empty wrapper paragraphs.
+
+### Evidence and future practice
+
+- The attached GitHub Actions log recorded 10 passes and one repeated strict-mode failure.
+- The focused regression passed after the selector correction.
+- The full suite passed with `CI=1`, two workers, and the production preview before closeout.
+- Product code was left unchanged because current evidence did not identify a learner-facing defect.
+- A CI or regression-test correction is recorded under the existing v2 quality work without
+  pretending that it is a new learner feature.
+- `audit.md` and `QAlogs.md` remain unchanged because no module checkpoint was reached and Aman did
+  not explicitly request a formal QA execution.
+
+### Remaining boundary
+
+This fix proves the flashcard workflow in the configured desktop Chromium project at a 390-pixel
+viewport and dark theme. It does not add dedicated Firefox, WebKit, or mobile-device projects. Those
+coverage expansions remain planned and should not be inferred from this passing regression.
+
+### Handoff improvement requested by Aman
+
+Aman asked for a usable commit message with this correction and with future changes. A change can be
+technically complete while still leaving the repository owner to reconstruct its intent from a diff.
+A concise proposed message closes that handoff gap. Future closeouts with uncommitted work will state
+one message that describes the verified outcome without exaggerating scope. For this correction, the
+message is `fix(ci): target the visible flashcard answer in regression test`.

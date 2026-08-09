@@ -1,6 +1,6 @@
 # cloudservs Workflow Router
 
-Last documentation sync: `2026-08-09T11:43:43-04:00`
+Last documentation sync: `2026-08-09T12:01:10-04:00`
 
 This file routes project tasks to detailed procedures in [`playbooks/`](./playbooks/README.md). It is not an installable Codex skill package.
 
@@ -104,3 +104,4 @@ npm run format:check        Check formatting
 - Synchronize the four living documents.
 - Append an honest `lessons_learned.md` entry.
 - Preserve limitations, unfinished work, and the next action.
+- Provide a concise commit message when uncommitted changes remain for Aman.

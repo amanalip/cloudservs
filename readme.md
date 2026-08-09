@@ -1,6 +1,6 @@
 # cloudservs
 
-Last documentation sync: `2026-08-09T11:43:43-04:00`
+Last documentation sync: `2026-08-09T12:01:10-04:00`
 
 > Learn cloud concepts once, then understand how AWS, Microsoft Azure, and Google Cloud implement them.
 

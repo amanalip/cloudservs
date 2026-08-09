@@ -1,6 +1,6 @@
 # cloudservs Agent Contract
 
-Last documentation sync: `2026-08-09T11:43:43-04:00`
+Last documentation sync: `2026-08-09T12:01:10-04:00`
 
 ## Purpose and learner
 
@@ -104,6 +104,7 @@ If evidence is incomplete, say `not yet verified`. If current evidence contradic
 - `DOCS-02`: Update `audit.md` only for formal module checkpoints or dated amendments.
 - `DOCS-03`: Preserve `lessons_learned.md` as append-only decision memory with separate lessons for Aman and Codex.
 - `DOCS-04`: Keep `AGENTS.md` at or below the repository's 16 KiB ceiling and `SKILLS.md` at or below its 12 KiB ceiling. These are conservative project budgets, not model-recall guarantees. Put task-specific procedures in an existing playbook. Create a new playbook only for a distinct, recurring workflow with no suitable owner, then index, route, and validate it.
+- `DOCS-05`: When a handoff leaves changes for Aman to commit, include one concise, ready-to-use commit message that accurately describes the verified change.
 - `QA-01`: Append `QAlogs.md` whenever a module completes a 25%, 50%, 75%, or 100% checkpoint and whenever Aman explicitly requests QA of content, behavior, readiness, or project quality.
 - `QA-02`: Every QA entry records its timestamp, trigger, scope, outcome, findings, actions, evidence, validation results, remaining risks, and next action. A completed module audit must have a matching QA marker.
 
