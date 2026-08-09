@@ -4,7 +4,7 @@
 
 ## Document status
 
-- Last documentation sync: `2026-08-09T12:01:10-04:00`
+- Last documentation sync: `2026-08-09T12:10:10-04:00`
 - Current format version: 2
 - Update policy: Required at the end of every project work session
 - Historical note: Aman found version 1 too shallow. Version 2 replaces that first draft with a fuller retrospective. Future historical entries must be appended rather than silently removed.
@@ -56,6 +56,7 @@ Entries are listed in file order so the links match the append-only record. The 
 - [2026-07-22 18:41:24 | Process must eventually make room for the product](#2026-07-22-184124-edt--process-must-eventually-make-room-for-the-product)
 - [2026-08-09 11:43:43 | Completion is an evidence chain, not a word count](#2026-08-09-114343-edt--completion-is-an-evidence-chain-not-a-word-count)
 - [2026-08-09 12:01:10 | A failing pipeline can reveal a test defect rather than a product defect](#2026-08-09-120110-edt--a-failing-pipeline-can-reveal-a-test-defect-rather-than-a-product-defect)
+- [2026-08-09 12:10:10 | Correct link text is not proof of correct navigation](#2026-08-09-121010-edt--correct-link-text-is-not-proof-of-correct-navigation)
 
 <!-- LESSONS_TOC_END -->
 
@@ -3534,3 +3535,93 @@ technically complete while still leaving the repository owner to reconstruct its
 A concise proposed message closes that handoff gap. Future closeouts with uncommitted work will state
 one message that describes the verified outcome without exaggerating scope. For this correction, the
 message is `fix(ci): target the visible flashcard answer in regression test`.
+
+## 2026-08-09 12:10:10 EDT | Correct link text is not proof of correct navigation
+
+### What happened
+
+The first foundation lesson displayed **Next: Shared responsibility**, and the second displayed
+**Previous: What is cloud computing?**. Both labels and both destination names looked correct.
+However, clicking either link opened a 404 page because the relative URL started with `./`.
+
+The browser resolves a relative URL from the current page directory:
+
+```text
+Current page
+/cloudservs/learn/foundations/what-is-cloud-computing/
+
+./shared-responsibility/
+        |
+        v
+/cloudservs/learn/foundations/what-is-cloud-computing/shared-responsibility/
+Result: wrong child route and 404
+
+../shared-responsibility/
+        |
+        v
+/cloudservs/learn/foundations/shared-responsibility/
+Result: correct sibling lesson
+```
+
+### Lesson learned by Aman
+
+A link has at least three different parts that can succeed or fail independently:
+
+| Part        | Question                                              | Evidence needed              |
+| ----------- | ----------------------------------------------------- | ---------------------------- |
+| Label       | Does the learner understand where the link should go? | Read the visible text        |
+| Address     | Does the browser calculate the intended URL?          | Inspect the resolved URL     |
+| Destination | Does that URL load the intended page?                 | Click it and verify the page |
+
+The screenshots showed that the label was good but the complete navigation task was not. This is
+why careful feedback from a real deployed workflow remains valuable even when builds and unrelated
+browser tests pass.
+
+### Lesson learned by Codex
+
+The earlier quality gate required internal-link validation, but the implemented browser suite did
+not click the manual Next and Previous links. Codex verified lesson content, flashcards, diagrams,
+themes, and base-path output while leaving this small but essential curriculum transition outside
+the assertions. The gap should have been visible because an ordered curriculum depends on reliable
+movement between lessons.
+
+The correction must not stop at replacing two strings. The reusable authoring rule now explains
+that sibling lessons need parent-then-sibling syntax, and the browser suite protects the full round
+trip under `/cloudservs/`. Future lesson work can copy the tested pattern instead of guessing from
+how the Markdown looks.
+
+```text
+Source link looks reasonable
+            |
+            v
+Build under the real base path
+            |
+            v
+Click Next and verify route plus heading
+            |
+            v
+Click Previous and verify route plus heading
+            |
+            v
+Only then call navigation verified
+```
+
+### Evidence and record decision
+
+- Generated HTML preserved `./shared-responsibility/` and `./what-is-cloud-computing/` exactly as
+  authored.
+- Chromium reproduced the wrong nested route and the 404 response before editing.
+- Both lesson sources now use `../` to reach their sibling route.
+- The focused round-trip browser regression passed after the correction.
+- The complete CI-equivalent suite and repository quality gate passed before closeout.
+- This is a learner-facing website bug fix, so it creates the v3 repository release candidate and
+  belongs in `changelog.md`.
+- No syllabus topic or requirement changed, no module checkpoint was reached, and Aman did not ask
+  for a formal QA execution. `audit.md` and `QAlogs.md` therefore remain unchanged.
+
+### Remaining boundary
+
+The regression protects the two currently rendered lesson-sequence links in Chromium under the
+GitHub Pages base path. It does not yet crawl every internal link in every future lesson or add
+Firefox and WebKit coverage. Each added lesson must still follow the authoring rule and extend the
+ordered navigation regression where applicable.

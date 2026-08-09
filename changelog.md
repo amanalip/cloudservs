@@ -1,6 +1,6 @@
 # cloudservs Changelog
 
-Last documentation sync: `2026-08-09T12:01:10-04:00`
+Last documentation sync: `2026-08-09T12:10:10-04:00`
 
 This changelog records verified repository release candidates and confirmed public releases of `cloudservs` in beginner-friendly language. It explains what learners receive, what maintainers add, what was verified, what is deployed, and what remains outside each version.
 
@@ -15,11 +15,14 @@ v1  First feature release, published July 21, 2026
 v2  First complete lesson, repository candidate completed August 9, 2026
  |
  v
-v3  Next version after another qualifying learner-facing change
+v3  Lesson sequence navigation correction, repository candidate completed August 9, 2026
+ |
+ v
+v4  Next version after another qualifying learner-facing change
 ```
 
 - Documentation corrections, post-mortem improvements, and record maintenance do not create a new feature version by themselves.
-- The next qualifying change after v2 will be named `v3`.
+- The next qualifying change after v3 will be named `v4`.
 - A version entry distinguishes locally verified repository evidence from independently checked GitHub Pages deployment.
 - The private npm package value `0.1.0` is internal project metadata. Public changelog labels use `v1`, `v2`, and later whole-number releases.
 - A version is added only after its qualifying syllabus content, features, or bug fixes exist in the repository and pass the appropriate quality checks.
@@ -42,6 +45,44 @@ Release entry
 +-- Content .......... Lessons, diagrams, sources, and curriculum changes
 +-- Known limits ..... Honest boundaries of what the release does not contain
 ```
+
+---
+
+## v3 | Correct lesson sequence navigation
+
+- Completion date: `2026-08-09`
+- Release state: Verified repository release candidate
+- Deployment state: Not yet verified on GitHub Pages
+- Curriculum state: 93 lessons across 9 modules
+- Module 1 topic coverage: 30%
+- Quality-gated complete lessons: 1
+- Browser regression tests: 12
+
+### Fixed
+
+- Corrected the **Next: Shared responsibility** link so it reaches the sibling lesson instead of a
+  nonexistent child route below **What is cloud computing?**.
+- Corrected the **Previous: What is cloud computing?** link so it returns to the sibling lesson
+  instead of a nonexistent child route below **Shared responsibility**.
+- Changed both links from current-directory syntax to parent-then-sibling syntax, preserving the
+  required `/cloudservs/` GitHub Pages base path.
+
+### Quality
+
+- Reproduced the original Next-link failure in Chromium and confirmed that it returned the
+  cloudservs 404 page.
+- Added a round-trip browser regression that clicks Next, verifies the destination route and lesson
+  heading, clicks Previous, and verifies the original route and heading.
+- Increased the configured desktop Chromium suite from 11 to 12 regressions.
+- Passed the focused navigation regression, the complete CI-equivalent browser suite, production
+  build, and repository validation checks.
+
+### Known limits
+
+- GitHub Pages deployment of v3 has not yet been independently verified.
+- The configured automated browser project remains Chromium. Dedicated Firefox and WebKit projects
+  remain planned.
+- The production build continues to report the existing JavaScript chunk-size warning.
 
 ---
 

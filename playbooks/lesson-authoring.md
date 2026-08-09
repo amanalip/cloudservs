@@ -121,6 +121,7 @@ Learner term
 - Use encouraging, direct, human language.
 - Avoid excessive gamification, streak anxiety, and visual noise.
 - Make the next useful action obvious.
+- Treat lesson-to-lesson navigation as base-path-sensitive behavior. A relative link to a sibling lesson must leave the current lesson directory, such as `../next-lesson/`, and a browser regression must click the forward and backward links under `/cloudservs/`.
 - Generated heading chain icons must navigate to the section, copy the complete absolute URL, and provide visible and screen-reader confirmation with a restricted-browser fallback.
 
 ## Required lesson metadata

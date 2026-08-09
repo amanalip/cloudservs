@@ -1,6 +1,6 @@
 # cloudservs
 
-Last documentation sync: `2026-08-09T12:01:10-04:00`
+Last documentation sync: `2026-08-09T12:10:10-04:00`
 
 > Learn cloud concepts once, then understand how AWS, Microsoft Azure, and Google Cloud implement them.
 
@@ -115,11 +115,11 @@ The contract also requires independent technical judgment. A contributor or agen
 | Visuals               | ASCII, Mermaid, Markmap, provider comparisons, and a starter architecture           | Released Cytoscape graphs and Chart.js visualizations         |
 | Learning interactions | Knowledge checks, hints, explanations, retry, and native disclosure flashcards      | A larger multi-question quiz and revision system              |
 | Accessibility checks  | Semantic controls, keyboard flashcards, reduced motion, contrast, and mobile review | axe-core integration and multi-browser assistive review       |
-| Browser tests         | 11 Chromium regressions, including a focused 390-pixel viewport check               | Dedicated mobile, Firefox, and WebKit projects                |
+| Browser tests         | 12 Chromium regressions, including mobile-width and lesson-navigation checks        | Dedicated mobile, Firefox, and WebKit projects                |
 | Keyboard search label | Starlight search shortcut behavior                                                  | Repository implementation of a platform-aware Command K label |
 | Offline use           | Static site delivery                                                                | Installable PWA, deferred for Astro 7 compatibility           |
 | Optional libraries    | Packages installed                                                                  | Chart.js, Cytoscape.js, and Driver.js learner-facing use      |
-| Deployment            | GitHub Pages-ready production output at `/cloudservs/`                              | Deployed `v2` behavior is not yet verified                    |
+| Deployment            | GitHub Pages-ready production output at `/cloudservs/`                              | Deployed `v3` behavior is not yet verified                    |
 
 ### Evidence-based status promise
 
@@ -158,6 +158,8 @@ npm run dev
 ```
 
 Open `http://localhost:4321/cloudservs/`. The repository base path is part of the local URL so navigation behaves like the GitHub Pages deployment.
+
+Lesson sequence links are tested by clicking from one sibling lesson to the next and back again under the `/cloudservs/` base path. This catches links that look correct but accidentally nest the destination below the current lesson directory.
 
 Before publishing a chunk, run:
 

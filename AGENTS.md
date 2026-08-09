@@ -1,6 +1,6 @@
 # cloudservs Agent Contract
 
-Last documentation sync: `2026-08-09T12:01:10-04:00`
+Last documentation sync: `2026-08-09T12:10:10-04:00`
 
 ## Purpose and learner
 
@@ -36,14 +36,14 @@ Agreement is not the goal by itself. The goal is a better, evidence-supported pr
 ## Current verified boundary
 
 - Last confirmed public release: `v1`, developed July 21, 2026.
-- Repository release candidate: `v2`, completed August 9, 2026, with deployment not yet rechecked.
+- Repository release candidate: `v3`, completed August 9, 2026, with deployment not yet rechecked.
 - Curriculum ledger: 93 planned lessons across 9 ordered modules.
 - Module 1: 30% topic coverage, 21% requirement progress, one quality-gated complete lesson.
 - Verified complete lesson: `What is cloud computing?`; detailed draft: `Shared responsibility`.
 - Active visuals: ASCII, Mermaid, Markmap, and provider comparisons.
 - Installed but not released as learner features: Chart.js, Cytoscape.js, and Driver.js.
 - axe-core is installed but not invoked by the current browser suite.
-- The browser suite has 11 Chromium regressions, including a focused 390-pixel viewport check. Dedicated mobile, Firefox, and WebKit projects remain planned.
+- The browser suite has 12 Chromium regressions, including focused 390-pixel viewport and lesson-navigation checks. Dedicated mobile, Firefox, and WebKit projects remain planned.
 - Advanced search filters, bookmarks, recently viewed lessons, continue-learning automation, and platform-aware Command K remain planned.
 - PWA support is deferred because the evaluated adapter does not support Astro 7.
 

@@ -195,6 +195,23 @@ test.describe('shared visual regressions', () => {
     await expect(firstAnswer).toBeVisible();
   });
 
+  test('lesson sequence links navigate between sibling lessons in both directions', async ({
+    page,
+  }) => {
+    /** Start from the first lesson exactly as a learner following the ordered curriculum would. */
+    await page.goto('./learn/foundations/what-is-cloud-computing/');
+
+    /** Clicking Next must reach the sibling lesson without nesting it below the current route. */
+    await page.getByRole('main').getByRole('link', { name: 'Shared responsibility' }).click();
+    await expect(page).toHaveURL(/\/cloudservs\/learn\/foundations\/shared-responsibility\/$/);
+    await expect(page.getByRole('heading', { level: 1 })).toHaveText('Shared responsibility');
+
+    /** Clicking Previous must complete the round trip to the original sibling lesson. */
+    await page.getByRole('main').getByRole('link', { name: 'What is cloud computing?' }).click();
+    await expect(page).toHaveURL(/\/cloudservs\/learn\/foundations\/what-is-cloud-computing\/$/);
+    await expect(page.getByRole('heading', { level: 1 })).toHaveText('What is cloud computing?');
+  });
+
   test('ASCII diagrams stay centered and copy reliably', async ({ context, page }) => {
     await context.grantPermissions(['clipboard-read', 'clipboard-write'], {
       origin: 'http://127.0.0.1:4330',
