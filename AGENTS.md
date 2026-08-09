@@ -1,6 +1,6 @@
 # cloudservs Agent Contract
 
-Last documentation sync: `2026-08-09T12:10:10-04:00`
+Last documentation sync: `2026-08-09T14:44:57-04:00`
 
 ## Purpose and learner
 
@@ -82,6 +82,9 @@ Read [`playbooks/privacy.md`](./playbooks/privacy.md) for every dependency, brow
 - `CURR-02`: Run `npm run syllabus:validate` and `npm run syllabus:status` before continuing curriculum work.
 - `CURR-03`: Mark a lesson complete only after all assigned topics and requirements, source metadata, verification, visuals, interactions, accessibility, and relevant tests pass.
 - `CURR-04`: Stop expansion for whole-module audits at 25%, 50%, 75%, and 100% topic coverage.
+- `CURR-05`: Plan coherent batches, normally 2 to 4 lessons, and end earlier at an audit, risk, blocker, or reviewability boundary.
+- `CURR-06`: Batching changes full-gate cadence only. Every lesson independently passes all depth, fact, evidence, and completion requirements.
+- `CURR-07`: Run focused checks per lesson and risk, the full gate per batch, and an early full gate for high-risk shared changes.
 
 ## Implementation claims and trust
 

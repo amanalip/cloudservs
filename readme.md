@@ -1,6 +1,6 @@
 # cloudservs
 
-Last documentation sync: `2026-08-09T12:10:10-04:00`
+Last documentation sync: `2026-08-09T14:44:57-04:00`
 
 > Learn cloud concepts once, then understand how AWS, Microsoft Azure, and Google Cloud implement them.
 
@@ -293,6 +293,48 @@ npm run qa:validate
 ```
 
 The report deliberately separates topic coverage from complete lesson quality. It also confirms the audit log and shows the completion date for every finished checkpoint. A draft lesson may contain source-reviewed claims while still needing glossary, flashcards, architecture, accessibility, or review work. File existence and navigation visibility never count as completion by themselves. The first complete lesson demonstrates the full evidence path: all topics, all 25 requirements, verified metadata, primary sources, rendered review, and browser regressions.
+
+### Balanced curriculum batches
+
+Curriculum work is delivered in coherent batches so the project does not choose between two bad extremes:
+
+```text
+Too small                         Balanced                         Too large
+
+One small addition               2 to 4 related lessons           Many rushed lessons
+       |                                  |                                |
+       v                                  v                                v
+Repeat the full gate             Verify each lesson               Miss evidence and defects
+after nearly every edit          independently                    inside a large review surface
+       |                                  |                                |
+       v                                  v                                v
+High fixed overhead              Run one full batch gate          Expensive rework and weak trust
+```
+
+The 2 to 4 lesson range is a default for planning, not a production quota. A complex lesson may justify a smaller batch. A closely related group of straightforward lessons may justify the upper end. The batch closes at the earliest applicable boundary:
+
+- the coherent subject group is complete
+- 2 to 4 lessons have independently passed their completion evidence
+- topic coverage reaches the next 25%, 50%, 75%, or 100% module audit
+- a factual, source, accessibility, or architecture blocker appears
+- shared UI, navigation, dependency, privacy, storage, or deployment behavior changes
+- the review surface becomes too large to inspect carefully
+
+Batching changes when repeated validation runs, not what a complete lesson must contain. Every lesson still needs its own objectives, beginner explanation, vocabulary, analogy and boundary, mental models, technical mechanism, AWS, Azure, and Google Cloud treatment, mapping confidence, realistic architecture, mistakes, troubleshooting, workplace relevance, glossary, flashcards, quiz, primary sources, metadata, and accessibility evidence.
+
+```text
+Lesson 1 evidence pass ----+
+Lesson 2 evidence pass ----+--> coherent batch --> full production gate
+Lesson 3 evidence pass ----+                           |
+Focused risk checks -------+                           +--> browser suite
+                                                        +--> privacy and links
+                                                        +--> release record
+                                                        +--> next ledger action
+```
+
+While a batch is being written, narrow checks run where they provide immediate feedback. New facts are checked against primary sources. New diagrams are inspected in the relevant themes and widths. New interactions and shared components receive focused browser coverage immediately. The complete build, complete browser suite, privacy validation, documentation synchronization, and release closeout run once at the end of the coherent batch unless a high-risk change requires an earlier gate.
+
+One passing batch gate never grants automatic completion to every lesson inside it. The ledger records completion lesson by lesson, and only current source evidence can satisfy a lesson requirement. This preserves comprehensive depth while amortizing the fixed cost of whole-project validation.
 
 ### Module quality checkpoints
 

@@ -28,15 +28,71 @@ The ledger keeps stable lesson IDs, module order, topics, covered topics, prereq
 4. Select the reported next lesson rather than choosing from memory.
 5. Read its topics, prerequisites, status history, completed requirements, and `nextStep`.
 6. Read `lesson-authoring.md`, `cloud-fact-checking.md`, and any other routed playbook.
-7. Complete one coherent research, writing, fact-checking, visual, or review checkpoint.
+7. Plan a coherent delivery batch using the batch-sizing gate below, then complete each selected lesson through its own research, writing, fact-checking, visual, and review checkpoints.
 8. Update covered topics and completed requirements only when evidence exists.
 9. Append status history instead of rewriting earlier events.
 10. Update the ledger in the same change that adds, reviews, blocks, resumes, or completes lesson content.
 11. Record a concrete blocker whenever status is `blocked`.
 12. Record the next concrete action or blocker before closeout.
-13. Run syllabus validation, unit tests, production build, and relevant browser checks.
+13. Run narrow checks during lesson development and the full syllabus, unit, production-build, and browser gate at the batch boundary or earlier risk boundary.
 14. Report topic coverage and quality-gated completion separately.
 15. Update `changelog.md` in the same change when validated learner-facing syllabus content is added.
+
+## Batch-sizing gate
+
+Use a default planning range of 2 to 4 related lessons. This is a balance point for the current project, not a guarantee that every topic fits the same amount of work and not permission to create shallow lessons.
+
+Before writing, calculate the nearest module checkpoint and choose a batch that will not continue expansion beyond it. Close the batch at the first applicable condition:
+
+1. The coherent concept group is complete.
+2. Between 2 and 4 lessons have independently met every assigned requirement.
+3. Topic coverage reaches 25%, 50%, 75%, or 100%, which immediately triggers the module audit.
+4. A lesson exposes a factual, primary-source, pedagogy, accessibility, architecture, or scope blocker.
+5. Shared UI, navigation, dependencies, browser storage, privacy, deployment, or another high-risk system changes.
+6. The combined review surface becomes too large to re-read and inspect carefully.
+
+```text
+Choose related lessons
+         |
+         v
+Check distance to next module audit
+         |
+         v
+Complete each lesson independently
+         |
+         +--> new shared risk? --> focused check and early full gate
+         |
+         +--> audit reached? ----> stop expansion and audit module
+         |
+         v
+Close coherent batch
+         |
+         v
+Run complete quality and release gate once
+```
+
+### Work that remains individual to every lesson
+
+- primary-source research and claim verification
+- complete lesson-sequence evidence
+- provider mapping confidence and differences
+- purposeful visuals and text alternatives
+- realistic architecture and operational explanation
+- glossary, flashcards, quiz feedback, and recap
+- search terminology, metadata, and navigation
+- theme, responsive, keyboard, zoom, and accessibility checks that apply to the lesson
+- ledger requirement evidence and honest status
+
+### Work that can be amortized across a coherent batch
+
+- the complete unit suite
+- the complete production build and Pagefind generation
+- the complete browser regression suite
+- whole-site privacy, link, formatting, documentation, and guidance validation
+- one changelog version for the coherent learner-facing delivery
+- one closeout reflection and handoff
+
+Focused checks are not postponed when feedback is needed immediately. A new diagram can be inspected before the next lesson starts. A new interaction receives a focused regression when it is introduced. A shared component, privacy boundary, dependency, or navigation change can close the batch early. The efficiency gain comes from avoiding repeated full-project gates after low-risk content increments, never from postponing evidence until mistakes become difficult to isolate.
 
 ## Requirement evidence pass
 
@@ -168,4 +224,4 @@ Do not create shallow placeholder lessons to make the curriculum appear complete
 5. Job preparation, quizzes, scenarios, and revision tools.
 6. Advanced curriculum and maintenance automation.
 
-Complete content, visual, factual, accessibility, responsive, search, and browser review for a chunk before expanding it.
+Complete content, visual, factual, accessibility, responsive, search, and browser review for a chunk before expanding it. A chunk should normally contain 2 to 4 comprehensive lessons, but its actual boundary follows coherence, complexity, risk, and the next mandatory module audit.

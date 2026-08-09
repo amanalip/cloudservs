@@ -59,6 +59,30 @@ Every substantial lesson follows this sequence unless the subject requires a doc
 - Incorrect quiz answers receive helpful explanations without shaming.
 - Every requirement assigned in `src/data/syllabus.ts` is evidenced before the lesson is marked complete.
 
+## Depth does not change inside a batch
+
+Batching is a release and validation strategy, not an authoring shortcut. Never reduce lesson sections, technical depth, provider distinctions, source review, diagrams, accessibility, practice, or job relevance merely to reach a batch-size target.
+
+Evaluate every lesson independently:
+
+```text
+Comprehensive lesson evidence
+          |
+          +--> concept and vocabulary
+          +--> analogy and its boundary
+          +--> visual and technical models
+          +--> AWS, Azure, and Google Cloud
+          +--> architecture and troubleshooting
+          +--> workplace and interview use
+          +--> glossary, flashcards, and quiz
+          +--> sources, metadata, and accessibility
+          |
+          v
+Eligible for completion
+```
+
+If one lesson needs significantly more research or explanation, reduce the batch rather than compressing the lesson. If several lessons share terminology, sources, or an architecture, reuse the shared research carefully while preserving a self-contained explanation and independent evidence for each lesson. A batch is successful only when its included completed lessons would still pass review if examined one at a time.
+
 ## Learning interactions
 
 Suitable interactions include:

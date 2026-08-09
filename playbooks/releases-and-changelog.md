@@ -63,6 +63,8 @@ Update `changelog.md` in the same change whenever:
 
 Group related work in one coherent push into one version. Syllabus bookkeeping alone does not qualify. Require the real lesson, diagram, exercise, or curriculum capability. A bug does not qualify as resolved without a focused regression test or documented reproducible check.
 
+For curriculum delivery, one coherent version may contain a default planning range of 2 to 4 comprehensively completed lessons. Every lesson must satisfy its own evidence before appearing under Content. The grouped version exists to amortize the full release gate and documentation closeout, not to convert partial drafts into released lessons. Close the version earlier at a module audit, high-risk implementation change, blocker, or loss of reviewability.
+
 Documentation clarification, planning, audit-only work, post-mortem maintenance, internal validation tooling, and repository hygiene do not create a release unless they change learner-facing behavior or historical release evidence.
 
 Use whole-number public versions `v1`, `v2`, `v3`, and onward. Keep v1 until a qualifying post-v1 product change is implemented and validated.

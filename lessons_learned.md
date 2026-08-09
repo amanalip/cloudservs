@@ -4,7 +4,7 @@
 
 ## Document status
 
-- Last documentation sync: `2026-08-09T12:10:10-04:00`
+- Last documentation sync: `2026-08-09T14:44:57-04:00`
 - Current format version: 2
 - Update policy: Required at the end of every project work session
 - Historical note: Aman found version 1 too shallow. Version 2 replaces that first draft with a fuller retrospective. Future historical entries must be appended rather than silently removed.
@@ -57,6 +57,7 @@ Entries are listed in file order so the links match the append-only record. The 
 - [2026-08-09 11:43:43 | Completion is an evidence chain, not a word count](#2026-08-09-114343-edt--completion-is-an-evidence-chain-not-a-word-count)
 - [2026-08-09 12:01:10 | A failing pipeline can reveal a test defect rather than a product defect](#2026-08-09-120110-edt--a-failing-pipeline-can-reveal-a-test-defect-rather-than-a-product-defect)
 - [2026-08-09 12:10:10 | Correct link text is not proof of correct navigation](#2026-08-09-121010-edt--correct-link-text-is-not-proof-of-correct-navigation)
+- [2026-08-09 14:44:57 | Batch fixed-cost validation, never lesson completeness](#2026-08-09-144457-edt--batch-fixed-cost-validation-never-lesson-completeness)
 
 <!-- LESSONS_TOC_END -->
 
@@ -3625,3 +3626,143 @@ The regression protects the two currently rendered lesson-sequence links in Chro
 GitHub Pages base path. It does not yet crawl every internal link in every future lesson or add
 Firefox and WebKit coverage. Each added lesson must still follow the authoring rule and extend the
 ordered navigation regression where applicable.
+
+## 2026-08-09 14:44:57 EDT | Batch fixed-cost validation, never lesson completeness
+
+### What prompted this decision
+
+Aman observed that recent deliveries added relatively little syllabus content while repeatedly
+spending substantial effort on the complete UI and production gate. He did not propose removing
+testing. He proposed applying the same non-negotiable gate to a larger, still-reviewable syllabus
+delivery so fixed validation cost is shared across more learner value.
+
+He then added the essential quality boundary: lessons must remain comprehensive. The batch must not
+be so large that explanations, facts, diagrams, accessibility, or evidence are missed, and it must
+not be so small that the project repeats whole-site work after every low-risk increment.
+
+### Lesson learned by Aman
+
+The observation was technically sound. Many quality activities have different cost shapes:
+
+| Activity                          | Cost behavior                             | Correct cadence                              |
+| --------------------------------- | ----------------------------------------- | -------------------------------------------- |
+| Verify a provider claim           | Grows with each lesson and claim          | Perform for every lesson                     |
+| Review a new diagram              | Grows with each visual and its risk       | Inspect when introduced                      |
+| Check lesson requirements         | Grows with each lesson                    | Perform independently per lesson             |
+| Start the production build        | Mostly fixed for a given repository state | Once per coherent batch                      |
+| Run unchanged browser regressions | Mostly fixed for a given suite            | Once per batch, unless risk requires earlier |
+| Synchronize release documents     | Mostly fixed per delivery                 | Once per coherent release                    |
+| Audit a whole module              | Triggered by coverage thresholds          | At 25%, 50%, 75%, and 100%                   |
+
+Repeating a fixed-cost activity more often does not automatically create proportionally more safety.
+If three related lessons each receive their own source and accessibility review, one complete browser
+suite after the coherent group can protect the shared website behavior more efficiently than three
+identical full-suite runs after each lesson.
+
+The opposite is also true. Combining many unfinished or shallow lessons into one batch does not make
+them complete. It only creates a larger surface in which omissions are harder to detect.
+
+```text
+Efficiency without quality             Quality without proportion
+          |                                      |
+          v                                      v
+Rush many lessons                       Repeat every global check
+          |                             after every small edit
+          v                                      |
+Miss evidence                                    v
+          |                             Slow learner-value delivery
+          +------------------+-------------------+
+                             |
+                             v
+                    Balanced layered process
+                             |
+                +------------+------------+
+                |                         |
+                v                         v
+       Individual lesson evidence   One coherent batch gate
+```
+
+### Lesson learned by Codex
+
+Codex correctly treated testing as non-negotiable during shared UI stabilization and deployment
+failures. However, carrying the same release-closeout cadence into ordinary curriculum expansion
+would over-apply a useful safeguard. Thoroughness is not measured by how many times the same
+unchanged suite runs. It is measured by whether the right evidence is gathered at the right risk
+boundary and whether failures can be detected before claims are made.
+
+Codex must distinguish three questions:
+
+1. What must be proved separately for each lesson?
+2. What changed in shared code and needs immediate focused regression coverage?
+3. What whole-project checks can run once after a coherent set of independently reviewed lessons?
+
+Failing to make that distinction can produce a project that is highly documented and repeatedly
+tested but advances too slowly to serve learners. The correction is layered validation, not weaker
+validation.
+
+### Adopted operating model
+
+The default planning range is 2 to 4 related lessons. It is deliberately a range rather than a hard
+number. Complexity, coherence, risk, and the next module threshold decide the actual boundary.
+
+```text
+Plan related lessons
+        |
+        v
+Check distance to next audit
+        |
+        v
+For each lesson:
+  research -> explain -> illustrate -> compare -> practise -> verify
+        |
+        +--> blocker or shared risk? --> close or reduce batch
+        |
+        +--> audit threshold? --------> stop expansion and audit
+        |
+        v
+Run one complete batch gate
+        |
+        v
+Release only independently complete lessons
+```
+
+The following cannot be amortized away:
+
+- primary-source research and current verification dates
+- beginner-friendly explanation with sufficient technical depth
+- vocabulary before heavy terminology
+- analogy and explicit technical boundary
+- purposeful mental models, flows, architectures, and text alternatives
+- separate AWS, Azure, and Google Cloud coverage
+- honest direct, approximate, or absent mappings
+- realistic operations, mistakes, troubleshooting, workplace, and interview context
+- glossary, flashcards, quiz explanations, recap, and search terminology
+- metadata, navigation, responsive behavior, keyboard access, and applicable accessibility review
+- exact ledger evidence before completion credit
+
+The following can normally be shared across the coherent delivery:
+
+- complete unit and browser suites
+- production build and Pagefind generation
+- whole-site privacy and link validation
+- full documentation synchronization
+- one changelog version and one closeout reflection
+
+### Stop conditions and protection against misuse
+
+The batch closes early when it reaches a module audit, introduces a high-risk shared change, exposes a
+blocker, loses conceptual coherence, or becomes too large to re-read carefully. If a lesson needs
+more depth, the batch becomes smaller. The lesson never becomes shorter merely to preserve the batch
+size.
+
+A complete browser suite at the batch boundary cannot prove that every technical statement is true.
+Likewise, individually fact-checked lessons cannot prove that navigation, themes, or shared
+components work. Both evidence layers are required because they answer different questions.
+
+### Record decision
+
+This decision changes the documented curriculum-development workflow, not the learner-facing website
+or current syllabus content. It therefore updates the living documents and the syllabus, authoring,
+testing, and release playbooks. It does not create a changelog version, a module audit, or a
+`QAlogs.md` entry. The next qualifying learner-facing batch will update those records through their
+existing triggers.

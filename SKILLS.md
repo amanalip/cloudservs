@@ -1,6 +1,6 @@
 # cloudservs Workflow Router
 
-Last documentation sync: `2026-08-09T12:10:10-04:00`
+Last documentation sync: `2026-08-09T14:44:57-04:00`
 
 This file routes project tasks to detailed procedures in [`playbooks/`](./playbooks/README.md). It is not an installable Codex skill package.
 
@@ -73,6 +73,8 @@ npm run syllabus:status
 ```
 
 Resume the reported lesson and `nextStep`, or complete the reported blocking audit. Detailed bug, implementation-status, dependency, privacy, release, and QA procedures remain in their routed playbooks rather than being duplicated here.
+
+For curriculum delivery, plan a coherent batch that normally contains 2 to 4 comprehensively completed lessons. This is not a target to fill with shallow work. Apply lesson evidence and focused checks individually, stop at any reached module audit or meaningful risk boundary, and run the complete build and browser gate once when the batch closes.
 
 ## Command reference
 

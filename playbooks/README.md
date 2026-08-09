@@ -14,16 +14,16 @@ Before changing the project:
 
 ## Playbooks
 
-| Playbook                                                         | Primary responsibility                                                                                       |
-| ---------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------ |
-| [`lesson-authoring.md`](./lesson-authoring.md)                   | Beginner pedagogy, lesson structure, interactions, search metadata, code explanations, and content metadata  |
-| [`cloud-fact-checking.md`](./cloud-fact-checking.md)             | Primary-source research, provider comparisons, mapping confidence, and verification dates                    |
-| [`diagrams-and-ui.md`](./diagrams-and-ui.md)                     | Visual selection, diagrams, icons, themes, responsive design, and learner-interface invariants               |
-| [`syllabus-and-audits.md`](./syllabus-and-audits.md)             | Ordered curriculum, durable ledger, continuation, completion gates, and milestone audits                     |
-| [`testing-and-accessibility.md`](./testing-and-accessibility.md) | Architecture, dependencies, testing, accessibility, search validation, performance, and deployment           |
-| [`privacy.md`](./privacy.md)                                     | Zero analytics, local storage, telemetry, hosting boundaries, and privacy regression checks                  |
-| [`releases-and-changelog.md`](./releases-and-changelog.md)       | Evidence-based status, implementation confirmation, versions, changelog triggers, and documentation closeout |
-| [`repository-safety.md`](./repository-safety.md)                 | Git hygiene, shell safety, accidental-file recovery, secrets, and safe filesystem work                       |
+| Playbook                                                         | Primary responsibility                                                                             |
+| ---------------------------------------------------------------- | -------------------------------------------------------------------------------------------------- |
+| [`lesson-authoring.md`](./lesson-authoring.md)                   | Beginner pedagogy, comprehensive lesson depth, interactions, search metadata, and content evidence |
+| [`cloud-fact-checking.md`](./cloud-fact-checking.md)             | Primary-source research, provider comparisons, mapping confidence, and verification dates          |
+| [`diagrams-and-ui.md`](./diagrams-and-ui.md)                     | Visual selection, diagrams, icons, themes, responsive design, and learner-interface invariants     |
+| [`syllabus-and-audits.md`](./syllabus-and-audits.md)             | Ordered curriculum, durable ledger, balanced batch sizing, completion gates, and milestone audits  |
+| [`testing-and-accessibility.md`](./testing-and-accessibility.md) | Layered batch validation, accessibility, architecture, search, performance, and deployment         |
+| [`privacy.md`](./privacy.md)                                     | Zero analytics, local storage, telemetry, hosting boundaries, and privacy regression checks        |
+| [`releases-and-changelog.md`](./releases-and-changelog.md)       | Evidence-based status, coherent batch versions, changelog triggers, and documentation closeout     |
+| [`repository-safety.md`](./repository-safety.md)                 | Git hygiene, shell safety, accidental-file recovery, secrets, and safe filesystem work             |
 
 ## Traceability from the former `AGENTS.md`
 

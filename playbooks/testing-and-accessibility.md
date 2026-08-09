@@ -53,6 +53,27 @@ The evaluated Vite PWA Astro adapter does not declare Astro 7 compatibility. Do 
 16. Append `QAlogs.md` when the work is a module checkpoint or Aman explicitly requested QA.
 17. Update the four living documents and the changelog when its product-change triggers apply.
 
+## Layered validation for curriculum batches
+
+Use the narrowest check that gives timely evidence during development, then run the complete gate once at the batch boundary. This reduces repeated fixed cost without weakening coverage.
+
+| Layer  | Trigger                                                                                                 | Required evidence                                                                                         |
+| ------ | ------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------- |
+| Lesson | Every lesson being completed                                                                            | Source review, requirement evidence, facts, visuals, metadata, accessibility, and relevant focused checks |
+| Risk   | New or changed interaction, shared UI, navigation, dependency, privacy, storage, or deployment behavior | Immediate focused regression and an early full gate when the blast radius is meaningful                   |
+| Batch  | Coherent set of normally 2 to 4 comprehensively completed lessons                                       | Complete unit, build, browser, privacy, link, search, formatting, and documentation gate                  |
+| Module | 25%, 50%, 75%, or 100% topic coverage                                                                   | Whole-module audit plus matching `audit.md` and `QAlogs.md` evidence                                      |
+
+Do not rerun the complete browser suite after every prose paragraph or low-risk lesson section. Do not wait until batch closeout to inspect a new diagram, interaction, or factual claim that can be checked immediately. The purpose of layers is to put feedback at the least expensive point that can still find the relevant failure.
+
+```text
+Low-risk lesson work --> narrow feedback -------------------+
+New shared behavior --> focused regression --> early gate --+--> batch gate
+Module threshold --------------------------------------------+--> module audit
+```
+
+The full gate remains non-negotiable before the batch is called verified or enters a release candidate. A batch-wide pass supplements individual lesson evidence. It does not replace it.
+
 ## Current commands
 
 ```text
