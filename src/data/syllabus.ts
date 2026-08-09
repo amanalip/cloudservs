@@ -238,9 +238,9 @@ const whatIsCloudComputing: SyllabusLesson = {
   topics: ['cloud definitions', 'on-premises and cloud models', 'IaaS', 'PaaS', 'SaaS'],
   coveredTopics: ['cloud definitions', 'on-premises and cloud models', 'IaaS', 'PaaS', 'SaaS'],
   prerequisites: [],
-  status: 'drafting',
+  status: 'complete',
   sourcePath: 'src/content/docs/learn/foundations/what-is-cloud-computing.mdx',
-  lastVerified: '2026-07-21',
+  lastVerified: '2026-08-09',
   completedRequirements: [
     'learning-objectives',
     'plain-language-concept',
@@ -254,16 +254,21 @@ const whatIsCloudComputing: SyllabusLesson = {
     'azure-implementation',
     'google-cloud-implementation',
     'provider-comparison',
+    'mapping-confidence',
+    'real-architecture',
     'mistakes-and-troubleshooting',
+    'workplace-and-interview-context',
     'recap',
+    'glossary',
+    'flashcards',
     'quiz-with-explanations',
     'primary-sources',
     'last-verified-date',
     'editorial-review',
+    'accessibility-review',
     'browser-regression-review',
   ],
-  nextStep:
-    'Add mapping confidence, a realistic architecture, workplace context, glossary, flashcards, and an accessibility review.',
+  nextStep: 'Lesson complete. Continue the ordered curriculum with m1-02-shared-responsibility.',
   history: [
     {
       status: 'planned',
@@ -279,6 +284,21 @@ const whatIsCloudComputing: SyllabusLesson = {
       status: 'drafting',
       date: '2026-07-21',
       note: 'Published the first detailed draft and recorded remaining lesson-standard sections.',
+    },
+    {
+      status: 'fact-checking',
+      date: '2026-08-09',
+      note: 'Added mapping confidence, a realistic architecture, workplace context, glossary, flashcards, and refreshed primary-source verification.',
+    },
+    {
+      status: 'visual-review',
+      date: '2026-08-09',
+      note: 'Reviewed the architecture and flashcards in light and dark themes, mobile layout, keyboard interaction, and maximum diagram zoom.',
+    },
+    {
+      status: 'complete',
+      date: '2026-08-09',
+      note: 'Completed all 25 lesson requirements after primary-source, accessibility, production-build, and browser-regression review.',
     },
   ],
 };

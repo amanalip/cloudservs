@@ -4,7 +4,7 @@
 
 ## Document status
 
-- Last documentation sync: `2026-07-22T18:41:24-04:00`
+- Last documentation sync: `2026-08-09T11:43:43-04:00`
 - Current format version: 2
 - Update policy: Required at the end of every project work session
 - Historical note: Aman found version 1 too shallow. Version 2 replaces that first draft with a fuller retrospective. Future historical entries must be appended rather than silently removed.
@@ -54,6 +54,7 @@ Entries are listed in file order so the links match the append-only record. The 
 - [2026-07-22 17:37:32 | QA history needs a different record from audits and releases](#2026-07-22-173732-edt--qa-history-needs-a-different-record-from-audits-and-releases)
 - [2026-07-22 17:48:22 | Compression needs a semantic preservation check](#2026-07-22-174822-edt--compression-needs-a-semantic-preservation-check)
 - [2026-07-22 18:41:24 | Process must eventually make room for the product](#2026-07-22-184124-edt--process-must-eventually-make-room-for-the-product)
+- [2026-08-09 11:43:43 | Completion is an evidence chain, not a word count](#2026-08-09-114343-edt--completion-is-an-evidence-chain-not-a-word-count)
 
 <!-- LESSONS_TOC_END -->
 
@@ -3388,3 +3389,62 @@ The suggested 80 to 90 percent curriculum focus is a direction, not a measured p
 ### Record decision
 
 This reflection changes no learner-facing feature, syllabus content, or verified website behavior. It belongs in `lessons_learned.md`, not `QAlogs.md`, `audit.md`, or `changelog.md`.
+
+## 2026-08-09 11:43:43 EDT | Completion is an evidence chain, not a word count
+
+### What happened
+
+The first syllabus continuation after the workflow refactor resumed the exact lesson and `nextStep` reported by the repository. It added the six missing requirements to **What is cloud computing?**, refreshed its primary-source review, inspected the rendered result, added focused browser coverage, and only then marked the lesson complete.
+
+### Lesson learned by Aman
+
+The earlier investment in tracking and quality controls produced a practical benefit. Aman did not need to restate which lesson was next or remember its unfinished sections. The ledger identified the lesson, named the missing work, and prevented a verification-date mismatch from reaching the build.
+
+```text
+Repository next step
+       |
+       v
+Create missing learner value
+       |
+       v
+Check primary sources
+       |
+       v
+Inspect real rendering
+       |
+       v
+Add regression evidence
+       |
+       v
+Grant requirement credit
+       |
+       v
+Mark complete and advance
+```
+
+A long lesson is not automatically a complete lesson. Completion means that every required learning stage and quality check has current evidence.
+
+### Lesson learned by Codex
+
+Codex initially changed the lesson's verification date before changing the ledger. The production build rejected the temporary disagreement. After synchronization, the ledger also rejected a repeated `drafting` history event because it was not a valid forward status transition. Both failures were useful safeguards, not reasons to bypass validation.
+
+After the lesson became complete, the unit suite also found a stale expectation that still named the first lesson as the next continuation target. Updating that assertion to **Shared responsibility** made the regression describe the new authoritative state.
+
+The correct response was to represent the real workflow: `drafting` moved to `fact-checking`, then to `visual-review`, then to `complete`. Requirement credit was added only for sections visible in the source, and accessibility credit followed actual light, dark, mobile, zoom, and keyboard review.
+
+### What this proves and what it does not
+
+This session proves that repository-based continuation can reliably recover the next lesson and enforce its structural evidence gates. It does not prove that no factual or pedagogical issue can ever be found later. Future module audits still recheck completed lessons because provider documentation changes and a later whole-module view may reveal issues that a lesson-level review did not.
+
+### Future practice
+
+- Change lesson source and ledger verification dates together before running the build.
+- Use real forward status transitions instead of adding repeated history labels.
+- Treat a validator failure as information about the model, not an obstacle to suppress.
+- Add focused browser coverage for new interaction and dense diagram behavior.
+- Keep deployment status separate from local build status until GitHub Pages is checked.
+- Resume the next ledger-reported lesson rather than continuing from memory.
+
+### Record decision
+
+The completed learner-facing syllabus addition creates the `v2` repository release candidate and belongs in `changelog.md`. No new module threshold was reached, and Aman did not request a separate QA execution, so `audit.md` and `QAlogs.md` remain unchanged.

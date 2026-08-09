@@ -5,7 +5,7 @@ sidebar:
   order: 1
 module: 1
 difficulty: beginner
-estimatedMinutes: 22
+estimatedMinutes: 32
 providers:
   - AWS
   - Azure
@@ -16,8 +16,8 @@ objectives:
   - Recognize the five NIST cloud characteristics
   - Distinguish service models from deployment models
   - Describe what AWS, Azure, and Google Cloud provide at a high level
-lastVerified: 2026-07-21
-reviewStatus: draft
+lastVerified: 2026-08-09
+reviewStatus: verified
 searchTerms:
   - cloud computing
   - on demand
@@ -26,6 +26,14 @@ searchTerms:
   - SaaS
   - elasticity
   - resource pooling
+  - virtual machine
+  - object storage
+  - Amazon EC2
+  - Azure Virtual Machines
+  - Compute Engine
+  - Amazon S3
+  - Azure Blob Storage
+  - Cloud Storage
 ---
 
 import LessonMeta from '../../../../components/LessonMeta.astro';
@@ -36,7 +44,7 @@ import ProviderComparison from '../../../../components/ProviderComparison.astro'
 import KnowledgeCheck from '../../../../components/KnowledgeCheck';
 import LessonProgress from '../../../../components/LessonProgress';
 
-<LessonMeta difficulty="Beginner" minutes={22} module={1} verified="July 21, 2026" />
+<LessonMeta difficulty="Beginner" minutes={32} module={1} verified="August 9, 2026" />
 
 ## What you will understand
 
@@ -228,6 +236,66 @@ These platforms are not single products. They are collections of services, manag
 
 Text equivalent: Cloud computing can be understood through five characteristics, three main service models, four deployment models, three public cloud platforms studied here, and resource categories such as compute, storage, networking, databases, security, and observability.
 
+## How provider mappings should be read
+
+A provider mapping answers a narrow question: which services address a similar need? It does not claim that their settings, limits, security controls, pricing, regional availability, or surrounding tools are identical.
+
+| Vendor-neutral capability | AWS        | Microsoft Azure        | Google Cloud   | Mapping confidence | Important boundary                                                                                          |
+| ------------------------- | ---------- | ---------------------- | -------------- | ------------------ | ----------------------------------------------------------------------------------------------------------- |
+| Virtual machines          | Amazon EC2 | Azure Virtual Machines | Compute Engine | Direct             | All provide customer-configured virtual compute, but machine families, disks, networking, and tooling vary. |
+| Object storage            | Amazon S3  | Azure Blob Storage     | Cloud Storage  | Direct             | All store objects in cloud containers, but namespaces, storage classes, permissions, and features vary.     |
+
+**Why “direct” does not mean “identical”:** each row maps a stable capability with substantially comparable customer responsibility. A migration still requires a feature-by-feature design review. Later compute and storage lessons examine those differences in depth.
+
+## A realistic starter architecture
+
+Imagine a small team operating a web application. The team uses several cloud capabilities together rather than buying one product called “the cloud.”
+
+<MermaidDiagram
+  title="A small web application in the cloud"
+  caption="A cloud architecture combines network entry, elastic application capacity, data services, identity controls, and measurement."
+  code={`flowchart LR
+    accTitle: A small web application in the cloud
+    accDescr: A user request enters through a network endpoint and load balancer, reaches one of several application instances, then uses a managed database or object storage. Identity controls access, while monitoring and usage records observe the system.
+    U[User device] --> N[Network endpoint]
+    N --> L[Load balancer]
+    L --> A1[Application instance 1]
+    L --> A2[Application instance 2]
+    A1 --> D[(Managed database)]
+    A2 --> D
+    A1 --> O[(Object storage)]
+    A2 --> O
+    I[Identity and access rules] -. authorize .-> N
+    I -. authorize .-> A1
+    I -. authorize .-> A2
+    M[Monitoring and usage records] -. observe .-> N
+    M -. observe .-> A1
+    M -. observe .-> A2
+    M -. observe .-> D
+    M -. observe .-> O`}
+/>
+
+### Read the request path step by step
+
+1. A user reaches a network endpoint through a standard network protocol.
+2. A load balancer sends the request to an available application instance.
+3. Several instances allow capacity to change and reduce reliance on one process.
+4. The application reads structured records from a managed database and files from object storage.
+5. Identity and access rules decide which people and software may perform actions.
+6. Monitoring and usage records help operators see behavior, investigate problems, and understand consumption.
+
+### Where the five characteristics appear
+
+| Characteristic         | Example in the architecture                                                                |
+| ---------------------- | ------------------------------------------------------------------------------------------ |
+| On-demand self-service | The team provisions application, storage, and monitoring resources through provider tools. |
+| Broad network access   | Users and components communicate over defined network interfaces.                          |
+| Resource pooling       | The provider allocates underlying capacity from shared pools while isolating customers.    |
+| Rapid elasticity       | Application capacity can grow or shrink as demand changes.                                 |
+| Measured service       | Usage records make consumption visible for operations and billing.                         |
+
+This diagram is a teaching architecture, not a production guarantee. Real systems also need decisions about regions, failure recovery, backups, encryption, secrets, deployment, cost controls, and service-specific limits.
+
 ## What cloud computing does not guarantee
 
 Cloud computing does not automatically make an application secure, highly available, inexpensive, compliant, or well designed. Providers supply capabilities and operate defined parts of the system. Customers must still select, configure, monitor, and use those capabilities appropriately.
@@ -249,6 +317,112 @@ False. Consumption pricing changes how cost is incurred. Poor sizing, idle resou
 ### Managed means no responsibility
 
 False. A managed service changes the responsibility boundary. It does not eliminate customer responsibility for data, identity, access, configuration, and workload design.
+
+## Workplace and interview context
+
+### What a beginner may do at work
+
+A junior cloud practitioner is unlikely to “manage the whole cloud.” A first task may be smaller and more concrete:
+
+- identify whether a request needs a virtual machine, a managed platform, or an existing SaaS tool
+- create a development resource from an approved template
+- record its owner, purpose, environment, and cost tag
+- confirm that network access is private or intentionally public
+- check monitoring and usage information
+- remove temporary resources after the work finishes
+- explain which tasks remain with the team after selecting a managed service
+
+```text
+Work request
+     |
+     v
+Clarify the need
+     |
+     +--> What capability is required?
+     +--> Who manages each layer?
+     +--> Who may access it?
+     +--> How will use and health be measured?
+     +--> When should it be changed or removed?
+     |
+     v
+Provision, verify, document, and review
+```
+
+### A useful interview answer
+
+If asked “What is cloud computing?”, begin with the operating model rather than listing provider products:
+
+> Cloud computing provides configurable computing resources as network-accessible services that can be provisioned quickly and measured. Its essential characteristics include on-demand self-service, broad network access, resource pooling, rapid elasticity, and measured service. Service and deployment models then explain responsibility and who uses the environment.
+
+Then add one boundary: cloud use does not automatically make a workload secure, reliable, or inexpensive. That sentence shows that you understand both the value and the limits of the model.
+
+## Glossary
+
+| Term                              | Beginner-friendly meaning                                                                                    |
+| --------------------------------- | ------------------------------------------------------------------------------------------------------------ |
+| Cloud computing                   | An operating model for obtaining configurable computing resources as rapidly provisioned, measured services. |
+| Provision                         | Create or allocate a resource so it is ready to use.                                                         |
+| Resource                          | A usable computing capability, such as processing, storage, networking, a database, or an application.       |
+| Workload                          | The application, service, data processing job, or other work that runs on computing resources.               |
+| Elasticity                        | Increasing or decreasing capacity as demand changes.                                                         |
+| Scalability                       | A system's broader ability to handle growth or reduction in work.                                            |
+| Resource pooling                  | A provider serving many consumers from shared capacity while maintaining appropriate isolation.              |
+| IaaS                              | Infrastructure as a Service, where the customer controls more of the operating stack.                        |
+| PaaS                              | Platform as a Service, where the provider manages more of the application platform.                          |
+| SaaS                              | Software as a Service, a complete provider-operated application that a customer configures and uses.         |
+| Public cloud                      | Cloud infrastructure offered for use by multiple organizations and operated by a provider.                   |
+| Virtual machine                   | A software-defined computer with allocated processor, memory, storage, networking, and an operating system.  |
+| Object storage                    | Storage that keeps data as objects inside containers, commonly called buckets or containers.                 |
+| Application programming interface | A defined way for software to request actions or data from another system, commonly shortened to API.        |
+
+## Flashcards
+
+Use each prompt for recall before opening the answer.
+
+<div class="flashcard-grid">
+  <details class="flashcard">
+    <summary>What five characteristics define the NIST cloud model?</summary>
+    <p>
+      On-demand self-service, broad network access, resource pooling, rapid elasticity, and measured
+      service.
+    </p>
+  </details>
+  <details class="flashcard">
+    <summary>What question do IaaS, PaaS, and SaaS help answer?</summary>
+    <p>
+      They help answer how much of the technology stack the provider manages and how much remains
+      with the customer.
+    </p>
+  </details>
+  <details class="flashcard">
+    <summary>What is the difference between elasticity and scalability?</summary>
+    <p>
+      Elasticity is changing capacity with demand. Scalability is the broader ability of a system to
+      handle changing amounts of work.
+    </p>
+  </details>
+  <details class="flashcard">
+    <summary>Does broad network access require a public internet endpoint?</summary>
+    <p>
+      No. A cloud resource can use private networking and still be accessed through standard network
+      mechanisms.
+    </p>
+  </details>
+  <details class="flashcard">
+    <summary>Why is a direct provider mapping not a claim of identical services?</summary>
+    <p>
+      Direct means the services address a substantially comparable capability. Their configuration,
+      limits, integrations, and commercial models can still differ.
+    </p>
+  </details>
+  <details class="flashcard">
+    <summary>What should you ask before creating a cloud resource?</summary>
+    <p>
+      Ask what capability is needed, who manages each layer, who may access it, how it will be
+      measured, and when it should be changed or removed.
+    </p>
+  </details>
+</div>
 
 ## Knowledge check
 
@@ -294,8 +468,14 @@ False. A managed service changes the responsibility boundary. It does not elimin
 - [AWS: What is cloud computing?](https://docs.aws.amazon.com/whitepapers/latest/aws-overview/what-is-cloud-computing.html)
 - [Microsoft Learn: Describe cloud computing](https://learn.microsoft.com/en-us/training/modules/describe-cloud-compute/)
 - [Google Cloud overview](https://docs.cloud.google.com/docs/overview)
+- [AWS: What is Amazon EC2?](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/concepts.html)
+- [Microsoft Learn: Virtual machines in Azure](https://learn.microsoft.com/en-us/azure/virtual-machines/overview)
+- [Google Cloud: Compute Engine overview](https://docs.cloud.google.com/compute/docs/overview)
+- [AWS: What is Amazon S3?](https://docs.aws.amazon.com/AmazonS3/latest/userguide/Welcome.html)
+- [Microsoft Learn: Azure Blob Storage documentation](https://learn.microsoft.com/en-us/azure/storage/blobs/)
+- [Google Cloud: Cloud Storage overview](https://docs.cloud.google.com/storage/docs/introduction)
 
-Last verified: **July 21, 2026**
+Last verified: **August 9, 2026**
 
 <LessonProgress client:load slug="what-is-cloud-computing" />
 

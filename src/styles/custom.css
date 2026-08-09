@@ -572,6 +572,44 @@ input,
   font-size: 0.9rem;
 }
 
+/* Flashcards use native details elements so recall practice works without client JavaScript. */
+.flashcard-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.85rem;
+  margin-block: 1.5rem 2rem;
+}
+
+/* Each card keeps its answer hidden until the learner deliberately opens the prompt. */
+.flashcard {
+  min-width: 0;
+  margin: 0;
+  border: 1px solid var(--cloudservs-border);
+  border-radius: 1rem;
+  padding: 1rem;
+  background: var(--cloudservs-surface);
+  box-shadow: var(--cloudservs-shadow);
+}
+
+/* The native summary remains keyboard operable and receives a clear interactive treatment. */
+.flashcard summary {
+  color: var(--sl-color-white);
+  font-family: var(--cloudservs-font-heading);
+  font-weight: 720;
+  cursor: pointer;
+}
+
+.flashcard summary:focus-visible {
+  border-radius: 0.35rem;
+  outline: 3px solid var(--sl-color-accent);
+  outline-offset: 0.25rem;
+}
+
+.flashcard p {
+  margin: 0.85rem 0 0;
+  color: var(--sl-color-gray-2);
+}
+
 /* Quiz and progress controls use the same card language as static lesson content. */
 .quiz-card,
 .progress-card {
@@ -644,6 +682,10 @@ input,
     grid-template-columns: 1fr;
   }
 
+  .flashcard-grid {
+    grid-template-columns: 1fr;
+  }
+
   .curriculum-stage {
     grid-template-columns: auto 1fr;
   }
@@ -690,6 +732,7 @@ input,
   .learning-card,
   .diagram-card,
   .provider-card,
+  .flashcard,
   .progress-card,
   .quiz-card,
   .curriculum-stage {

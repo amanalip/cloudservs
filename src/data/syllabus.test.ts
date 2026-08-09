@@ -54,7 +54,7 @@ describe('syllabus ledger', () => {
   });
 
   it('resumes the earliest unfinished and unblocked lesson', () => {
-    expect(getNextSyllabusLesson()?.id).toBe('m1-01-what-is-cloud-computing');
+    expect(getNextSyllabusLesson()?.id).toBe('m1-02-shared-responsibility');
   });
 
   it('pauses lesson continuation while a reached module audit is in progress', () => {

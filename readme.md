@@ -1,6 +1,6 @@
 # cloudservs
 
-Last documentation sync: `2026-07-22T18:41:24-04:00`
+Last documentation sync: `2026-08-09T11:43:43-04:00`
 
 > Learn cloud concepts once, then understand how AWS, Microsoft Azure, and Google Cloud implement them.
 
@@ -28,7 +28,7 @@ The project is built as a static website for deployment through GitHub Pages.
 
 ## Project status
 
-Current public release: `v1`, released July 21, 2026. The next validated learner-facing syllabus addition, feature, or resolved website bug will be recorded in `v2`. Documentation-only work performed after v1 does not increment the version.
+Last confirmed public release: `v1`, released July 21, 2026. Repository release candidate `v2` was completed and locally verified on August 9, 2026. Its GitHub Pages deployment remains `not yet verified` until the change is pushed and the deployed site is checked.
 
 The detailed, evidence-based release history is available in [`changelog.md`](./changelog.md).
 
@@ -58,11 +58,12 @@ Development is active. The first implementation chunk is available and includes:
 - A detailed `QAlogs.md` history for every completed module checkpoint and explicitly requested QA review
 - A detailed, append-only `lessons_learned.md` post-mortem with beginner explanations, diagrams, evidence, limitations, and prevention steps
 - A detailed `changelog.md` that separates released features from planned, deferred, and installed-but-unused capabilities
-- Two detailed, source-backed foundation lesson drafts
+- One quality-gated foundation lesson and one detailed foundation draft
+- Native, keyboard-accessible flashcards that require no learner-side JavaScript
 - GitHub Pages base-path configuration and an automated deployment workflow
 - A zero-analytics privacy policy, disabled Astro CLI telemetry, build-time privacy scanning, and a browser test that rejects third-party requests
 
-The first detailed lesson drafts are **What is cloud computing?** and **Shared responsibility**. Their technical claims were checked against current NIST, AWS, Microsoft, and Google primary sources on July 21, 2026. The syllabus ledger separately records the remaining whole-lesson requirements before either draft is quality-gated as complete.
+**What is cloud computing?** is the first quality-gated complete lesson. It includes all 25 lesson requirements and was rechecked against current NIST, AWS, Microsoft, and Google primary sources on August 9, 2026. **Shared responsibility** remains a detailed draft whose exact missing requirements are recorded in the syllabus ledger.
 
 Core repository documents:
 
@@ -104,20 +105,21 @@ Documentation synchronization also verifies that `lessons_learned.md` ends with 
 
 The contract also requires independent technical judgment. A contributor or agent must evaluate a requested method against evidence, project goals, privacy, accessibility, accuracy, maintainability, performance, scope, safety, and long-term cost. Meaningful concerns must be explained before implementation with a concrete alternative. Safe product and aesthetic preferences remain the owner's decision.
 
-### Honest v1 boundary
+### Honest current boundary
 
-| Area                  | Implemented in v1                                              | Still planned or deferred                                     |
-| --------------------- | -------------------------------------------------------------- | ------------------------------------------------------------- |
-| Curriculum            | 93-lesson ledger, 9 modules, 2 detailed foundation drafts      | Remaining lessons and full quality completion                 |
-| Search                | Static Pagefind full-text index                                | Advanced filters and complete synonym translation             |
-| Progress              | Local lesson-completion toggle                                 | Bookmarks, recently viewed, and continue-learning automation  |
-| Visuals               | ASCII, Mermaid, Markmap, and provider comparisons              | Released Cytoscape graphs and Chart.js visualizations         |
-| Learning interactions | Knowledge checks, hints, explanations, and retry               | Flashcard component and larger quiz system                    |
-| Accessibility checks  | Semantic controls, keyboard behavior, reduced motion, contrast | axe-core integration and multi-browser assistive review       |
-| Browser tests         | 9 desktop Chromium regressions                                 | Dedicated mobile, Firefox, and WebKit projects                |
-| Keyboard search label | Starlight search shortcut behavior                             | Repository implementation of a platform-aware Command K label |
-| Offline use           | Static site delivery                                           | Installable PWA, deferred for Astro 7 compatibility           |
-| Optional libraries    | Packages installed                                             | Chart.js, Cytoscape.js, and Driver.js learner-facing use      |
+| Area                  | Verified repository behavior                                                        | Still planned, deferred, or unverified                        |
+| --------------------- | ----------------------------------------------------------------------------------- | ------------------------------------------------------------- |
+| Curriculum            | 93-lesson ledger, 9 modules, 1 complete lesson, and 1 detailed draft                | Remaining lessons and milestone quality completion            |
+| Search                | Static Pagefind full-text index                                                     | Advanced filters and complete synonym translation             |
+| Progress              | Local lesson-completion toggle                                                      | Bookmarks, recently viewed, and continue-learning automation  |
+| Visuals               | ASCII, Mermaid, Markmap, provider comparisons, and a starter architecture           | Released Cytoscape graphs and Chart.js visualizations         |
+| Learning interactions | Knowledge checks, hints, explanations, retry, and native disclosure flashcards      | A larger multi-question quiz and revision system              |
+| Accessibility checks  | Semantic controls, keyboard flashcards, reduced motion, contrast, and mobile review | axe-core integration and multi-browser assistive review       |
+| Browser tests         | 11 Chromium regressions, including a focused 390-pixel viewport check               | Dedicated mobile, Firefox, and WebKit projects                |
+| Keyboard search label | Starlight search shortcut behavior                                                  | Repository implementation of a platform-aware Command K label |
+| Offline use           | Static site delivery                                                                | Installable PWA, deferred for Astro 7 compatibility           |
+| Optional libraries    | Packages installed                                                                  | Chart.js, Cytoscape.js, and Driver.js learner-facing use      |
+| Deployment            | GitHub Pages-ready production output at `/cloudservs/`                              | Deployed `v2` behavior is not yet verified                    |
 
 ### Evidence-based status promise
 
@@ -288,7 +290,7 @@ npm run syllabus:status
 npm run qa:validate
 ```
 
-The report deliberately separates topic coverage from complete lesson quality. It also confirms the audit log and shows the completion date for every finished checkpoint. A draft lesson may contain source-reviewed claims while still needing glossary, flashcard, architecture, accessibility, or review work. File existence and navigation visibility never count as completion by themselves.
+The report deliberately separates topic coverage from complete lesson quality. It also confirms the audit log and shows the completion date for every finished checkpoint. A draft lesson may contain source-reviewed claims while still needing glossary, flashcards, architecture, accessibility, or review work. File existence and navigation visibility never count as completion by themselves. The first complete lesson demonstrates the full evidence path: all topics, all 25 requirements, verified metadata, primary sources, rendered review, and browser regressions.
 
 ### Module quality checkpoints
 
@@ -668,26 +670,26 @@ The site will support light mode, dark mode, system-preference detection, persis
 
 The site uses a static-first architecture. The status column prevents an installed or planned library from being mistaken for a released feature.
 
-| Technology             | Intended responsibility                                      | v1 evidence status                                |
-| ---------------------- | ------------------------------------------------------------ | ------------------------------------------------- |
-| Astro                  | Static generation and GitHub Pages output                    | Active                                            |
-| Starlight              | Curriculum layout, navigation, theme, and search integration | Active                                            |
-| Markdown and MDX       | Lessons with reusable interactive components                 | Active                                            |
-| Preact                 | Focused interactive learning components                      | Active for quizzes, progress, and toolkit         |
-| Pagefind               | Static full-text search                                      | Active for production indexing                    |
-| Mermaid                | Flow and architecture diagrams                               | Active                                            |
-| Markmap                | Interactive Markdown mind maps                               | Active                                            |
-| Cytoscape.js           | Service relationship and prerequisite graphs                 | Installed, no released v1 use                     |
-| Lucide                 | Generic interface icons                                      | Active                                            |
-| Nano Stores Persistent | Local learner state                                          | Active for lesson completion                      |
-| Vite PWA               | Future offline installation                                  | Not installed, deferred for Astro 7 compatibility |
-| Chart.js               | Quantitative visuals with table alternatives                 | Installed, no released v1 use                     |
-| Driver.js              | Optional first-visit guidance                                | Installed, no released v1 use                     |
-| Expressive Code        | Code examples, command blocks, and styled text blocks        | Active through Starlight                          |
-| TypeScript             | Typed components, data, and validation                       | Active                                            |
-| Vitest                 | Unit testing                                                 | Active                                            |
-| Playwright             | Production browser regression testing                        | Active for desktop Chromium                       |
-| axe-core               | Automated accessibility checks                               | Installed, not invoked by the v1 browser suite    |
+| Technology             | Intended responsibility                                      | Current evidence status                             |
+| ---------------------- | ------------------------------------------------------------ | --------------------------------------------------- |
+| Astro                  | Static generation and GitHub Pages output                    | Active                                              |
+| Starlight              | Curriculum layout, navigation, theme, and search integration | Active                                              |
+| Markdown and MDX       | Lessons with reusable interactive components                 | Active                                              |
+| Preact                 | Focused interactive learning components                      | Active for quizzes, progress, and toolkit           |
+| Pagefind               | Static full-text search                                      | Active for production indexing                      |
+| Mermaid                | Flow and architecture diagrams                               | Active                                              |
+| Markmap                | Interactive Markdown mind maps                               | Active                                              |
+| Cytoscape.js           | Service relationship and prerequisite graphs                 | Installed, no verified learner-facing use           |
+| Lucide                 | Generic interface icons                                      | Active                                              |
+| Nano Stores Persistent | Local learner state                                          | Active for lesson completion                        |
+| Vite PWA               | Future offline installation                                  | Not installed, deferred for Astro 7 compatibility   |
+| Chart.js               | Quantitative visuals with table alternatives                 | Installed, no verified learner-facing use           |
+| Driver.js              | Optional first-visit guidance                                | Installed, no verified learner-facing use           |
+| Expressive Code        | Code examples, command blocks, and styled text blocks        | Active through Starlight                            |
+| TypeScript             | Typed components, data, and validation                       | Active                                              |
+| Vitest                 | Unit testing                                                 | Active                                              |
+| Playwright             | Production browser regression testing                        | Active for desktop Chromium                         |
+| axe-core               | Automated accessibility checks                               | Installed, not invoked by the current browser suite |
 
 Libraries will be used generously when they add learning value. Overlapping dependencies will be avoided. Heavy libraries will be loaded only on pages that need them so a text lesson does not pay the performance cost of every visualization tool. Installation alone never counts as a released feature.
 

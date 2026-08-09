@@ -1,8 +1,8 @@
 # cloudservs Changelog
 
-Last documentation sync: `2026-07-22T14:53:30-04:00`
+Last documentation sync: `2026-08-09T11:43:43-04:00`
 
-This changelog records public feature releases of `cloudservs` in beginner-friendly language. It explains what learners received, what maintainers added, what was verified, and what remains outside the release.
+This changelog records verified repository release candidates and confirmed public releases of `cloudservs` in beginner-friendly language. It explains what learners receive, what maintainers add, what was verified, what is deployed, and what remains outside each version.
 
 ## Versioning policy
 
@@ -12,15 +12,15 @@ This changelog records public feature releases of `cloudservs` in beginner-frien
 v1  First feature release, published July 21, 2026
  |
  v
-v2  Next release after a syllabus addition, feature, or verified website bug fix
+v2  First complete lesson, repository candidate completed August 9, 2026
  |
  v
-v3  Feature release after v2
+v3  Next version after another qualifying learner-facing change
 ```
 
 - Documentation corrections, post-mortem improvements, and record maintenance do not create a new feature version by themselves.
-- The next qualifying change after v1 will be named `v2`.
-- This file intentionally ends at `v1` because no post-v1 learner-facing feature has been released yet.
+- The next qualifying change after v2 will be named `v3`.
+- A version entry distinguishes locally verified repository evidence from independently checked GitHub Pages deployment.
 - The private npm package value `0.1.0` is internal project metadata. Public changelog labels use `v1`, `v2`, and later whole-number releases.
 - A version is added only after its qualifying syllabus content, features, or bug fixes exist in the repository and pass the appropriate quality checks.
 - Planned capabilities must never be listed as released features.
@@ -42,6 +42,49 @@ Release entry
 +-- Content .......... Lessons, diagrams, sources, and curriculum changes
 +-- Known limits ..... Honest boundaries of what the release does not contain
 ```
+
+---
+
+## v2 | First quality-gated lesson
+
+- Completion date: `2026-08-09`
+- Release state: Verified repository release candidate
+- Deployment state: Not yet verified on GitHub Pages
+- Curriculum state: 93 lessons across 9 modules
+- Module 1 topic coverage: 30%
+- Module 1 requirement progress: 21%
+- Quality-gated complete lessons: 1
+- Detailed lesson drafts: 1
+- Browser regression tests: 11
+
+### Content
+
+- Completed all 25 requirements for **What is cloud computing?**, making it the curriculum's first quality-gated complete lesson.
+- Added direct category mappings for virtual machines and object storage across AWS, Microsoft Azure, and Google Cloud, with explicit warnings that direct does not mean identical.
+- Added a realistic vendor-neutral web-application architecture with a request-path walkthrough and a table locating all five essential cloud characteristics in the design.
+- Added practical entry-level workplace tasks and a structured interview answer.
+- Added a 14-term beginner glossary covering the cloud operating model, service models, resources, virtual machines, object storage, and APIs.
+- Added six native disclosure flashcards for active recall without additional client-side JavaScript or learner-data storage.
+- Expanded search terminology with provider virtual-machine and object-storage names.
+- Refreshed the lesson's NIST, AWS, Microsoft, and Google Cloud primary-source review date to August 9, 2026.
+
+### Quality
+
+- Verified the new architecture in light and dark themes, at desktop and 390-pixel mobile widths, and through 300 percent diagram zoom.
+- Verified that architecture labels remain inside their nodes at maximum zoom.
+- Verified that flashcards stack into one mobile column and open using the keyboard in dark mode.
+- Added two focused browser regressions for the starter architecture and flashcards, increasing the suite from 9 to 11 tests.
+- Updated the continuation unit test so it now protects Shared responsibility as the next ledger-selected lesson.
+- Passed syllabus, QA-log, documentation, guidance, Astro, production-build, privacy, formatting, and browser checks.
+- Generated 7 static pages and a Pagefind search index under the GitHub Pages base path.
+
+### Known limits
+
+- **Shared responsibility** remains a detailed draft awaiting glossary, flashcards, and documented accessibility review.
+- The configured browser project remains Chromium. A focused regression uses a 390-pixel viewport, but dedicated mobile-device, Firefox, and WebKit projects remain planned.
+- axe-core remains installed but is not invoked by the browser suite.
+- The production build still reports a JavaScript chunk larger than 500 kB. This remains a tracked optimization risk.
+- GitHub Pages deployment of v2 has not been independently verified because these repository changes have not been pushed during this session.
 
 ---
 

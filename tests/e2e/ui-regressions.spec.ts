@@ -36,6 +36,28 @@ function expectAligned(values: number[], tolerance = 1): void {
   expect(Math.max(...values) - Math.min(...values)).toBeLessThanOrEqual(tolerance);
 }
 
+/** Inspect Mermaid geometry directly so every tested label remains inside its rendered node. */
+async function readOverflowingMermaidNodes(diagram: Locator): Promise<string[]> {
+  return diagram.locator('.mermaid .node').evaluateAll((nodes) =>
+    nodes.flatMap((node, index) => {
+      const label = node.querySelector<HTMLElement>('.nodeLabel');
+      const shape = node.querySelector<SVGGraphicsElement>('rect, polygon, path');
+      if (!label || !shape) return [`node ${index} is missing a label or shape`];
+
+      const labelBox = label.getBoundingClientRect();
+      const shapeBox = shape.getBoundingClientRect();
+      const tolerance = 2;
+      const contained =
+        labelBox.left >= shapeBox.left - tolerance &&
+        labelBox.right <= shapeBox.right + tolerance &&
+        labelBox.top >= shapeBox.top - tolerance &&
+        labelBox.bottom <= shapeBox.bottom + tolerance;
+
+      return contained ? [] : [`node ${index} label exceeds its shape`];
+    }),
+  );
+}
+
 test.describe('shared visual regressions', () => {
   test('learner pages make no requests to third-party origins', async ({ page }) => {
     /** Static same-origin assets are expected, while any different origin is a privacy regression. */
@@ -126,26 +148,44 @@ test.describe('shared visual regressions', () => {
     for (let click = 0; click < 8; click += 1) await zoomIn.click();
     await expect(diagram.getByRole('status')).toHaveText('300%');
 
-    const overflowingNodes = await diagram.locator('.mermaid .node').evaluateAll((nodes) =>
-      nodes.flatMap((node, index) => {
-        const label = node.querySelector<HTMLElement>('.nodeLabel');
-        const shape = node.querySelector<SVGGraphicsElement>('rect, polygon, path');
-        if (!label || !shape) return [`node ${index} is missing a label or shape`];
+    expect(await readOverflowingMermaidNodes(diagram)).toEqual([]);
+  });
 
-        const labelBox = label.getBoundingClientRect();
-        const shapeBox = shape.getBoundingClientRect();
-        const tolerance = 2;
-        const contained =
-          labelBox.left >= shapeBox.left - tolerance &&
-          labelBox.right <= shapeBox.right + tolerance &&
-          labelBox.top >= shapeBox.top - tolerance &&
-          labelBox.bottom <= shapeBox.bottom + tolerance;
+  test('starter architecture labels remain contained through maximum zoom', async ({ page }) => {
+    await page.goto('./learn/foundations/what-is-cloud-computing/');
 
-        return contained ? [] : [`node ${index} label exceeds its shape`];
-      }),
-    );
+    const diagram = page.getByRole('figure', { name: 'A small web application in the cloud' });
+    const zoomIn = diagram.getByRole('button', { name: 'Zoom in' });
 
-    expect(overflowingNodes).toEqual([]);
+    for (let click = 0; click < 8; click += 1) await zoomIn.click();
+    await expect(diagram.getByRole('status')).toHaveText('300%');
+    expect(await readOverflowingMermaidNodes(diagram)).toEqual([]);
+  });
+
+  test('flashcards stack on mobile and reveal answers from the keyboard in dark mode', async ({
+    page,
+  }) => {
+    /** Set the theme before navigation so the first rendered frame follows the dark palette. */
+    await page.addInitScript(() => localStorage.setItem('starlight-theme', 'dark'));
+    await page.setViewportSize({ width: 390, height: 844 });
+    await page.goto('./learn/foundations/what-is-cloud-computing/#flashcards');
+
+    const cards = page.locator('.flashcard');
+    await expect(cards).toHaveCount(6);
+    await expect(page.locator('html')).toHaveAttribute('data-theme', 'dark');
+
+    /** One aligned column prevents narrow cards from competing for horizontal reading space. */
+    const boxes = await readBoxes(cards);
+    expectAligned(boxes.map((box) => box.left));
+    expectAligned(boxes.map((box) => box.right));
+
+    /** Native summary activation must expose the answer without a pointer or client script. */
+    const firstCard = cards.first();
+    const firstPrompt = firstCard.locator('summary');
+    await firstPrompt.focus();
+    await firstPrompt.press('Enter');
+    await expect(firstCard).toHaveJSProperty('open', true);
+    await expect(firstCard.locator('p')).toContainText('On-demand self-service');
   });
 
   test('ASCII diagrams stay centered and copy reliably', async ({ context, page }) => {
