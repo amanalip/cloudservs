@@ -1,0 +1,369 @@
+---
+title: Control plane and data plane
+description: Separate the requests that configure cloud resources from the requests that serve real users and data.
+sidebar:
+  order: 3
+module: 1
+difficulty: beginner
+estimatedMinutes: 26
+providers:
+  - AWS
+  - Azure
+  - Google Cloud
+prerequisites:
+  - Shared responsibility
+objectives:
+  - Explain what a control plane does and what a data plane does
+  - Sort real cloud actions into configuration work and serving work
+  - Explain why the two planes can fail and be governed differently
+  - Compare how AWS, Azure, and Google Cloud express the separation
+lastVerified: 2026-08-21
+reviewStatus: verified
+searchTerms:
+  - control plane
+  - data plane
+  - forwarding plane
+  - management plane
+  - Azure Resource Manager
+  - DynamoDB control plane
+  - GKE control plane
+  - request path
+---
+
+import LessonMeta from '../../../../components/LessonMeta.astro';
+import AsciiDiagram from '../../../../components/AsciiDiagram.astro';
+import MermaidDiagram from '../../../../components/MermaidDiagram.astro';
+import ProviderComparison from '../../../../components/ProviderComparison.astro';
+import KnowledgeCheck from '../../../../components/KnowledgeCheck';
+import LessonProgress from '../../../../components/LessonProgress';
+
+<LessonMeta difficulty="Beginner" minutes={26} module={1} verified="August 21, 2026" />
+
+## What you will understand
+
+By the end of this lesson, you should be able to look at almost any cloud action and answer two questions: does this action configure or change a resource, or does this action use a resource to do real work? Cloud systems keep those two kinds of work apart, and knowing which side you are operating in explains a surprising number of behaviors around access, failures, and governance.
+
+## Begin with the problem
+
+A cloud platform answers two very different conversations at the same time.
+
+One conversation sounds like this: create a virtual machine, resize a database, attach a network rule, delete an old bucket. These requests change what exists.
+
+The other conversation sounds like this: load the product page, save the shopping cart, run the report, stream the video. These requests use resources that already exist to do useful work.
+
+If both conversations travel through the same door, they compete. A burst of report queries could slow down or block someone trying to fix a broken deployment. A problem in the management system could take down every working application behind it. Separating the two keeps configuration traffic and serving traffic independent.
+
+## Plain-language definition
+
+Every cloud organizes its work into two main paths:
+
+- The **control plane** receives your requests to create, read, change, and delete resources. It makes decisions and pushes configuration outward.
+- The **data plane** carries the actual workloads. It serves user requests, moves records, forwards packets, and processes jobs according to whatever the control plane arranged.
+
+Internet standards describe the same split for networks. RFC 7426 defines the forwarding plane as the collection of resources responsible for handling packets based on instructions received from the control plane, and it notes that this layer is widely called the **data plane**. The same document defines the control plane as the functions responsible for deciding how packets should be handled and pushing those decisions down for execution.
+
+```text
+Control plane                      Data plane
+--------------                     ----------
+Decides and configures             Executes and serves
+Create, resize, delete resources   Serve pages, move data, forward packets
+Slower, deliberate changes         Constant, high-volume work
+```
+
+## Everyday analogy: an airport
+
+Think about how an airport runs.
+
+The control tower watches the whole airfield, decides takeoff and landing order, and issues instructions. Aircraft on taxiways and runways carry out the actual movement of people and cargo.
+
+<AsciiDiagram
+  title="Airport responsibility split"
+  caption="The tower decides and directs while the runways and aircraft perform the actual movement."
+  diagram={`Control tower                        Runways and aircraft
+-------------                        -------------------
+Watches the whole field              Physically accelerate and land
+Decides departure order              Carry passengers and cargo
+Issues route instructions            Follow the assigned path
+Handles exceptions and changes       Repeat movements continuously
+
+                 Shared outcome
+                       |
+                       v
+        Flights arrive and depart safely`}
+
+/>
+
+### Where the analogy stops
+
+Real cloud platforms generalize this idea further than one tower over one airfield. Control planes are distributed services exposed through APIs rather than a single room. Data paths can hold local state such as routing tables and make fast local decisions without asking permission for every packet. Networking standards also recognize a third category, the management plane, which covers slower monitoring and maintenance work. Cloud products blend these duties differently, so treat each service's documentation as the authority for where its boundary sits.
+
+## Vocabulary before the details
+
+| Term             | Meaning                                                                        |
+| ---------------- | ------------------------------------------------------------------------------ |
+| Control plane    | The services that receive resource-management requests and decide what happens |
+| Data plane       | The services and hardware that execute the actual work                         |
+| Forwarding plane | The networking name for the data path, per RFC 7426                            |
+| Management plane | Slower monitoring, configuration, and maintenance functions                    |
+| Resource         | Something you manage through the cloud, such as a database or network          |
+| Provision        | Create and prepare a resource so it is ready to use                            |
+| Endpoint         | The network address a client calls to reach a service                          |
+
+## The core mental model
+
+The two planes usually expose different endpoints, enforce different permissions, and fail independently.
+
+<MermaidDiagram
+  title="Two doors into the cloud"
+  caption="Management requests enter the control plane while customer traffic flows through the data plane, and the control plane configures what the data plane executes."
+  code={`flowchart LR
+    accTitle: How the control plane and data plane relate
+    accDescr: An administrator sends configuration requests to the control plane, which provisions resources. Customer requests flow to those resources through the data plane.
+    Admin[Administrator] -->|create, resize, delete| CP[Control plane]
+    CP -->|provisions and configures| R[Resources]
+    User[Customer] -->|real workload requests| DP[Data plane]
+    DP --> R`}
+/>
+
+## How the mechanism actually works
+
+When you ask a cloud to create a database, your request lands on a control-plane API. That service checks who you are, validates the request against policies and quotas, records the intended state, and directs the platform to build and wire the resource. When your application later writes a record, that request never touches the control plane. It goes to a data-path endpoint that already knows how to store and retrieve items quickly.
+
+The separation has practical consequences that standards writers and providers document openly:
+
+- **Different speeds.** RFC 7426 describes control interactions as frequent, low-latency coordination, while management-style changes happen on longer timescales of minutes, hours, or days. Serving traffic runs continuously at the highest volume.
+- **Different failure behavior.** Because the paths are separate, each can degrade independently. Microsoft states plainly that even during periods of control-plane unavailability, customers can still access the data plane of their Azure resources.
+- **Different governance surfaces.** Configuration requests are natural checkpoints for permissions and policy. Serving requests may bypass those checkpoints unless the data plane itself enforces controls.
+
+## AWS expresses the split inside service APIs
+
+Amazon DynamoDB documents the division directly in its API guide. Its operations fall into named groups:
+
+- **Control plane** operations create and manage tables: `CreateTable`, `DescribeTable`, `ListTables`, `UpdateTable`, and `DeleteTable`.
+- **Data plane** operations perform create, read, update, and delete work on the items inside those tables: `PutItem`, `GetItem`, `Query`, `Scan`, `UpdateItem`, and `DeleteItem`.
+
+```text
+DynamoDB request                     Which plane answers?
+----------------                     --------------------
+CreateTable                          Control plane
+UpdateTable throughput setting       Control plane
+GetItem for one product record       Data plane
+Query for today's orders             Data plane
+Scan a secondary index               Data plane
+DeleteTable                          Control plane
+```
+
+The pattern generalizes across AWS: management actions shape resources, and application traffic uses them, though each service names and exposes the boundary in its own way.
+
+## Azure names its control plane explicitly
+
+Microsoft documents that Azure operations divide into control plane and data plane categories, and that **Azure Resource Manager** handles control plane requests. Requests to manage resources go to a management endpoint such as `https://management.azure.com`. After authenticating a request, Azure Resource Manager applies features like role-based access control, Azure Policy, management locks, and activity logs automatically.
+
+Data plane requests instead go to an endpoint specific to your resource instance. Microsoft's examples include creating a virtual machine through the control plane and then connecting to it through Remote Desktop Protocol, and creating a storage account through the control plane while reading and writing blobs through that account's own storage URI.
+
+Azure also documents the operational consequences clearly:
+
+- If the control plane is unavailable, data plane access continues. Your applications can keep using a storage endpoint even while the management endpoint is down.
+- Governance features that protect resources do not always govern data. A lock that prevents deleting a database does not prevent someone deleting rows through queries.
+
+## Google Cloud runs a managed control plane in GKE
+
+Google Kubernetes Engine gives the clearest single-product picture. Google documents that a GKE cluster consists of a **control plane** and worker machines called **nodes**, and that the control plane runs the Kubernetes API server, workload controllers, the scheduler, and cluster-state storage.
+
+- In GKE Standard, Google manages the control plane and its lifecycle, including version upgrades, while you manage the nodes.
+- The control plane is the unified endpoint for the cluster. You interact with it through Kubernetes API calls, and it drives what the nodes execute.
+
+That arrangement echoes the shared-responsibility lesson: the provider operates the decision-making tier, and the customer operates the machines doing daily work.
+
+<ProviderComparison
+  items={[
+    {
+      provider: 'AWS',
+      title: 'Plane-aware service APIs',
+      description:
+        'Services such as DynamoDB group operations into documented control plane and data plane categories within their APIs.',
+    },
+    {
+      provider: 'Azure',
+      title: 'Resource Manager as the control plane',
+      description:
+        'Control plane requests concentrate on Azure Resource Manager endpoints, where RBAC and policy apply automatically before reaching resource providers.',
+    },
+    {
+      provider: 'Google Cloud',
+      title: 'Managed control planes for clusters',
+      description:
+        'Google builds, upgrades, and operates the GKE control plane as a managed service while customers operate worker nodes.',
+    },
+  ]}
+/>
+
+**Mapping confidence: direct concept, approximate expression.** All three providers separate decisions from execution, and the idea transfers directly between them. The expression differs: AWS documents plane groupings inside individual service APIs, Azure centralizes control traffic on Resource Manager endpoints, and Google Cloud presents whole managed control planes for Kubernetes. Endpoints, tooling, and default governance differ, so verify each service's own documentation.
+
+## Both planes appear in one realistic architecture
+
+Consider a small online shop running on virtual machines with a managed database.
+
+```text
+Deployer at work                              Shopper at home
+----------------                              ---------------
+Resize the database                           Browse products
+Patch a virtual machine image                 Add items to a cart
+Add a firewall rule                           Check out and pay
+            |                                        |
+            v                                        v
+   Control plane requests                    Data plane requests
+   (provider management APIs)                (application and database traffic)
+            |                                        |
+            v                                        v
+   Resources are changed                     Records are read and written
+```
+
+Both columns matter. Neither column should depend on the other being quiet.
+
+### Read the architecture step by step
+
+1. The deployer authenticates to provider management APIs and asks for a larger database tier. The control plane validates, plans, and applies the change.
+2. Meanwhile shoppers hit the website. Their requests reach the virtual machines and database directly through serving endpoints.
+3. Because the paths are separate, resizing the database does not require taking the storefront through a management portal, and a busy checkout hour does not crowd out an emergency configuration change.
+4. Access is granted per plane. A teammate who only runs reports needs data-plane access, not broad management rights.
+
+## Common beginner mistakes
+
+### Assuming a control-plane outage stops everything
+
+Providers deliberately separate the paths so serving traffic survives management problems. Microsoft documents exactly this for Azure. Conversely, a healthy control plane does not guarantee your application logic or data are sound.
+
+### Granting management rights when data access was the need
+
+If someone only needs to query a database or read a bucket, handing them subscription-wide management permissions violates least privilege. Ask which plane the task lives in first.
+
+### Expecting resource locks to govern the data plane
+
+Azure's own example shows the gap: a lock preventing database deletion does nothing to stop row deletion through queries. Data-level protections must exist at the data level.
+
+### Treating serverless as plane-free
+
+Functions and managed platforms still have control planes that provision capacity and data paths that run your code. The planes hide behind simpler interfaces, but the distinction still explains their behavior.
+
+## Workplace scenario
+
+An analyst asks for read access to a production reporting database. A junior administrator grants the analyst the same broad management role used by infrastructure engineers. A week later an audit flags that someone outside engineering could resize or delete production databases even though the analyst never needed any of it.
+
+The correction is to identify the plane first. Querying data is data-plane work, so the right grant is scoped read access on the database, not management rights on the surrounding environment. Naming the plane turns a vague security debate into a concrete scoping decision.
+
+Interviewers value this framing too. Explaining that a managed Kubernetes control plane is operated by the provider while nodes remain customer-managed shows you understand both the vocabulary and the responsibility boundary behind it.
+
+## Knowledge check
+
+<KnowledgeCheck
+  client:load
+  question="An engineer calls CreateTable to add a DynamoDB table, then calls PutItem thousands of times to load records. Which statement is correct?"
+  hint="Ask whether each call changes what exists or uses something that already exists."
+  options={[
+    {
+      label: 'Both calls belong to the control plane because they touch DynamoDB.',
+      correct: false,
+      explanation:
+        'Touching a service does not make a call a control-plane operation. What matters is whether the call manages resources or uses them.',
+    },
+    {
+      label: 'CreateTable is a control plane operation and PutItem is a data plane operation.',
+      correct: true,
+      explanation:
+        'Correct. DynamoDB documents CreateTable under control plane operations for managing tables, and PutItem under data plane operations for writing items.',
+    },
+    {
+      label: 'Both calls belong to the data plane because records are involved.',
+      correct: false,
+      explanation:
+        'Creating the table changes the resource landscape, which is control-plane work. Only the item writes are data-plane traffic.',
+    },
+  ]}
+/>
+
+## Recap
+
+- The control plane receives requests to create, inspect, change, and remove resources, then pushes decisions outward.
+- The data plane performs the actual serving work: reading and writing records, forwarding packets, and running workloads.
+- Standards define the same split for networks, calling the execution layer the forwarding plane or data plane.
+- AWS documents plane groupings inside service APIs such as DynamoDB, Azure concentrates control traffic on Azure Resource Manager, and Google Cloud operates managed control planes such as the one in GKE.
+- The planes fail and are governed separately, so availability and access decisions should be made per plane.
+- Asking which plane an action belongs to is a fast way to scope permissions, troubleshoot incidents, and explain cloud behavior in interviews.
+
+## Glossary
+
+| Term             | Beginner-friendly meaning                                                               |
+| ---------------- | --------------------------------------------------------------------------------------- |
+| Control plane    | The services that accept resource-management requests and decide what changes happen.   |
+| Data plane       | The services and hardware that perform the real serving work.                           |
+| Forwarding plane | The networking term for the data path, defined alongside the control plane in RFC 7426. |
+| Management plane | Functions that monitor, configure, and maintain systems on slower timescales.           |
+| Resource         | Something manageable through a cloud, such as a table, machine, network, or bucket.     |
+| Provisioning     | Creating and preparing a resource so it is ready for use.                               |
+| Endpoint         | The network address clients call to reach a particular service or instance.             |
+| Request path     | The journey a real user request takes through the data plane.                           |
+| Availability     | A system's ability to respond when callers need it.                                     |
+| Least privilege  | Granting only the permissions a person or program genuinely needs.                      |
+
+## Flashcards
+
+Use each prompt for recall before opening the answer.
+
+<div class="flashcard-grid">
+  <details class="flashcard">
+    <summary>What does the control plane do?</summary>
+    <p>
+      It receives requests to create, inspect, change, and delete resources, validates them, and
+      pushes the resulting configuration out to the platform.
+    </p>
+  </details>
+  <details class="flashcard">
+    <summary>What does the data plane do?</summary>
+    <p>
+      It performs the actual work: serving user requests, storing and retrieving records, and
+      forwarding traffic according to what the control plane arranged.
+    </p>
+  </details>
+  <details class="flashcard">
+    <summary>Is CreateTable a control plane or data plane operation?</summary>
+    <p>
+      Control plane. Amazon documents CreateTable among DynamoDB operations that create and manage
+      tables, while PutItem and GetItem are data plane operations on the items inside.
+    </p>
+  </details>
+  <details class="flashcard">
+    <summary>Can the data plane keep working if the control plane is unavailable?</summary>
+    <p>
+      Yes. Microsoft documents that Azure data plane access continues even during control plane
+      unavailability, such as writing to a storage endpoint while the management endpoint is down.
+    </p>
+  </details>
+  <details class="flashcard">
+    <summary>Who operates the control plane in GKE Standard?</summary>
+    <p>
+      Google does. Google manages the GKE control plane, including upgrades, while the customer
+      manages the worker nodes in Standard mode.
+    </p>
+  </details>
+  <details class="flashcard">
+    <summary>Why check which plane a task belongs to before granting access?</summary>
+    <p>
+      Because the planes have different permission surfaces. Someone who only needs to query data
+      should get scoped data-plane access, not broad management rights over the environment.
+    </p>
+  </details>
+</div>
+
+## Official sources
+
+- [RFC 7426: Software-Defined Networking (SDN): Layers and Architecture Terminology](https://www.rfc-editor.org/rfc/rfc7426.html)
+- [Amazon DynamoDB Developer Guide: DynamoDB API](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/API.html)
+- [Microsoft Learn: Control plane and data plane operations](https://learn.microsoft.com/en-us/azure/azure-resource-manager/management/control-plane-and-data-plane)
+- [Google Cloud: GKE cluster architecture](https://docs.cloud.google.com/kubernetes-engine/docs/concepts/cluster-architecture)
+
+Last verified: **August 21, 2026**
+
+<LessonProgress client:load slug="control-plane-and-data-plane" />
+
+Previous: [Shared responsibility](../shared-responsibility/)

@@ -20,9 +20,9 @@ describe('syllabus ledger', () => {
 
   it('calculates Module 1 topic coverage from recorded evidence', () => {
     const summary = summarizeModule(syllabusModules[0]);
-    expect(summary.coveredTopics).toBe(6);
+    expect(summary.coveredTopics).toBe(8);
     expect(summary.totalTopics).toBe(20);
-    expect(summary.topicCoveragePercent).toBe(30);
+    expect(summary.topicCoveragePercent).toBe(40);
   });
 
   it('records the completed Module 1 audit at the first threshold', () => {
@@ -54,7 +54,7 @@ describe('syllabus ledger', () => {
   });
 
   it('resumes the earliest unfinished and unblocked lesson', () => {
-    expect(getNextSyllabusLesson()?.id).toBe('m1-03-control-plane-and-data-plane');
+    expect(getNextSyllabusLesson()?.id).toBe('m1-04-regions-and-zones');
   });
 
   it('pauses lesson continuation while a reached module audit is in progress', () => {

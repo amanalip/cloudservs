@@ -21,11 +21,14 @@ v3  Lesson sequence navigation correction, repository candidate completed August
 v4  Second complete lesson, repository candidate completed August 21, 2026
  |
  v
-v5  Next version after another qualifying learner-facing change
+v5  Third complete lesson, repository candidate completed August 21, 2026
+ |
+ v
+v6  Next version after another qualifying learner-facing change
 ```
 
 - Documentation corrections, post-mortem improvements, and record maintenance do not create a new feature version by themselves.
-- The next qualifying change after v4 will be named `v5`.
+- The next qualifying change after v5 will be named `v6`.
 - A version entry distinguishes locally verified repository evidence from independently checked GitHub Pages deployment.
 - The private npm package value `0.1.0` is internal project metadata. Public changelog labels use `v1`, `v2`, and later whole-number releases.
 - A version is added only after its qualifying syllabus content, features, or bug fixes exist in the repository and pass the appropriate quality checks.
@@ -48,6 +51,43 @@ Release entry
 +-- Content .......... Lessons, diagrams, sources, and curriculum changes
 +-- Known limits ..... Honest boundaries of what the release does not contain
 ```
+
+---
+
+## v5 | Third quality-gated lesson
+
+- Completion date: `2026-08-21`
+- Release state: Verified repository release candidate
+- Deployment state: Not yet verified on GitHub Pages
+- Curriculum state: 93 lessons across 9 modules
+- Module 1 topic coverage: 40%
+- Module 1 requirement progress: 33%
+- Quality-gated complete lessons: 3
+- Browser regression tests: 12
+
+### Content
+
+- Added the new **Control plane and data plane** lesson, covering both assigned topics with all 25 lesson requirements.
+- Grounded the vendor-neutral definition in RFC 7426, including the control plane's decision role and the forwarding plane's execution role.
+- Explained AWS's documented control plane and data plane operation groups through the DynamoDB API guide.
+- Explained Azure Resource Manager as the named control plane endpoint, its automatic RBAC, policy, lock, and activity-log application, data-plane instance endpoints, continued data access during control-plane unavailability, and the resource-lock versus query gap.
+- Explained Google Cloud's managed GKE control plane, including its API server, scheduler, controller, and cluster-state responsibilities, and the Standard mode split where customers manage nodes.
+- Added an airport analogy with an explicit boundary, a two-door mental model diagram, a request-path architecture walkthrough, per-plane access guidance, four common mistakes, a workplace scenario, a 10-term glossary, six native flashcards, and a knowledge check.
+
+### Quality
+
+- Read all four cited primary sources before writing and labeled the provider mapping as direct concept with approximate expression.
+- Ran an 11-check focused browser accessibility review covering keyboard flashcard operation, visible focus, table header semantics, quiz feedback announcements, reduced motion, touch operation, and absence of horizontal overflow at 390 pixels.
+- Reviewed the new Mermaid and ASCII diagrams in light and dark themes at desktop width and confirmed accessible titles and no page overflow.
+- Updated the ledger continuation test to guard Regions and zones as the next lesson and the coverage evidence test to eight covered topics.
+- Passed syllabus, QA-log, documentation, guidance, Astro, production-build, privacy, formatting, and browser checks.
+
+### Known limits
+
+- GitHub Pages deployment of v4 and v5 has not yet been independently verified.
+- The configured automated browser project remains Chromium. Dedicated Firefox and WebKit projects remain planned.
+- axe-core remains installed but is not invoked by the browser suite.
+- Module 1 has crossed 30 percent but not yet reached the 50 percent audit threshold.
 
 ---
 

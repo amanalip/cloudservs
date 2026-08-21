@@ -55,6 +55,10 @@ export default defineConfig({
               slug: 'learn/foundations/what-is-cloud-computing',
             },
             { label: 'Shared responsibility', slug: 'learn/foundations/shared-responsibility' },
+            {
+              label: 'Control plane and data plane',
+              slug: 'learn/foundations/control-plane-and-data-plane',
+            },
           ],
         },
         {

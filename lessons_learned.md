@@ -4,7 +4,7 @@
 
 ## Document status
 
-- Last documentation sync: `2026-08-21T18:21:19-04:00`
+- Last documentation sync: `2026-08-21T18:48:31-04:00`
 - Current format version: 2
 - Update policy: Required at the end of every project work session
 - Historical note: Aman found version 1 too shallow. Version 2 replaces that first draft with a fuller retrospective. Future historical entries must be appended rather than silently removed.
@@ -59,6 +59,7 @@ Entries are listed in file order so the links match the append-only record. The 
 - [2026-08-09 12:10:10 | Correct link text is not proof of correct navigation](#2026-08-09-121010-edt--correct-link-text-is-not-proof-of-correct-navigation)
 - [2026-08-09 14:44:57 | Batch fixed-cost validation, never lesson completeness](#2026-08-09-144457-edt--batch-fixed-cost-validation-never-lesson-completeness)
 - [2026-08-21 18:21:19 | Claims follow evidence, and browser checks follow component reality](#2026-08-21-182119-edt--claims-follow-evidence-and-browser-checks-follow-component-reality)
+- [2026-08-21 18:48:31 | Research first, then write, and diff structured lists carefully](#2026-08-21-184831-edt--research-first-then-write-and-diff-structured-lists-carefully)
 
 <!-- LESSONS_TOC_END -->
 
@@ -3817,3 +3818,51 @@ Completing a quality-gated lesson is learner-facing curriculum content, so this 
 changelog version v4, updated the readme status and boundary tables, refreshed the AGENTS.md
 boundary block, and synchronized all four living documents. No module threshold was crossed, so no
 audit or QA-log entry applies.
+
+## 2026-08-21 18:48:31 EDT | Research first, then write, and diff structured lists carefully
+
+### What prompted this session
+
+With **Shared responsibility** complete, the ledger pointed to the next planned lesson,
+**Control plane and data plane**. The session ran the full lesson pipeline once: fetch and read
+every primary source, draft against verified claims, review visuals and accessibility in a real
+browser, then close out release records.
+
+### Lesson learned by Aman
+
+Research-first authoring changed the feel of the work. Because all four sources were read before
+any prose existed, drafting never stalled on verification questions, and no claim needed rewriting
+afterward. The ledger-to-lesson handoff also worked for a second consecutive session without any
+conversation memory.
+
+### Lesson learned by Codex
+
+Two small defects occurred, and both were caught by existing guardrails:
+
+| Defect                                                                                   | Guardrail that caught it                         | Prevention adopted                                                      |
+| ---------------------------------------------------------------------------------------- | ------------------------------------------------ | ----------------------------------------------------------------------- |
+| Rewriting the requirements list while appending history silently dropped one requirement | Syllabus validator rejected an incomplete lesson | After editing a list, recount entries instead of trusting visual review |
+| A shell substitution failed mid-pattern on table text containing pipe characters         | Shell refused to parse; SAFE-02 stop-and-check   | Prefer file-edit tools over sed for text with regex metacharacters      |
+
+The first defect is worth naming plainly: editing two parts of one record at once invites drift.
+The validator caught the result, but counting the list immediately after editing it costs seconds
+and removes the dependency on validation order entirely.
+
+### Evidence
+
+- Validator messages for the missing requirement and the premature status, each resolved and revalidated.
+- An 11-check focused browser pass on the new page plus Mermaid and ASCII diagram screenshots in light and dark themes.
+- Unit tests updated from six to eight covered topics, matching recorded evidence.
+- All four primary sources fetched and read during this session, not quoted from memory or search results.
+
+### Remaining boundary
+
+The batch contained one authored lesson rather than the usual planning range because the same day
+already released v4, and starting Regions and zones research would have exceeded a careful review
+surface. Module 1 stands at 40 percent coverage, below the 50 percent audit threshold. Deployment
+of v5 remains unverified until pushed and checked.
+
+### Record decision
+
+The new learner-facing lesson created changelog version v5. The living documents were synchronized
+in the same change. No module threshold was reached, so no audit or QA-log entry applies.

@@ -1,6 +1,6 @@
 # cloudservs Agent Contract
 
-Last documentation sync: `2026-08-21T18:21:19-04:00`
+Last documentation sync: `2026-08-21T18:48:31-04:00`
 
 ## Purpose and learner
 
@@ -36,10 +36,10 @@ Agreement is not the goal by itself. The goal is a better, evidence-supported pr
 ## Current verified boundary
 
 - Last confirmed public release: `v1`, developed July 21, 2026.
-- Repository release candidate: `v4`, completed August 21, 2026, with deployment not yet rechecked.
+- Repository release candidate: `v5`, completed August 21, 2026, with deployment not yet rechecked.
 - Curriculum ledger: 93 planned lessons across 9 ordered modules.
-- Module 1: 30% topic coverage, 22% requirement progress, two quality-gated complete lessons.
-- Verified complete lessons: `What is cloud computing?` and `Shared responsibility`; next planned lesson: `Control plane and data plane`.
+- Module 1: 40% topic coverage, 33% requirement progress, three quality-gated complete lessons.
+- Verified complete lessons: `What is cloud computing?`, `Shared responsibility`, and `Control plane and data plane`; next planned lesson: `Regions and zones`.
 - Active visuals: ASCII, Mermaid, Markmap, and provider comparisons.
 - Installed but not released as learner features: Chart.js, Cytoscape.js, and Driver.js.
 - axe-core is installed but not invoked by the current browser suite.

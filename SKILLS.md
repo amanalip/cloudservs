@@ -1,6 +1,6 @@
 # cloudservs Workflow Router
 
-Last documentation sync: `2026-08-21T18:21:19-04:00`
+Last documentation sync: `2026-08-21T18:48:31-04:00`
 
 This file routes project tasks to detailed procedures in [`playbooks/`](./playbooks/README.md). It is not an installable Codex skill package.
 

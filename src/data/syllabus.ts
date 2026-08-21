@@ -378,6 +378,81 @@ const sharedResponsibility: SyllabusLesson = {
   ],
 };
 
+/** The third lesson separates configuration traffic from serving traffic across all providers. */
+const controlPlaneAndDataPlane: SyllabusLesson = {
+  id: 'm1-03-control-plane-and-data-plane',
+  module: 1,
+  order: 3,
+  slug: 'control-plane-and-data-plane',
+  title: 'Control plane and data plane',
+  topics: ['control plane', 'data plane'],
+  coveredTopics: ['control plane', 'data plane'],
+  prerequisites: ['m1-02-shared-responsibility'],
+  status: 'complete',
+  sourcePath: 'src/content/docs/learn/foundations/control-plane-and-data-plane.mdx',
+  lastVerified: '2026-08-21',
+  completedRequirements: [
+    'learning-objectives',
+    'plain-language-concept',
+    'problem-and-purpose',
+    'vocabulary',
+    'day-to-day-analogy',
+    'analogy-boundary',
+    'visual-mental-models',
+    'technical-mechanism',
+    'aws-implementation',
+    'azure-implementation',
+    'google-cloud-implementation',
+    'provider-comparison',
+    'mapping-confidence',
+    'real-architecture',
+    'mistakes-and-troubleshooting',
+    'workplace-and-interview-context',
+    'recap',
+    'glossary',
+    'flashcards',
+    'quiz-with-explanations',
+    'primary-sources',
+    'last-verified-date',
+    'editorial-review',
+    'accessibility-review',
+    'browser-regression-review',
+  ],
+  nextStep: 'Lesson complete. Continue the ordered curriculum with m1-04-regions-and-zones.',
+  history: [
+    {
+      status: 'planned',
+      date: '2026-07-20',
+      note: 'Added to the ordered cloudservs curriculum ledger.',
+    },
+    {
+      status: 'researching',
+      date: '2026-08-21',
+      note: 'Verified the vendor-neutral definitions in RFC 7426 plus the AWS DynamoDB API guide, the Microsoft Learn control-plane article, and the GKE cluster architecture documentation.',
+    },
+    {
+      status: 'drafting',
+      date: '2026-08-21',
+      note: 'Published the complete lesson draft with an airport analogy, mechanism explanation, provider sections, architecture walkthrough, glossary, flashcards, and knowledge check.',
+    },
+    {
+      status: 'fact-checking',
+      date: '2026-08-21',
+      note: 'Mapped every provider claim to its fetched primary source, labeled the mapping as direct concept with approximate expression, and recorded the verification date.',
+    },
+    {
+      status: 'visual-review',
+      date: '2026-08-21',
+      note: 'Reviewed the Mermaid mental model and airport analogy in light and dark themes, confirmed the Mermaid SVG exposes its accessible title, and checked a 390-pixel mobile viewport for overflow.',
+    },
+    {
+      status: 'complete',
+      date: '2026-08-21',
+      note: 'Completed all 25 lesson requirements after an 11-check focused browser accessibility review covering keyboard operation, focus visibility, table semantics, quiz feedback announcements, reduced motion, and mobile layout, plus production-build and browser-regression validation.',
+    },
+  ],
+};
+
 /** The complete ordered syllabus is grouped into the nine approved curriculum modules. */
 export const syllabusModules: SyllabusModule[] = [
   {
@@ -387,10 +462,7 @@ export const syllabusModules: SyllabusModule[] = [
     lessons: [
       whatIsCloudComputing,
       sharedResponsibility,
-      plannedLesson(1, 3, 'control-plane-and-data-plane', 'Control plane and data plane', [
-        'control plane',
-        'data plane',
-      ]),
+      controlPlaneAndDataPlane,
       plannedLesson(1, 4, 'regions-and-zones', 'Regions and zones', ['regions', 'zones']),
       plannedLesson(1, 5, 'elasticity-and-scalability', 'Elasticity and scalability', [
         'elasticity',
