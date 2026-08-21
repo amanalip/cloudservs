@@ -54,7 +54,7 @@ describe('syllabus ledger', () => {
   });
 
   it('resumes the earliest unfinished and unblocked lesson', () => {
-    expect(getNextSyllabusLesson()?.id).toBe('m1-02-shared-responsibility');
+    expect(getNextSyllabusLesson()?.id).toBe('m1-03-control-plane-and-data-plane');
   });
 
   it('pauses lesson continuation while a reached module audit is in progress', () => {

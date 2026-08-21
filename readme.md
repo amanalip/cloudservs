@@ -1,6 +1,6 @@
 # cloudservs
 
-Last documentation sync: `2026-08-09T14:44:57-04:00`
+Last documentation sync: `2026-08-21T18:21:19-04:00`
 
 > Learn cloud concepts once, then understand how AWS, Microsoft Azure, and Google Cloud implement them.
 
@@ -28,7 +28,7 @@ The project is built as a static website for deployment through GitHub Pages.
 
 ## Project status
 
-Last confirmed public release: `v1`, released July 21, 2026. Repository release candidate `v2` was completed and locally verified on August 9, 2026. Its GitHub Pages deployment remains `not yet verified` until the change is pushed and the deployed site is checked.
+Last confirmed public release: `v1`, released July 21, 2026. Repository release candidate `v4` was completed and locally verified on August 21, 2026. GitHub Pages deployment remains `not yet verified` until the change is pushed and the deployed site is checked.
 
 The detailed, evidence-based release history is available in [`changelog.md`](./changelog.md).
 
@@ -58,12 +58,12 @@ Development is active. The first implementation chunk is available and includes:
 - A detailed `QAlogs.md` history for every completed module checkpoint and explicitly requested QA review
 - A detailed, append-only `lessons_learned.md` post-mortem with beginner explanations, diagrams, evidence, limitations, and prevention steps
 - A detailed `changelog.md` that separates released features from planned, deferred, and installed-but-unused capabilities
-- One quality-gated foundation lesson and one detailed foundation draft
+- Two quality-gated foundation lessons with complete evidence chains
 - Native, keyboard-accessible flashcards that require no learner-side JavaScript
 - GitHub Pages base-path configuration and an automated deployment workflow
 - A zero-analytics privacy policy, disabled Astro CLI telemetry, build-time privacy scanning, and a browser test that rejects third-party requests
 
-**What is cloud computing?** is the first quality-gated complete lesson. It includes all 25 lesson requirements and was rechecked against current NIST, AWS, Microsoft, and Google primary sources on August 9, 2026. **Shared responsibility** remains a detailed draft whose exact missing requirements are recorded in the syllabus ledger.
+**What is cloud computing?** was the first quality-gated complete lesson, rechecked against current NIST, AWS, Microsoft, and Google primary sources on August 9, 2026. **Shared responsibility** became the second quality-gated complete lesson on August 21, 2026 after its glossary and flashcards were added, its provider claims were rechecked against current AWS, Microsoft Learn, and Google Cloud sources, and a focused browser accessibility review passed all eleven checks. The next planned lesson is **Control plane and data plane**.
 
 Core repository documents:
 
@@ -109,7 +109,7 @@ The contract also requires independent technical judgment. A contributor or agen
 
 | Area                  | Verified repository behavior                                                        | Still planned, deferred, or unverified                        |
 | --------------------- | ----------------------------------------------------------------------------------- | ------------------------------------------------------------- |
-| Curriculum            | 93-lesson ledger, 9 modules, 1 complete lesson, and 1 detailed draft                | Remaining lessons and milestone quality completion            |
+| Curriculum            | 93-lesson ledger, 9 modules, and 2 complete lessons                                 | Remaining lessons and milestone quality completion            |
 | Search                | Static Pagefind full-text index                                                     | Advanced filters and complete synonym translation             |
 | Progress              | Local lesson-completion toggle                                                      | Bookmarks, recently viewed, and continue-learning automation  |
 | Visuals               | ASCII, Mermaid, Markmap, provider comparisons, and a starter architecture           | Released Cytoscape graphs and Chart.js visualizations         |
@@ -119,7 +119,7 @@ The contract also requires independent technical judgment. A contributor or agen
 | Keyboard search label | Starlight search shortcut behavior                                                  | Repository implementation of a platform-aware Command K label |
 | Offline use           | Static site delivery                                                                | Installable PWA, deferred for Astro 7 compatibility           |
 | Optional libraries    | Packages installed                                                                  | Chart.js, Cytoscape.js, and Driver.js learner-facing use      |
-| Deployment            | GitHub Pages-ready production output at `/cloudservs/`                              | Deployed `v3` behavior is not yet verified                    |
+| Deployment            | GitHub Pages-ready production output at `/cloudservs/`                              | Deployed `v4` behavior is not yet verified                    |
 
 ### Evidence-based status promise
 

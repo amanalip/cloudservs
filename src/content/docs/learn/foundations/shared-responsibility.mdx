@@ -17,8 +17,8 @@ objectives:
   - Describe how responsibility changes across IaaS, PaaS, and SaaS
   - Identify customer responsibilities that do not disappear in managed services
   - Compare provider language without assuming identical models
-lastVerified: 2026-07-21
-reviewStatus: draft
+lastVerified: 2026-08-21
+reviewStatus: verified
 searchTerms:
   - shared responsibility
   - shared fate
@@ -34,7 +34,7 @@ import ProviderComparison from '../../../../components/ProviderComparison.astro'
 import KnowledgeCheck from '../../../../components/KnowledgeCheck';
 import LessonProgress from '../../../../components/LessonProgress';
 
-<LessonMeta difficulty="Beginner" minutes={24} module={1} verified="July 21, 2026" />
+<LessonMeta difficulty="Beginner" minutes={24} module={1} verified="August 21, 2026" />
 
 ## What you will understand
 
@@ -250,6 +250,77 @@ Documented responsibility
 Named owner --> Scheduled patching --> Verification --> Evidence
 ```
 
+## Glossary
+
+| Term                   | Beginner-friendly meaning                                                                                    |
+| ---------------------- | ------------------------------------------------------------------------------------------------------------ |
+| Shared responsibility  | The division of security and operational work between a cloud provider and its customer.                     |
+| Security of the cloud  | The provider's duty to protect the infrastructure that runs cloud services, such as facilities and hardware. |
+| Security in the cloud  | The customer's duty to protect data, identities, access, configuration, and everything built in the cloud.   |
+| Service model          | A category, such as IaaS, PaaS, or SaaS, that describes how much of the stack the provider manages.          |
+| Guest operating system | The operating system installed inside a virtual machine. In IaaS, the customer manages it.                   |
+| Patching               | Applying software updates that fix errors or close security vulnerabilities.                                 |
+| Hypervisor             | The virtualization layer that lets one physical server run many isolated virtual machines.                   |
+| Managed service        | A service where the provider operates most technology layers while the customer configures and uses it.      |
+| Data classification    | Deciding how sensitive data is so it receives the right level of protection.                                 |
+| Identity lifecycle     | Creating, managing, and removing user access as people join, change roles, or leave an organization.         |
+| Shared fate            | Google Cloud's approach that treats provider and customer security as an ongoing partnership.                |
+| Mapping confidence     | The cloudservs label describing whether provider services are direct, approximate, or have no equivalent.    |
+
+## Flashcards
+
+Use each prompt for recall before opening the answer.
+
+<div class="flashcard-grid">
+  <details class="flashcard">
+    <summary>
+      What is the difference between security of the cloud and security in the cloud?
+    </summary>
+    <p>
+      Security of the cloud is the provider's duty to protect the underlying infrastructure.
+      Security in the cloud is the customer's duty to protect data, identities, configuration, and
+      workloads.
+    </p>
+  </details>
+  <details class="flashcard">
+    <summary>Who normally patches the guest operating system of a cloud virtual machine?</summary>
+    <p>
+      The customer does. AWS states that EC2 customers manage guest operating system updates and
+      security patches because virtual machines are an Infrastructure as a Service responsibility.
+    </p>
+  </details>
+  <details class="flashcard">
+    <summary>Does moving to SaaS remove the customer's duty for data and access?</summary>
+    <p>
+      No. Microsoft states that customers own their data and identities across every deployment
+      type, including SaaS. Someone must still decide who may sign in and what data is stored.
+    </p>
+  </details>
+  <details class="flashcard">
+    <summary>
+      Why should you not reuse one generic responsibility diagram for every service?
+    </summary>
+    <p>
+      Because the boundary changes by service, tier, and configuration. Each service's own security
+      and operations documentation defines who manages which layer.
+    </p>
+  </details>
+  <details class="flashcard">
+    <summary>What does Google Cloud add to the shared responsibility conversation?</summary>
+    <p>
+      Google Cloud describes shared fate, an ongoing partnership that adds secure foundations,
+      guidance, and recommended controls on top of documented customer and provider duties.
+    </p>
+  </details>
+  <details class="flashcard">
+    <summary>Name three duties that stay with the customer in every service model.</summary>
+    <p>
+      Protecting data, managing identities and access, and making safe configuration choices remain
+      customer duties from on-premises systems through SaaS.
+    </p>
+  </details>
+</div>
+
 ## Knowledge check
 
 <KnowledgeCheck
@@ -294,7 +365,7 @@ Named owner --> Scheduled patching --> Verification --> Evidence
 - [Microsoft Azure: Shared responsibility in the cloud](https://learn.microsoft.com/en-us/azure/security/fundamentals/shared-responsibility)
 - [Google Cloud: Shared responsibilities and shared fate](https://docs.cloud.google.com/architecture/framework/security/shared-responsibility-shared-fate)
 
-Last verified: **July 21, 2026**
+Last verified: **August 21, 2026**
 
 <LessonProgress client:load slug="shared-responsibility" />
 

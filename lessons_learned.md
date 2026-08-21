@@ -4,7 +4,7 @@
 
 ## Document status
 
-- Last documentation sync: `2026-08-09T14:44:57-04:00`
+- Last documentation sync: `2026-08-21T18:21:19-04:00`
 - Current format version: 2
 - Update policy: Required at the end of every project work session
 - Historical note: Aman found version 1 too shallow. Version 2 replaces that first draft with a fuller retrospective. Future historical entries must be appended rather than silently removed.
@@ -58,6 +58,7 @@ Entries are listed in file order so the links match the append-only record. The 
 - [2026-08-09 12:01:10 | A failing pipeline can reveal a test defect rather than a product defect](#2026-08-09-120110-edt--a-failing-pipeline-can-reveal-a-test-defect-rather-than-a-product-defect)
 - [2026-08-09 12:10:10 | Correct link text is not proof of correct navigation](#2026-08-09-121010-edt--correct-link-text-is-not-proof-of-correct-navigation)
 - [2026-08-09 14:44:57 | Batch fixed-cost validation, never lesson completeness](#2026-08-09-144457-edt--batch-fixed-cost-validation-never-lesson-completeness)
+- [2026-08-21 18:21:19 | Claims follow evidence, and browser checks follow component reality](#2026-08-21-182119-edt--claims-follow-evidence-and-browser-checks-follow-component-reality)
 
 <!-- LESSONS_TOC_END -->
 
@@ -3766,3 +3767,53 @@ or current syllabus content. It therefore updates the living documents and the s
 testing, and release playbooks. It does not create a changelog version, a module audit, or a
 `QAlogs.md` entry. The next qualifying learner-facing batch will update those records through their
 existing triggers.
+
+## 2026-08-21 18:21:19 EDT | Claims follow evidence, and browser checks follow component reality
+
+### What prompted this session
+
+The syllabus ledger reported one concrete next step: finish **Shared responsibility** by adding a
+glossary, flashcards, and a documented accessibility review. The session completed that lesson
+through the normal evidence path instead of inventing new scope. Two small, instructive mistakes
+happened along the way, and both were caught before they could reach learners.
+
+### Lesson learned by Aman
+
+The durable-progress design worked as intended. A fresh session knew exactly where to resume
+because `npm run syllabus:status` names the lesson and its next action. No conversation memory was
+required. The two-pass structure also held: create and explain first, then verify independently,
+then record credit in the ledger.
+
+### Lesson learned by Codex
+
+Two sequencing and assumption errors occurred, and both are worth preventing:
+
+| Mistake                                                                     | Cause                                                     | Prevention adopted                                                      |
+| --------------------------------------------------------------------------- | --------------------------------------------------------- | ----------------------------------------------------------------------- |
+| Set lesson frontmatter to `verified` before the ledger agreed               | Edited claims before editing the evidence that backs them | Update the ledger and frontmatter together, then let validators confirm |
+| Asserted radio-input labels and page-first table lookup in an access script | Assumed component internals without reading them          | Read component source, then write checks against real semantics         |
+
+The first mistake produced the correct outcome anyway: `npm run syllabus:validate` refused the
+inconsistent state with two precise errors, and the ledger update resolved them. Validators are
+guardrails, not obstacles.
+
+### Evidence
+
+- Validator output naming the frontmatter and ledger mismatch, followed by a valid 93-lesson ledger after correction.
+- The focused accessibility script failed on assumptions, then passed all eleven checks after reading `KnowledgeCheck.tsx` and scoping selectors to the glossary section.
+- Screenshots of the new glossary and flashcards in light theme, dark theme, and a 390-pixel mobile viewport.
+- Rechecked AWS, Microsoft Learn, and Google Cloud pages confirming every provider claim before refreshing verification dates.
+
+### Remaining boundary
+
+The focused browser review ran against the Chromium development server at desktop and mobile
+widths. It did not run Firefox or WebKit because dedicated projects remain planned, and axe-core
+remains installed but uninvoked. The production build and full regression suite still had to pass
+after this entry was drafted, and closeout depends on their success.
+
+### Record decision
+
+Completing a quality-gated lesson is learner-facing curriculum content, so this session created
+changelog version v4, updated the readme status and boundary tables, refreshed the AGENTS.md
+boundary block, and synchronized all four living documents. No module threshold was crossed, so no
+audit or QA-log entry applies.

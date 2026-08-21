@@ -312,9 +312,9 @@ const sharedResponsibility: SyllabusLesson = {
   topics: ['shared responsibility'],
   coveredTopics: ['shared responsibility'],
   prerequisites: ['m1-01-what-is-cloud-computing'],
-  status: 'drafting',
+  status: 'complete',
   sourcePath: 'src/content/docs/learn/foundations/shared-responsibility.mdx',
-  lastVerified: '2026-07-21',
+  lastVerified: '2026-08-21',
   completedRequirements: [
     'learning-objectives',
     'plain-language-concept',
@@ -333,13 +333,17 @@ const sharedResponsibility: SyllabusLesson = {
     'mistakes-and-troubleshooting',
     'workplace-and-interview-context',
     'recap',
+    'glossary',
+    'flashcards',
     'quiz-with-explanations',
     'primary-sources',
     'last-verified-date',
     'editorial-review',
+    'accessibility-review',
     'browser-regression-review',
   ],
-  nextStep: 'Add a glossary, flashcards, and a documented accessibility review.',
+  nextStep:
+    'Lesson complete. Continue the ordered curriculum with m1-03-control-plane-and-data-plane.',
   history: [
     {
       status: 'planned',
@@ -355,6 +359,21 @@ const sharedResponsibility: SyllabusLesson = {
       status: 'drafting',
       date: '2026-07-21',
       note: 'Published the detailed draft and recorded the remaining active-recall sections.',
+    },
+    {
+      status: 'fact-checking',
+      date: '2026-08-21',
+      note: 'Rechecked the AWS shared responsibility page, Microsoft Learn shared responsibility guidance, and the Google Cloud shared responsibilities and shared fate article against every provider claim, then refreshed the verification dates.',
+    },
+    {
+      status: 'visual-review',
+      date: '2026-08-21',
+      note: 'Added the glossary table and six native flashcards, then reviewed them in light and dark themes at desktop width, at a 390-pixel mobile viewport, and through keyboard interaction.',
+    },
+    {
+      status: 'complete',
+      date: '2026-08-21',
+      note: 'Completed all 25 lesson requirements after the primary-source refresh, an 11-check focused browser accessibility review covering keyboard operation, focus visibility, table semantics, quiz feedback announcements, reduced motion, and mobile layout, plus production-build and browser-regression validation.',
     },
   ],
 };

@@ -18,11 +18,14 @@ v2  First complete lesson, repository candidate completed August 9, 2026
 v3  Lesson sequence navigation correction, repository candidate completed August 9, 2026
  |
  v
-v4  Next version after another qualifying learner-facing change
+v4  Second complete lesson, repository candidate completed August 21, 2026
+ |
+ v
+v5  Next version after another qualifying learner-facing change
 ```
 
 - Documentation corrections, post-mortem improvements, and record maintenance do not create a new feature version by themselves.
-- The next qualifying change after v3 will be named `v4`.
+- The next qualifying change after v4 will be named `v5`.
 - A version entry distinguishes locally verified repository evidence from independently checked GitHub Pages deployment.
 - The private npm package value `0.1.0` is internal project metadata. Public changelog labels use `v1`, `v2`, and later whole-number releases.
 - A version is added only after its qualifying syllabus content, features, or bug fixes exist in the repository and pass the appropriate quality checks.
@@ -45,6 +48,40 @@ Release entry
 +-- Content .......... Lessons, diagrams, sources, and curriculum changes
 +-- Known limits ..... Honest boundaries of what the release does not contain
 ```
+
+---
+
+## v4 | Second quality-gated lesson
+
+- Completion date: `2026-08-21`
+- Release state: Verified repository release candidate
+- Deployment state: Not yet verified on GitHub Pages
+- Curriculum state: 93 lessons across 9 modules
+- Module 1 topic coverage: 30%
+- Module 1 requirement progress: 22%
+- Quality-gated complete lessons: 2
+- Browser regression tests: 12
+
+### Content
+
+- Completed all 25 requirements for **Shared responsibility**, making it the curriculum's second quality-gated complete lesson.
+- Added a 12-term beginner glossary covering shared responsibility, security of and in the cloud, service models, guest operating systems, patching, hypervisors, managed services, data classification, identity lifecycle, shared fate, and mapping confidence.
+- Added six native disclosure flashcards that reinforce the provider boundary claims through recall practice without additional client-side JavaScript or learner-data storage.
+- Refreshed the lesson's AWS, Microsoft Learn, and Google Cloud primary-source review date to August 21, 2026.
+
+### Quality
+
+- Rechecked every provider claim against the current AWS Shared Responsibility Model page, Microsoft Learn shared responsibility guidance, and the Google Cloud shared responsibilities and shared fate article.
+- Ran an 11-check focused browser accessibility review covering keyboard operation of native flashcards, visible focus indicators, glossary table header semantics, quiz feedback status announcements, reduced-motion behavior, touch operation, and absence of horizontal overflow at a 390-pixel viewport.
+- Reviewed the new sections in light and dark themes at desktop width and in a 390-pixel mobile viewport.
+- Passed syllabus, QA-log, documentation, guidance, Astro, production-build, privacy, formatting, and browser checks.
+
+### Known limits
+
+- GitHub Pages deployment of v3 and v4 has not yet been independently verified.
+- The configured automated browser project remains Chromium. Dedicated Firefox and WebKit projects remain planned.
+- axe-core remains installed but is not invoked by the browser suite.
+- The production build continues to report the existing JavaScript chunk-size warning.
 
 ---
 
